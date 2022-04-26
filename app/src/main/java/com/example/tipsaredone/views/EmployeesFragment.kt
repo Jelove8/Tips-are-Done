@@ -8,15 +8,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.tipsaredone.R
-import com.example.tipsaredone.databinding.FragmentFirstBinding
+import com.example.tipsaredone.databinding.FragmentEmployeesBinding
 import com.example.tipsaredone.viewmodels.EmployeeViewModel
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class FirstFragment : Fragment() {
+class EmployeesFragment : Fragment() {
 
-    private var _binding: FragmentFirstBinding? = null
+    private var _binding: FragmentEmployeesBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -24,7 +24,7 @@ class FirstFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = FragmentFirstBinding.inflate(inflater, container, false)
+        _binding = FragmentEmployeesBinding.inflate(inflater, container, false)
         return binding.root
 
     }
@@ -33,6 +33,7 @@ class FirstFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val employeeVM: EmployeeViewModel by activityViewModels()
+
 
 
 
