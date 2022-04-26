@@ -7,8 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.tipsaredone.MainActivity
 import com.example.tipsaredone.R
+import com.example.tipsaredone.adapters.EmployeesAdapter
 import com.example.tipsaredone.databinding.FragmentEmployeesBinding
+import com.example.tipsaredone.model.MockData
 import com.example.tipsaredone.viewmodels.EmployeeViewModel
 
 /**
@@ -34,8 +38,14 @@ class EmployeesFragment : Fragment() {
 
         val employeeVM: EmployeeViewModel by activityViewModels()
 
+        // Initializing employee data in viewmodel
+        val mockEmployees = MockData().getMockEmployees()
+        employeeVM.initializeVM(mockEmployees)
 
-
+        // Populating recycler
+        binding.rcyEmployees.layoutManager = LinearLayoutManager(context as MainActivity)
+        val newAdapter = EmployeesAdapter(employeeVM.employeesList.value!!)
+        binding.rcyEmployees.adapter = newAdapter
 
         binding.btnConfirmEmployees.setOnClickListener {
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)

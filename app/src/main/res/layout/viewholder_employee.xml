@@ -34,7 +34,7 @@
         android:gravity="center_vertical"
         android:hint="Ashley Ramirez Johnson"
         android:textAlignment="textStart"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"

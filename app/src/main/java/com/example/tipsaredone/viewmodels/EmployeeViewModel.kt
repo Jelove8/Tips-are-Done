@@ -7,7 +7,12 @@ import com.example.tipsaredone.model.Employee
 
 class EmployeeViewModel: ViewModel() {
 
-    private val _employeesList = MutableLiveData<MutableList<Employee>>()
+    private val _employeesList = MutableLiveData<MutableList<Employee>>(mutableListOf())
 
+    val employeesList: LiveData<MutableList<Employee>>
+        get() = _employeesList
 
+   fun initializeVM(employees: MutableList<Employee>) {
+       _employeesList.value!!.addAll(employees)
+   }
 }
