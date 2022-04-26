@@ -10,9 +10,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tipsaredone.R
 import com.example.tipsaredone.model.Employee
 
-class EmployeesAdapter(
-    private val employees: MutableList<Employee>
-) : RecyclerView.Adapter<EmployeesAdapter.EmployeesViewHolder>() {
+class EmployeesAdapter : RecyclerView.Adapter<EmployeesAdapter.EmployeesViewHolder>() {
+
+    private var employees: MutableList<Employee> = mutableListOf()
 
     class EmployeesViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
         val employeeImage: ImageView = itemView.findViewById(R.id.employee_image)
@@ -32,5 +32,9 @@ class EmployeesAdapter(
 
     override fun getItemCount(): Int {
         return employees.size
+    }
+
+    fun setEmployeeAdapterData(list: MutableList<Employee>) {
+        employees = list
     }
 }

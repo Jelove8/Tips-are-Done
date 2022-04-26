@@ -23,6 +23,8 @@ class EmployeesFragment : Fragment() {
     private var _binding: FragmentEmployeesBinding? = null
     private val binding get() = _binding!!
 
+    private val employeeAdapter = EmployeesAdapter()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,14 +40,11 @@ class EmployeesFragment : Fragment() {
 
         val employeeVM: EmployeeViewModel by activityViewModels()
 
-        // Initializing employee data in viewmodel
-        val mockEmployees = MockData().getMockEmployees()
-        employeeVM.initializeVM(mockEmployees)
 
         // Populating recycler
         binding.rcyEmployees.layoutManager = LinearLayoutManager(context as MainActivity)
-        val newAdapter = EmployeesAdapter(employeeVM.employeesList.value!!)
-        binding.rcyEmployees.adapter = newAdapter
+        employeeAdapter.setEmployeeAdapterData(employeeVM.employeesList.value!!)
+        binding.rcyEmployees.adapter = employeeAdapter
 
         binding.btnConfirmEmployees.setOnClickListener {
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)

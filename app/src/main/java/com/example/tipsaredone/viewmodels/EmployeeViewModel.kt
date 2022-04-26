@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.tipsaredone.model.Employee
+import com.example.tipsaredone.model.MockData
 
 class EmployeeViewModel: ViewModel() {
 
@@ -12,7 +13,7 @@ class EmployeeViewModel: ViewModel() {
     val employeesList: LiveData<MutableList<Employee>>
         get() = _employeesList
 
-   fun initializeVM(employees: MutableList<Employee>) {
-       _employeesList.value!!.addAll(employees)
+   init {
+       _employeesList.value!!.addAll(MockData().getMockEmployees())
    }
 }
