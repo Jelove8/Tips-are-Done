@@ -10,7 +10,7 @@ import com.example.tipsaredone.model.MockData
 class EmployeeViewModel: ViewModel() {
 
     companion object {
-        const val ADD_EMPLOYEE = "add_employee"
+        const val EMPLOYEE_VM = "empVM"
     }
 
     private val _employeesList = MutableLiveData(MockData().getMockEmployees())
@@ -39,11 +39,16 @@ class EmployeeViewModel: ViewModel() {
 
         _employeesList.value!!.sortBy { it.name }
 
-        Log.d(ADD_EMPLOYEE,"New Employee Added: $newName, $uniqueID")
+        Log.d(EMPLOYEE_VM,"New Employee Added: $newName, $uniqueID")
     }
 
     val selectedEmployeeIndex = MutableLiveData<Int>()
     fun getSelectedEmployee(): Employee {
         return _employeesList.value!![selectedEmployeeIndex.value!!]
+    }
+    fun deleteSelectedEmployee() {
+        Log.d(EMPLOYEE_VM, "Deleted Employee: ${getSelectedEmployee().name}, ${getSelectedEmployee().id}")
+        _employeesList.value!!.remove(getSelectedEmployee())
+
     }
 }

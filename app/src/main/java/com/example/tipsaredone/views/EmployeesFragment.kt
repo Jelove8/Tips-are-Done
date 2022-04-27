@@ -1,8 +1,11 @@
 package com.example.tipsaredone.views
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -39,7 +42,7 @@ class EmployeesFragment : Fragment() {
         val employeeVM: EmployeeViewModel by activityViewModels()
         employeeAdapter = EmployeesAdapter(
             itemClickCallback = fun(position: Int) {
-                Log.d(EmployeeViewModel.ADD_EMPLOYEE,position.toString())
+                Log.d(EmployeeViewModel.EMPLOYEE_VM,position.toString())
                 employeeVM.selectedEmployeeIndex.value = position
                 findNavController().navigate(R.id.action_empList_to_empEdit)
             }
