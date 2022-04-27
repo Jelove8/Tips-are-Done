@@ -41,4 +41,9 @@ class EmployeeViewModel: ViewModel() {
 
         Log.d(ADD_EMPLOYEE,"New Employee Added: $newName, $uniqueID")
     }
+
+    val selectedEmployeeIndex = MutableLiveData<Int>()
+    fun getSelectedEmployee(): Employee {
+        return _employeesList.value!![selectedEmployeeIndex.value!!]
+    }
 }

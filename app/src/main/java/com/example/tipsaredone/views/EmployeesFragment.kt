@@ -5,16 +5,12 @@ import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.tipsaredone.MainActivity
 import com.example.tipsaredone.R
 import com.example.tipsaredone.adapters.EmployeesAdapter
 import com.example.tipsaredone.databinding.FragmentEmployeesBinding
-import com.example.tipsaredone.model.MockData
 import com.example.tipsaredone.viewmodels.EmployeeViewModel
-import kotlinx.coroutines.newFixedThreadPoolContext
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -24,7 +20,7 @@ class EmployeesFragment : Fragment() {
     private var _binding: FragmentEmployeesBinding? = null
     private val binding get() = _binding!!
 
-    private val employeeAdapter = EmployeesAdapter()
+    private lateinit var employeeAdapter: EmployeesAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,6 +37,13 @@ class EmployeesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val employeeVM: EmployeeViewModel by activityViewModels()
+        employeeAdapter = EmployeesAdapter(
+            itemClickCallback = fun(position: Int) {
+                Log.d(EmployeeViewModel.ADD_EMPLOYEE,position.toString())
+                employeeVM.selectedEmployeeIndex.value = position
+                findNavController().navigate(R.id.action_empList_to_empEdit)
+            }
+        )
 
         // Populating recycler
         binding.rcyEmployees.layoutManager = LinearLayoutManager(context as MainActivity)
@@ -70,8 +73,9 @@ class EmployeesFragment : Fragment() {
         }
 
         binding.btnConfirmEmployees.setOnClickListener {
-            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+
         }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater)  {
