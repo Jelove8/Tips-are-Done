@@ -51,4 +51,7 @@ class EmployeeViewModel: ViewModel() {
         _employeesList.value!!.remove(getSelectedEmployee())
 
     }
+    fun confirmEdits(editedName: String) {
+        _employeesList.value!![selectedEmployeeIndex.value!!].name = editedName
+    }
 }
