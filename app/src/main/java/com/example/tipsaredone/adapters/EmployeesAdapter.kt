@@ -5,18 +5,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.view.menu.MenuView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tipsaredone.R
 import com.example.tipsaredone.model.Employee
 
 class EmployeesAdapter : RecyclerView.Adapter<EmployeesAdapter.EmployeesViewHolder>() {
 
-    private var employees: MutableList<Employee> = mutableListOf()
+    var employees: MutableList<Employee> = mutableListOf()
 
     class EmployeesViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
         val employeeImage: ImageView = itemView.findViewById(R.id.employee_image)
-        val employeeName: TextView = itemView.findViewById(R.id.employee_name)
+        val employeeName: TextView = itemView.findViewById(R.id.tv_employee_name)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EmployeesViewHolder {
@@ -36,5 +35,6 @@ class EmployeesAdapter : RecyclerView.Adapter<EmployeesAdapter.EmployeesViewHold
 
     fun setEmployeeAdapterData(list: MutableList<Employee>) {
         employees = list
+        notifyDataSetChanged()
     }
 }

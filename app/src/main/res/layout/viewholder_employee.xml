@@ -25,13 +25,12 @@
     </androidx.cardview.widget.CardView>
 
     <TextView
-        android:id="@+id/employee_name"
+        android:id="@+id/tv_employee_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:fontFamily="serif"
-        android:gravity="center_vertical"
         android:hint="Ashley Ramirez Johnson"
         android:textAlignment="textStart"
         android:textColor="@color/black"
