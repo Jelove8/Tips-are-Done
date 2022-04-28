@@ -14,6 +14,9 @@
         <action
             android:id="@+id/action_empList_to_empEdit"
             app:destination="@id/EditEmployeeFragment" />
+        <action
+            android:id="@+id/action_empList_to_empHours"
+            app:destination="@id/EmployeeHoursFragment" />
     </fragment>
     <fragment
         android:id="@+id/EditEmployeeFragment"
@@ -25,4 +28,9 @@
             android:id="@+id/action_SecondFragment_to_FirstFragment"
             app:destination="@id/EmployeeFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/EmployeeHoursFragment"
+        android:name="com.example.tipsaredone.views.EmployeeHoursFragment"
+        android:label="Employee Hours"
+        tools:layout="@layout/fragment_employee_hours" />
 </navigation>

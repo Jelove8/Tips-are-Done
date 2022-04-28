@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tipsaredone.R
 import com.example.tipsaredone.adapters.EmployeesAdapter
 import com.example.tipsaredone.databinding.FragmentEmployeesListBinding
+import com.example.tipsaredone.viewmodels.EmployeeHoursViewModel
 import com.example.tipsaredone.viewmodels.EmployeeViewModel
 
 /**
@@ -68,9 +69,11 @@ class EmployeeListFragment : Fragment() {
             }
         }
 
-        // Navigating to TippableHoursFragment
+        // Navigating to EmployeeHoursFragment
         binding.btnConfirmEmployees.setOnClickListener {
-
+            val employeeHoursVM: EmployeeHoursViewModel by activityViewModels()
+            employeeHoursVM.setEmployeesList(employeeVM.employeesList.value!!)
+            findNavController().navigate(R.id.action_empList_to_empHours)
         }
 
     }
