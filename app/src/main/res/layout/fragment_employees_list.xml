@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".views.EmployeesFragment">
+    tools:context=".views.EmployeeListFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cnst_new_employee"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:padding="8dp"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -44,14 +44,15 @@
             android:fontFamily="serif"
             android:gravity="center_vertical"
             android:hint="Enter new name..."
+            android:inputType="text"
             android:textAlignment="textStart"
             android:textColor="@color/black"
             android:textSize="16sp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btn_confirm_new_employee"
             app:layout_constraintStart_toEndOf="@+id/cardView"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="TouchTargetSizeCheck" />
 
         <Button
             android:id="@+id/btn_cancel_new_employee"
@@ -100,4 +101,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cnst_new_employee" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

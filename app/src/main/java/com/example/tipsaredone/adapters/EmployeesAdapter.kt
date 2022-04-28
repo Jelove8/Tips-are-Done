@@ -1,5 +1,6 @@
 package com.example.tipsaredone.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,8 +13,7 @@ import com.example.tipsaredone.model.Employee
 
 class EmployeesAdapter(private val itemClickCallback: ((Int) -> Unit)?) : RecyclerView.Adapter<EmployeesAdapter.EmployeesViewHolder>() {
 
-    var initBool = true
-    var employees: MutableList<Employee> = mutableListOf()
+    private var employees: MutableList<Employee> = mutableListOf()
 
     class EmployeesViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
         val employeeImage: ImageView = itemView.findViewById(R.id.employee_image)
@@ -39,6 +39,7 @@ class EmployeesAdapter(private val itemClickCallback: ((Int) -> Unit)?) : Recycl
         return employees.size
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setEmployeeAdapterData(list: MutableList<Employee>) {
         employees = list
         notifyDataSetChanged()

@@ -15,6 +15,7 @@ class EmployeeViewModel: ViewModel() {
 
     private val _employeesList = MutableLiveData(MockData().getMockEmployees())
     val employeesList: LiveData<MutableList<Employee>> = _employeesList
+    val selectedIndex: MutableLiveData<Int> by lazy { MutableLiveData<Int>() }
 
     private fun getRandom8CharString() : String {
         val allowedChars = ('A'..'Z') + ('a'..'z') + ('0'..'9')
@@ -42,16 +43,17 @@ class EmployeeViewModel: ViewModel() {
         Log.d(EMPLOYEE_VM,"New Employee Added: $newName, $uniqueID")
     }
 
-    val selectedEmployeeIndex = MutableLiveData<Int>()
     fun getSelectedEmployee(): Employee {
-        return _employeesList.value!![selectedEmployeeIndex.value!!]
+        val selectedEmployee = _employeesList.value!![selectedIndex.value!!]
+        Log.d(EMPLOYEE_VM,"Selected: ${selectedEmployee.name}, ${selectedEmployee.id}")
+        return selectedEmployee
     }
     fun deleteSelectedEmployee() {
-        Log.d(EMPLOYEE_VM, "Deleted Employee: ${getSelectedEmployee().name}, ${getSelectedEmployee().id}")
-        _employeesList.value!!.remove(getSelectedEmployee())
-
+        _employeesList.value!!.removeAt(selectedIndex.value!!)
     }
     fun confirmEdits(editedName: String) {
-        _employeesList.value!![selectedEmployeeIndex.value!!].name = editedName
+        _employeesList.value!![selectedIndex.value!!].name = editedName
+        _employeesList.value!!.sortBy { it.name }
     }
+
 }

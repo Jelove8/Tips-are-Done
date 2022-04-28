@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/EmployeeFragment"
-        android:name="com.example.tipsaredone.views.EmployeesFragment"
+        android:name="com.example.tipsaredone.views.EmployeeListFragment"
         android:label="@string/employees_fragment_label"
-        tools:layout="@layout/fragment_employees">
+        tools:layout="@layout/fragment_employees_list">
 
         <action
             android:id="@+id/action_empList_to_empEdit"

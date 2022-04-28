@@ -1,29 +1,23 @@
 package com.example.tipsaredone.views
 
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import android.view.inputmethod.InputMethodManager
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tipsaredone.R
 import com.example.tipsaredone.adapters.EmployeesAdapter
-import com.example.tipsaredone.databinding.FragmentEmployeesBinding
+import com.example.tipsaredone.databinding.FragmentEmployeesListBinding
 import com.example.tipsaredone.viewmodels.EmployeeViewModel
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class EmployeesFragment : Fragment() {
+class EmployeeListFragment : Fragment() {
 
-    private var _binding: FragmentEmployeesBinding? = null
+    private var _binding: FragmentEmployeesListBinding? = null
     private val binding get() = _binding!!
-
-    private lateinit var employeeAdapter: EmployeesAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,7 +25,7 @@ class EmployeesFragment : Fragment() {
     ): View {
 
         setHasOptionsMenu(true)
-        _binding = FragmentEmployeesBinding.inflate(inflater, container, false)
+        _binding = FragmentEmployeesListBinding.inflate(inflater, container, false)
         return binding.root
 
     }
@@ -40,15 +34,17 @@ class EmployeesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val employeeVM: EmployeeViewModel by activityViewModels()
-        employeeAdapter = EmployeesAdapter(
+
+        val employeeAdapter = EmployeesAdapter(
+
+            // Navigating to EditEmployeeFragment
             itemClickCallback = fun(position: Int) {
-                Log.d(EmployeeViewModel.EMPLOYEE_VM,position.toString())
-                employeeVM.selectedEmployeeIndex.value = position
+                employeeVM.selectedIndex.value = position
                 findNavController().navigate(R.id.action_empList_to_empEdit)
             }
         )
 
-        // Populating recycler
+        // Populating employee list recycler
         binding.rcyEmployees.layoutManager = LinearLayoutManager(context as MainActivity)
         employeeAdapter.setEmployeeAdapterData(employeeVM.employeesList.value!!)
         binding.rcyEmployees.adapter = employeeAdapter
@@ -57,11 +53,9 @@ class EmployeesFragment : Fragment() {
         binding.btnCancelNewEmployee.setOnClickListener {
             binding.etNewEmployeeName.text.clear()
             binding.cnstNewEmployee.visibility = View.GONE
+            binding.btnConfirmEmployees.visibility = View.VISIBLE
         }
-
-
         binding.btnConfirmNewEmployee.setOnClickListener {
-
             if (binding.etNewEmployeeName.text.isNullOrEmpty()) {
                 (context as MainActivity).makeToastMessage("A name must be entered.")
             }
@@ -70,11 +64,11 @@ class EmployeesFragment : Fragment() {
                 employeeAdapter.setEmployeeAdapterData(employeeVM.employeesList.value!!)
                 binding.etNewEmployeeName.text.clear()
                 binding.cnstNewEmployee.visibility = View.GONE
-
+                binding.btnConfirmEmployees.visibility = View.VISIBLE
             }
-
         }
 
+        // Navigating to TippableHoursFragment
         binding.btnConfirmEmployees.setOnClickListener {
 
         }
@@ -91,10 +85,11 @@ class EmployeesFragment : Fragment() {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        val employeesVM: EmployeeViewModel by activityViewModels()
+
         return when (item.itemId) {
             R.id.action_add_employee -> {
                 binding.cnstNewEmployee.visibility = View.VISIBLE
+                binding.btnConfirmEmployees.visibility = View.GONE
                 true
             }
             else -> super.onOptionsItemSelected(item)
