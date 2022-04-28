@@ -10,6 +10,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tipsaredone.R
 import com.example.tipsaredone.model.Employee
+import org.w3c.dom.Text
 
 class EmployeeHoursAdapter(private val itemClickCallback: ((Int,Double) -> Unit)?) : RecyclerView.Adapter<EmployeeHoursAdapter.EmployeeHoursViewHolder>() {
 
@@ -17,6 +18,7 @@ class EmployeeHoursAdapter(private val itemClickCallback: ((Int,Double) -> Unit)
     private var hours: MutableList<Double> = mutableListOf()
 
     class EmployeeHoursViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
+        val tvIndex: TextView = itemView.findViewById(R.id.tv_empoyee_index)
         val tvName: TextView = itemView.findViewById(R.id.tv_employee_hours)
         val etHours: EditText = itemView.findViewById(R.id.et_employee_hours)
 
@@ -35,7 +37,8 @@ class EmployeeHoursAdapter(private val itemClickCallback: ((Int,Double) -> Unit)
         holder: EmployeeHoursViewHolder,
         position: Int
     ) {
-        holder.tvName.text = "${position + 1}. ${employees[position].name}"
+        holder.tvIndex.text ="${position+1}."
+        holder.tvName.text = employees[position].name
         holder.etHours.setText(employees[position].currentTippableHours.toString())
         holder.etHours.doAfterTextChanged {
             itemClickCallback?.invoke(position,holder.etHours.text.toString().toDouble())

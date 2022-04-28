@@ -1,16 +1,16 @@
 package com.example.tipsaredone.views
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.util.Log
+import android.view.*
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
+import androidx.navigation.findNavController
+import androidx.navigation.ui.navigateUp
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tipsaredone.R
 import com.example.tipsaredone.adapters.EmployeeHoursAdapter
-import com.example.tipsaredone.adapters.EmployeesAdapter
 import com.example.tipsaredone.databinding.FragmentEmployeeHoursBinding
 import com.example.tipsaredone.viewmodels.EmployeeHoursViewModel
 
@@ -23,6 +23,7 @@ class EmployeeHoursFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
         _binding = FragmentEmployeeHoursBinding.inflate(inflater,container,false)
         return binding.root
     }
@@ -43,7 +44,6 @@ class EmployeeHoursFragment : Fragment() {
         binding.rcyEmployeeHours.layoutManager = LinearLayoutManager(context as MainActivity)
         employeeHoursAdapter.setEmployeeAdapterData(employeeHoursVM.getEmployeesList(), employeeHoursVM.getEmployeeHours())
         binding.rcyEmployeeHours.adapter = employeeHoursAdapter
-
     }
 
     override fun onDestroyView() {
