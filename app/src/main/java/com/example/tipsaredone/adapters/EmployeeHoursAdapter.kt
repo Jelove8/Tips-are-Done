@@ -36,11 +36,8 @@ class EmployeeHoursAdapter(private val itemClickCallback: ((Int,Double) -> Unit)
         position: Int
     ) {
         holder.tvName.text = "${position + 1}. ${employees[position].name}"
-        holder.etHours.setText(hours[position].toString())
+        holder.etHours.setText(employees[position].currentTippableHours.toString())
         holder.etHours.doAfterTextChanged {
-            if (holder.etHours.text.isNullOrEmpty()) {
-                holder.etHours.setText("0.00")
-            }
             itemClickCallback?.invoke(position,holder.etHours.text.toString().toDouble())
         }
     }
