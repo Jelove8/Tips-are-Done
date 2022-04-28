@@ -11,11 +11,17 @@ class EmployeeHoursViewModel : ViewModel() {
 
     private val _employeeHours = MutableLiveData<MutableList<Double>>(mutableListOf())
 
+    fun getEmployeesList(): MutableList<Employee> {
+        return _employeeList.value!!
+    }
     fun setEmployeesList(list: MutableList<Employee>) {
         _employeeList.value = list
         for (i in 0 until _employeeList.value!!.size) {
             _employeeHours.value!!.add(0.00)
         }
+    }
+    fun getEmployeeHours(): MutableList<Double> {
+        return _employeeHours.value!!
     }
     fun setEmployeeHours(hours: Double, index: Int) {
         _employeeHours.value!![index] = hours
