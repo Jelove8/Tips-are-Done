@@ -5,9 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import androidx.core.widget.doAfterTextChanged
+import androidx.fragment.app.activityViewModels
 import com.example.tipsaredone.R
 import com.example.tipsaredone.databinding.FragmentEmployeeHoursBinding
 import com.example.tipsaredone.databinding.FragmentInputTipsBinding
+import com.example.tipsaredone.viewmodels.TipsViewModel
 
 class InputTipsFragment : Fragment() {
 
@@ -24,6 +28,25 @@ class InputTipsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val tipsVM: TipsViewModel by activityViewModels()
+
+        val listOfEditTexts = mutableListOf(binding.etOnes,binding.etTwos,binding.etFives,binding.etTens,binding.etTwenties)
+
+        for ((i, et) in listOfEditTexts.withIndex()) {
+
+            if (tipsVM.getBillsList()[i] == null) {
+                et.text.clear()
+            }
+            else {
+                et.setText(tipsVM.getBillsList()[i].toString())
+            }
+
+            et.doAfterTextChanged {
+                tipsVM.updateBillAmount(i,et.text.toString().toDouble())
+            }
+        }
+
 
     }
 
