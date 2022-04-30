@@ -41,5 +41,14 @@
         android:id="@+id/InputTipsFragment"
         android:name="com.example.tipsaredone.views.InputTipsFragment"
         android:label="Input Weekly Tips"
-        tools:layout="@layout/fragment_input_tips" />
+        tools:layout="@layout/fragment_input_tips" >
+        <action
+            android:id="@+id/action_InputTipsFragment_toOutputTipsFragment"
+            app:destination="@id/outputTipsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/outputTipsFragment"
+        android:name="com.example.tipsaredone.views.OutputTipsFragment"
+        android:label="fragment_output_tips"
+        tools:layout="@layout/fragment_output_tips" />
 </navigation>

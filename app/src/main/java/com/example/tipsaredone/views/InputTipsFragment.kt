@@ -8,6 +8,8 @@ import android.widget.EditText
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
+import com.example.tipsaredone.R
 import com.example.tipsaredone.databinding.FragmentInputTipsBinding
 import com.example.tipsaredone.viewmodels.TipsViewModel
 
@@ -53,13 +55,15 @@ class InputTipsFragment : Fragment() {
         }
 
         binding.btnConfirmBills.setOnClickListener {
-            checkBillAmounts(listOfEditTexts)
+            if (checkBillAmounts(listOfEditTexts)) {
+                findNavController().navigate(R.id.action_InputTipsFragment_toOutputTipsFragment)
+            }
         }
 
     }
 
 
-    private fun checkBillAmounts(list: List<EditText>) {
+    private fun checkBillAmounts(list: List<EditText>): Boolean {
         val listOfAmounts = mutableListOf<Int>()
         for (et in list) {
             if (et.text.isNullOrEmpty()) {
@@ -72,24 +76,25 @@ class InputTipsFragment : Fragment() {
 
         val sumOfMods = (listOfAmounts[1] % 2) + (listOfAmounts[2] % 5) + (listOfAmounts[3] % 10) + (listOfAmounts[4] % 20)
 
-        when {
+        return when {
             listOfAmounts.sum() == 0 -> {
                 (context as MainActivity).makeToastMessage("No bills inputted.")
+                false
             }
             sumOfMods != 0 -> {
                 (context as MainActivity).makeToastMessage("Incorrect amount detected.")
+                false
             }
             else -> {
                 (context as MainActivity).makeToastMessage("Bills confirmed")
+                true
             }
         }
-
-
-
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
 }
