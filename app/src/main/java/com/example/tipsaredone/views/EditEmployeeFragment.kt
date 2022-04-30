@@ -8,7 +8,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.tipsaredone.R
 import com.example.tipsaredone.databinding.FragmentEditEmployeeBinding
 import com.example.tipsaredone.model.Employee
-import com.example.tipsaredone.viewmodels.EmployeeViewModel
+import com.example.tipsaredone.viewmodels.EmployeeListViewModel
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
@@ -34,13 +34,13 @@ class EditEmployeeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val employeeVM: EmployeeViewModel by activityViewModels()
+        val employeeListVM: EmployeeListViewModel by activityViewModels()
 
-        selectedEmployee = employeeVM.getSelectedEmployee()
+        selectedEmployee = employeeListVM.getSelectedEmployee()
         binding.etEditName.setText(selectedEmployee.name)
 
         binding.btnDeleteEmployee.setOnClickListener {
-            employeeVM.deleteSelectedEmployee()
+            employeeListVM.deleteSelectedEmployee()
             findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
         }
 
@@ -56,7 +56,7 @@ class EditEmployeeFragment : Fragment() {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        val employeeVM: EmployeeViewModel by activityViewModels()
+        val employeeListVM: EmployeeListViewModel by activityViewModels()
 
         return when (item.itemId) {
             R.id.action_confirm_edits -> {
@@ -65,7 +65,7 @@ class EditEmployeeFragment : Fragment() {
                     false
                 }
                 else {
-                    employeeVM.confirmEdits(binding.etEditName.text.toString())
+                    employeeListVM.confirmEdits(binding.etEditName.text.toString())
                     findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
                     true
                 }

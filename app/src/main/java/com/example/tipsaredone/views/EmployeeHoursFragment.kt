@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tipsaredone.adapters.EmployeeHoursAdapter
 import com.example.tipsaredone.databinding.FragmentEmployeeHoursBinding
 import com.example.tipsaredone.viewmodels.EmployeeHoursViewModel
-import com.example.tipsaredone.viewmodels.EmployeeViewModel
+import com.example.tipsaredone.viewmodels.EmployeeListViewModel
 
 class EmployeeHoursFragment : Fragment() {
 
@@ -28,9 +28,9 @@ class EmployeeHoursFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val employeeListVM: EmployeeViewModel by activityViewModels()
+        val employeeListListVM: EmployeeListViewModel by activityViewModels()
         val employeeHoursVM: EmployeeHoursViewModel by activityViewModels()
-        employeeHoursVM.setEmployeesList(employeeListVM.employeesList.value!!)
+        employeeHoursVM.setEmployeesList(employeeListListVM.employeesList.value!!)
 
         val employeeHoursAdapter = EmployeeHoursAdapter(
 
@@ -46,7 +46,7 @@ class EmployeeHoursFragment : Fragment() {
         )
 
         binding.rcyEmployeeHours.layoutManager = LinearLayoutManager(context as MainActivity)
-        employeeHoursAdapter.setEmployeeAdapterData(employeeListVM.employeesList.value!!, employeeHoursVM.employeeHours.value!!)
+        employeeHoursAdapter.setEmployeeAdapterData(employeeListListVM.employeesList.value!!, employeeHoursVM.employeeHours.value!!)
         binding.rcyEmployeeHours.adapter = employeeHoursAdapter
     }
 

@@ -9,8 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tipsaredone.R
 import com.example.tipsaredone.adapters.EmployeesAdapter
 import com.example.tipsaredone.databinding.FragmentEmployeesListBinding
-import com.example.tipsaredone.viewmodels.EmployeeHoursViewModel
-import com.example.tipsaredone.viewmodels.EmployeeViewModel
+import com.example.tipsaredone.viewmodels.EmployeeListViewModel
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -34,20 +33,20 @@ class EmployeeListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val employeeVM: EmployeeViewModel by activityViewModels()
+        val employeeListVM: EmployeeListViewModel by activityViewModels()
 
         val employeeAdapter = EmployeesAdapter(
 
             // Navigating to EditEmployeeFragment
             itemClickCallback = fun(position: Int) {
-                employeeVM.selectedIndex.value = position
+                employeeListVM.selectedIndex.value = position
                 findNavController().navigate(R.id.action_empList_to_empEdit)
             }
         )
 
         // Populating employee list recycler
         binding.rcyEmployees.layoutManager = LinearLayoutManager(context as MainActivity)
-        employeeAdapter.setEmployeeAdapterData(employeeVM.employeesList.value!!)
+        employeeAdapter.setEmployeeAdapterData(employeeListVM.employeesList.value!!)
         binding.rcyEmployees.adapter = employeeAdapter
 
         // New Employee Logic
@@ -61,8 +60,8 @@ class EmployeeListFragment : Fragment() {
                 (context as MainActivity).makeToastMessage("A name must be entered.")
             }
             else {
-                employeeVM.addNewEmployee(binding.etNewEmployeeName.text.toString())
-                employeeAdapter.setEmployeeAdapterData(employeeVM.employeesList.value!!)
+                employeeListVM.addNewEmployee(binding.etNewEmployeeName.text.toString())
+                employeeAdapter.setEmployeeAdapterData(employeeListVM.employeesList.value!!)
                 binding.etNewEmployeeName.text.clear()
                 binding.cnstNewEmployee.visibility = View.GONE
                 binding.btnConfirmEmployees.visibility = View.VISIBLE

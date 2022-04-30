@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.example.tipsaredone.model.Employee
 import com.example.tipsaredone.model.MockData
 
-class EmployeeViewModel: ViewModel() {
+class EmployeeListViewModel: ViewModel() {
 
     companion object {
         const val EMPLOYEE_VM = "empVM"
