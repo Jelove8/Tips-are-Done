@@ -13,10 +13,12 @@ class EmployeeViewModel: ViewModel() {
         const val EMPLOYEE_VM = "empVM"
     }
 
-    private val _employeesList = MutableLiveData<MutableList<Employee>>(mutableListOf())
+
+    private val _employeesList = MutableLiveData<MutableList<Employee>>(MockData().getMockEmployees())  // Don't remove the type-argument
     val employeesList: LiveData<MutableList<Employee>> = _employeesList
     val selectedIndex: MutableLiveData<Int> by lazy { MutableLiveData<Int>() }
 
+    // Adding a new employee
     private fun getRandom8CharString() : String {
         val allowedChars = ('A'..'Z') + ('a'..'z') + ('0'..'9')
         return (1..8)
@@ -43,6 +45,7 @@ class EmployeeViewModel: ViewModel() {
         Log.d(EMPLOYEE_VM,"New Employee Added: $newName, $uniqueID")
     }
 
+    // Editing or Deleting an existing employee
     fun getSelectedEmployee(): Employee {
         val selectedEmployee = _employeesList.value!![selectedIndex.value!!]
         Log.d(EMPLOYEE_VM,"Selected: ${selectedEmployee.name}, ${selectedEmployee.id}")

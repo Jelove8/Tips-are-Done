@@ -16,8 +16,6 @@ import org.w3c.dom.Text
 class EmployeeHoursAdapter(private val itemClickCallback: (Editable, String) -> Unit) : RecyclerView.Adapter<EmployeeHoursAdapter.EmployeeHoursViewHolder>() {
 
     private var employees: MutableList<Employee> = mutableListOf()
-    private var hours: MutableList<Double?> = mutableListOf()
-
     private var hoursMap: MutableMap<String,Double?> = mutableMapOf()
 
     class EmployeeHoursViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {

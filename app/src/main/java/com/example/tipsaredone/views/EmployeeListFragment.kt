@@ -71,8 +71,6 @@ class EmployeeListFragment : Fragment() {
 
         // Navigating to EmployeeHoursFragment
         binding.btnConfirmEmployees.setOnClickListener {
-            val employeeHoursVM: EmployeeHoursViewModel by activityViewModels()
-            employeeHoursVM.setEmployeesList(employeeVM.employeesList.value!!)
             findNavController().navigate(R.id.action_empList_to_empHours)
         }
 
