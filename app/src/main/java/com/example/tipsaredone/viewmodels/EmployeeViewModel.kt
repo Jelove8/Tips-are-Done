@@ -13,7 +13,7 @@ class EmployeeViewModel: ViewModel() {
         const val EMPLOYEE_VM = "empVM"
     }
 
-    private val _employeesList = MutableLiveData(MockData().getMockEmployees())
+    private val _employeesList = MutableLiveData<MutableList<Employee>>(mutableListOf())
     val employeesList: LiveData<MutableList<Employee>> = _employeesList
     val selectedIndex: MutableLiveData<Int> by lazy { MutableLiveData<Int>() }
 
