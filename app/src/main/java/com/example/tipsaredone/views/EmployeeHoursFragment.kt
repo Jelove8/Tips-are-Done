@@ -1,15 +1,11 @@
 package com.example.tipsaredone.views
 
 import android.os.Bundle
-import android.util.Log
+import android.text.Editable
 import android.view.*
-import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.findNavController
-import androidx.navigation.ui.navigateUp
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.tipsaredone.R
 import com.example.tipsaredone.adapters.EmployeeHoursAdapter
 import com.example.tipsaredone.databinding.FragmentEmployeeHoursBinding
 import com.example.tipsaredone.viewmodels.EmployeeHoursViewModel
@@ -36,13 +32,18 @@ class EmployeeHoursFragment : Fragment() {
         val employeeHoursAdapter = EmployeeHoursAdapter(
 
             // Navigating to EditEmployeeFragment
-            itemClickCallback = fun(position: Int, hours: Double) {
-               employeeHoursVM.setEmployeeHours(hours,position)
+            itemClickCallback = fun(editable: Editable, id: String) {
+                if (editable.isEmpty()) {
+                    employeeHoursVM.setEmployeeHours(0.00,id)
+                }
+                else {
+                    employeeHoursVM.setEmployeeHours(editable.toString().toDouble(),id)
+                }
             }
         )
 
         binding.rcyEmployeeHours.layoutManager = LinearLayoutManager(context as MainActivity)
-        employeeHoursAdapter.setEmployeeAdapterData(employeeHoursVM.getEmployeesList(), employeeHoursVM.getEmployeeHours())
+        employeeHoursAdapter.setEmployeeAdapterData(employeeHoursVM.getEmployeesList(), employeeHoursVM.getMap())
         binding.rcyEmployeeHours.adapter = employeeHoursAdapter
     }
 

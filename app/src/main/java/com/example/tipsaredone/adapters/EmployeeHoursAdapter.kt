@@ -1,6 +1,7 @@
 package com.example.tipsaredone.adapters
 
 import android.annotation.SuppressLint
+import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,10 +13,12 @@ import com.example.tipsaredone.R
 import com.example.tipsaredone.model.Employee
 import org.w3c.dom.Text
 
-class EmployeeHoursAdapter(private val itemClickCallback: ((Int,Double) -> Unit)?) : RecyclerView.Adapter<EmployeeHoursAdapter.EmployeeHoursViewHolder>() {
+class EmployeeHoursAdapter(private val itemClickCallback: (Editable, String) -> Unit) : RecyclerView.Adapter<EmployeeHoursAdapter.EmployeeHoursViewHolder>() {
 
     private var employees: MutableList<Employee> = mutableListOf()
-    private var hours: MutableList<Double> = mutableListOf()
+    private var hours: MutableList<Double?> = mutableListOf()
+
+    private var hoursMap: MutableMap<String,Double?> = mutableMapOf()
 
     class EmployeeHoursViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
         val tvIndex: TextView = itemView.findViewById(R.id.tv_empoyee_index)
@@ -39,9 +42,16 @@ class EmployeeHoursAdapter(private val itemClickCallback: ((Int,Double) -> Unit)
     ) {
         holder.tvIndex.text ="${position+1}."
         holder.tvName.text = employees[position].name
-        holder.etHours.setText(employees[position].currentTippableHours.toString())
+
+        if (hoursMap[employees[position].id] == null) {
+            holder.etHours.text.clear()
+        }
+        else {
+            holder.etHours.setText(hoursMap[employees[position].id].toString())
+        }
+
         holder.etHours.doAfterTextChanged {
-            itemClickCallback?.invoke(position,holder.etHours.text.toString().toDouble())
+            itemClickCallback.invoke(holder.etHours.text,employees[position].id)
         }
     }
 
@@ -50,9 +60,9 @@ class EmployeeHoursAdapter(private val itemClickCallback: ((Int,Double) -> Unit)
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setEmployeeAdapterData(newEmployees: MutableList<Employee>, newHours: MutableList<Double>) {
+    fun setEmployeeAdapterData(newEmployees: MutableList<Employee>, newHours: MutableMap<String,Double?>) {
         this.employees = newEmployees
-        this.hours = newHours
+        this.hoursMap = newHours
         notifyDataSetChanged()
     }
 }
