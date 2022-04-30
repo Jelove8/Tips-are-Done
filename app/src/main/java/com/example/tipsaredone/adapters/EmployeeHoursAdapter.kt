@@ -41,7 +41,7 @@ class EmployeeHoursAdapter(private val itemClickCallback: (Editable, String) -> 
         holder.tvIndex.text ="${position+1}."
         holder.tvName.text = employees[position].name
 
-        if (hoursMap[employees[position].id] == null) {
+        if (hoursMap[employees[position].id] == null || hoursMap[employees[position].id] == 0.00) {
             holder.etHours.text.clear()
         }
         else {
