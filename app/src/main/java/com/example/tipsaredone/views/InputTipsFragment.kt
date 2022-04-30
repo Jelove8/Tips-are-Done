@@ -60,23 +60,31 @@ class InputTipsFragment : Fragment() {
 
 
     private fun checkBillAmounts(list: List<EditText>) {
+        val listOfAmounts = mutableListOf<Int>()
         for (et in list) {
             if (et.text.isNullOrEmpty()) {
-                et.setText("0")
+                listOfAmounts.add(0)
+            }
+            else {
+                listOfAmounts.add(et.text.toString().toInt())
             }
         }
-        val amountTwos = list[1].text.toString().toInt()
-        val amountFives = list[2].text.toString().toInt()
-        val amountTens = list[3].text.toString().toInt()
-        val amountTwenties = list[4].text.toString().toInt()
-        val sumOfMods = (amountTwos % 2) + (amountFives % 5) + (amountTens % 10) + (amountTwenties % 20)
 
-        if (sumOfMods != 0) {
-            (context as MainActivity).makeToastMessage("Incorrect amount detected.")
+        val sumOfMods = (listOfAmounts[1] % 2) + (listOfAmounts[2] % 5) + (listOfAmounts[3] % 10) + (listOfAmounts[4] % 20)
+
+        when {
+            listOfAmounts.sum() == 0 -> {
+                (context as MainActivity).makeToastMessage("No bills inputted.")
+            }
+            sumOfMods != 0 -> {
+                (context as MainActivity).makeToastMessage("Incorrect amount detected.")
+            }
+            else -> {
+                (context as MainActivity).makeToastMessage("Bills confirmed")
+            }
         }
-        else {
-            (context as MainActivity).makeToastMessage("Bills confirmed")
-        }
+
+
 
     }
 

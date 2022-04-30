@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:text="Bill Type"
                 android:textAlignment="center"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -34,9 +34,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="100dp"
                 android:padding="8dp"
-                android:text="Amount"
+                android:text="$ Amount"
                 android:textAlignment="center"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
         </TableRow>
 
