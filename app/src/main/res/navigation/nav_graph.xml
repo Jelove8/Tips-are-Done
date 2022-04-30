@@ -32,5 +32,14 @@
         android:id="@+id/EmployeeHoursFragment"
         android:name="com.example.tipsaredone.views.EmployeeHoursFragment"
         android:label="Employee Hours"
-        tools:layout="@layout/fragment_employee_hours" />
+        tools:layout="@layout/fragment_employee_hours" >
+        <action
+            android:id="@+id/action_EmployeeHoursFragment_to_inputTipsFragment"
+            app:destination="@id/InputTipsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/InputTipsFragment"
+        android:name="com.example.tipsaredone.views.InputTipsFragment"
+        android:label="Input Weekly Tips"
+        tools:layout="@layout/fragment_input_tips" />
 </navigation>

@@ -5,7 +5,9 @@ import android.text.Editable
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.tipsaredone.R
 import com.example.tipsaredone.adapters.EmployeeHoursAdapter
 import com.example.tipsaredone.databinding.FragmentEmployeeHoursBinding
 import com.example.tipsaredone.viewmodels.EmployeeHoursViewModel
@@ -48,6 +50,10 @@ class EmployeeHoursFragment : Fragment() {
         binding.rcyEmployeeHours.layoutManager = LinearLayoutManager(context as MainActivity)
         employeeHoursAdapter.setEmployeeAdapterData(employeeListListVM.employeesList.value!!, employeeHoursVM.employeeHours.value!!)
         binding.rcyEmployeeHours.adapter = employeeHoursAdapter
+
+        binding.btnConfirmHours.setOnClickListener {
+            findNavController().navigate(R.id.action_EmployeeHoursFragment_to_inputTipsFragment)
+        }
     }
 
     override fun onDestroyView() {
