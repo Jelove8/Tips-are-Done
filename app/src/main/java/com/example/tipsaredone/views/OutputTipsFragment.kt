@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.example.tipsaredone.R
 import com.example.tipsaredone.databinding.FragmentInputTipsBinding
 import com.example.tipsaredone.databinding.FragmentOutputTipsBinding
+import com.example.tipsaredone.model.TipCalculations
 
 class OutputTipsFragment : Fragment() {
 
@@ -24,7 +25,6 @@ class OutputTipsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
 
 
     }
