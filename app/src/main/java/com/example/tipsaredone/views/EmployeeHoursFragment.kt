@@ -98,15 +98,20 @@ class EmployeeHoursFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         getDateTimeCalendar()
         employeeHoursVM.setDate(savedDay,savedMonth,savedYear,dateToSelect)
 
+        updateDateText()
+
+    }
+
+    private fun updateDateText() {
+        val employeeHoursVM: EmployeeHoursViewModel by activityViewModels()
         when (dateToSelect) {
             false -> {
-                binding.etStartDate.text = "$savedMonth/$savedDay/$savedYear"
+                binding.etStartDate.text = employeeHoursVM.getDate()
             }
             true -> {
                 binding.etEndDate.text = "$savedMonth/$savedDay/$savedYear"
             }
         }
-
     }
 
 
