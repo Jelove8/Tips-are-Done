@@ -7,4 +7,12 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    // Official Starbucks Colors
+    <color name="starbucks_green">#006241</color>
+    <color name="accent_green">#00754A</color>
+    <color name="light_green">#D4E9E2</color>
+    <color name="house_green">#1E3932</color>
+    <color name="warm_neutral">#F2F0EB</color>
+    <color name="cool_neutral">#F9F9F9</color>
 </resources>
