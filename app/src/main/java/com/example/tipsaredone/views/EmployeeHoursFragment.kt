@@ -1,13 +1,10 @@
 package com.example.tipsaredone.views
 
 import android.app.DatePickerDialog
-import android.opengl.Visibility
-import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.view.*
 import android.widget.DatePicker
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -17,7 +14,6 @@ import com.example.tipsaredone.adapters.EmployeeHoursAdapter
 import com.example.tipsaredone.databinding.FragmentEmployeeHoursBinding
 import com.example.tipsaredone.viewmodels.EmployeeHoursViewModel
 import com.example.tipsaredone.viewmodels.EmployeeListViewModel
-import com.google.android.material.datepicker.MaterialDatePicker
 import java.util.*
 
 class EmployeeHoursFragment : Fragment(), DatePickerDialog.OnDateSetListener {
@@ -33,6 +29,7 @@ class EmployeeHoursFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     private var savedMonth = 0
     private var savedYear = 0
 
+    private var dateToSelect: Boolean = false // false = startdate, true = enddate
 
 
     override fun onCreateView(
@@ -68,8 +65,15 @@ class EmployeeHoursFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         employeeHoursAdapter.setEmployeeAdapterData(employeeListListVM.employeesList.value!!, employeeHoursVM.employeeHours.value!!)
         binding.rcyEmployeeHours.adapter = employeeHoursAdapter
 
-        binding.button.setOnClickListener {
+        binding.etStartDate.setOnClickListener {
             getDateTimeCalendar()
+            dateToSelect = false
+            DatePickerDialog(context as MainActivity,this,year,month,day).show()
+        }
+
+        binding.etEndDate.setOnClickListener {
+            getDateTimeCalendar()
+            dateToSelect = true
             DatePickerDialog(context as MainActivity,this,year,month,day).show()
         }
 
@@ -86,12 +90,23 @@ class EmployeeHoursFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+        val employeeHoursVM: EmployeeHoursViewModel by activityViewModels()
         savedDay = dayOfMonth
         savedMonth = month + 1          // HELP! HELP! HELP ME!!!! AHHHH!!!!
         savedYear = year
 
         getDateTimeCalendar()
-        binding.tvDate.text = "$savedMonth-$savedDay-$savedYear"
+        employeeHoursVM.setDate(savedDay,savedMonth,savedYear,dateToSelect)
+
+        when (dateToSelect) {
+            false -> {
+                binding.etStartDate.text = "$savedMonth/$savedDay/$savedYear"
+            }
+            true -> {
+                binding.etEndDate.text = "$savedMonth/$savedDay/$savedYear"
+            }
+        }
+
     }
 
 
