@@ -20,10 +20,7 @@ class EmployeeHoursViewModel : ViewModel() {
     val employeeHours: LiveData<MutableMap<String,Double?>> = _employeeHours
 
     private val _startDate = MutableLiveData<String>()
-    val startDate: LiveData<String> = _startDate
-
     private val _endDate = MutableLiveData<String>()
-    val endDate: LiveData<String> = _endDate
 
 
     fun setEmployeesList(list: MutableList<Employee>) {
@@ -55,72 +52,128 @@ class EmployeeHoursViewModel : ViewModel() {
         when (dateSelected) {
             false -> {
                 _startDate.value = yearString+ monthString + dayString
-                Log.d("Meow", "Start Date: ${_startDate.value!!}")
             }
             true -> {
                 _endDate.value = yearString+ monthString + dayString
-                Log.d("Meow", "End Date: ${_endDate.value!!}")
             }
         }
     }
 
-    fun getDate(): String? {
+    fun getDate(dateSelected: Boolean): String? {
         var output: String? = null
         var year: String
         var month: String
         var day: String
 
-        if (!_startDate.value.isNullOrBlank()) {
+        when (dateSelected) {
+            false -> {
+                if (!_startDate.value.isNullOrBlank()) {
 
-            year = _startDate.value!![0].toString() + _startDate.value!![1].toString() + _startDate.value!![2].toString() + _startDate.value!![3].toString()
-            month = _startDate.value!![4].toString() + _startDate.value!![5].toString()
-            day = _startDate.value!![6].toString() + _startDate.value!![7].toString()
+                    year = _startDate.value!![0].toString() + _startDate.value!![1].toString() + _startDate.value!![2].toString() + _startDate.value!![3].toString()
+                    month = _startDate.value!![4].toString() + _startDate.value!![5].toString()
+                    day = _startDate.value!![6].toString() + _startDate.value!![7].toString()
 
-            when (month) {
-                "01" -> {
-                    month = "January"
-                }
-                "02" -> {
-                    month = "February"
-                }
-                "03" -> {
-                    month = "March"
-                }
-                "04" -> {
-                    month = "April"
-                }
-                "05" -> {
-                    month = "May"
-                }
-                "06" -> {
-                    month = "June"
-                }
-                "07" -> {
-                    month = "July"
-                }
-                "08" -> {
-                    month = "August"
-                }
-                "09" -> {
-                    month = "September"
-                }
-                "10" -> {
-                    month = "October"
-                }
-                "11" -> {
-                    month = "November"
-                }
-                "12" -> {
-                    month = "December"
+                    when (month) {
+                        "01" -> {
+                            month = "January"
+                        }
+                        "02" -> {
+                            month = "February"
+                        }
+                        "03" -> {
+                            month = "March"
+                        }
+                        "04" -> {
+                            month = "April"
+                        }
+                        "05" -> {
+                            month = "May"
+                        }
+                        "06" -> {
+                            month = "June"
+                        }
+                        "07" -> {
+                            month = "July"
+                        }
+                        "08" -> {
+                            month = "August"
+                        }
+                        "09" -> {
+                            month = "September"
+                        }
+                        "10" -> {
+                            month = "October"
+                        }
+                        "11" -> {
+                            month = "November"
+                        }
+                        "12" -> {
+                            month = "December"
+                        }
+                    }
+
+                    if (day.toInt() < 10) {
+                        day = day.toInt().toString()
+                    }
+
+                    output = "$month $day, $year"
+
                 }
             }
+            true -> {
+                if (!_endDate.value.isNullOrBlank()) {
 
-            if (day.toInt() < 10) {
-                day = day.toInt().toString()
+                    year = _endDate.value!![0].toString() + _endDate.value!![1].toString() + _endDate.value!![2].toString() + _endDate.value!![3].toString()
+                    month = _endDate.value!![4].toString() + _endDate.value!![5].toString()
+                    day = _endDate.value!![6].toString() + _endDate.value!![7].toString()
+
+                    when (month) {
+                        "01" -> {
+                            month = "January"
+                        }
+                        "02" -> {
+                            month = "February"
+                        }
+                        "03" -> {
+                            month = "March"
+                        }
+                        "04" -> {
+                            month = "April"
+                        }
+                        "05" -> {
+                            month = "May"
+                        }
+                        "06" -> {
+                            month = "June"
+                        }
+                        "07" -> {
+                            month = "July"
+                        }
+                        "08" -> {
+                            month = "August"
+                        }
+                        "09" -> {
+                            month = "September"
+                        }
+                        "10" -> {
+                            month = "October"
+                        }
+                        "11" -> {
+                            month = "November"
+                        }
+                        "12" -> {
+                            month = "December"
+                        }
+                    }
+
+                    if (day.toInt() < 10) {
+                        day = day.toInt().toString()
+                    }
+
+                    output = "$month $day, $year"
+
+                }
             }
-
-            output = "$month $day, $year"
-
         }
 
         return output

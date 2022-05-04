@@ -65,6 +65,9 @@ class EmployeeHoursFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         employeeHoursAdapter.setEmployeeAdapterData(employeeListListVM.employeesList.value!!, employeeHoursVM.employeeHours.value!!)
         binding.rcyEmployeeHours.adapter = employeeHoursAdapter
 
+        updateDateText(false)
+        updateDateText(true)
+
         binding.etStartDate.setOnClickListener {
             getDateTimeCalendar()
             dateToSelect = false
@@ -98,18 +101,18 @@ class EmployeeHoursFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         getDateTimeCalendar()
         employeeHoursVM.setDate(savedDay,savedMonth,savedYear,dateToSelect)
 
-        updateDateText()
+        updateDateText(dateToSelect)
 
     }
 
-    private fun updateDateText() {
+    private fun updateDateText(dateSelected: Boolean) {
         val employeeHoursVM: EmployeeHoursViewModel by activityViewModels()
-        when (dateToSelect) {
+        when (dateSelected) {
             false -> {
-                binding.etStartDate.text = employeeHoursVM.getDate()
+                binding.etStartDate.text = employeeHoursVM.getDate(false)
             }
             true -> {
-                binding.etEndDate.text = "$savedMonth/$savedDay/$savedYear"
+                binding.etEndDate.text = employeeHoursVM.getDate(true)
             }
         }
     }
