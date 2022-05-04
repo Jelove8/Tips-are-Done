@@ -51,8 +51,10 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/btn_confirm_hours"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/subcnst_employee_hours_header" />
+        app:layout_constraintTop_toBottomOf="@+id/subcnst_employee_hours_header"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/btn_confirm_hours"
@@ -62,5 +64,27 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:text="dates"
+        app:layout_constraintBottom_toBottomOf="@+id/rcy_employee_hours"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textSize="8sp"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_confirm_hours"
+        app:layout_constraintEnd_toStartOf="@+id/btn_confirm_hours"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rcy_employee_hours" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

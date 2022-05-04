@@ -1,9 +1,12 @@
 package com.example.tipsaredone.views
 
+import android.app.DatePickerDialog
+import android.opengl.Visibility
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.view.*
+import android.widget.DatePicker
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -14,11 +17,23 @@ import com.example.tipsaredone.adapters.EmployeeHoursAdapter
 import com.example.tipsaredone.databinding.FragmentEmployeeHoursBinding
 import com.example.tipsaredone.viewmodels.EmployeeHoursViewModel
 import com.example.tipsaredone.viewmodels.EmployeeListViewModel
+import com.google.android.material.datepicker.MaterialDatePicker
+import java.util.*
 
-class EmployeeHoursFragment : Fragment() {
+class EmployeeHoursFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
     private var _binding: FragmentEmployeeHoursBinding? = null
     private val binding get() = _binding!!
+
+    private var day = 0
+    private var month = 0
+    private var year = 0
+
+    private var savedDay = 0
+    private var savedMonth = 0
+    private var savedYear = 0
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,14 +68,38 @@ class EmployeeHoursFragment : Fragment() {
         employeeHoursAdapter.setEmployeeAdapterData(employeeListListVM.employeesList.value!!, employeeHoursVM.employeeHours.value!!)
         binding.rcyEmployeeHours.adapter = employeeHoursAdapter
 
+        binding.button.setOnClickListener {
+            getDateTimeCalendar()
+            DatePickerDialog(context as MainActivity,this,year,month,day).show()
+        }
+
         binding.btnConfirmHours.setOnClickListener {
             findNavController().navigate(R.id.action_EmployeeHoursFragment_to_inputTipsFragment)
         }
     }
 
+    private fun getDateTimeCalendar() {
+        val cal = Calendar.getInstance()
+        day = cal.get(Calendar.DAY_OF_MONTH)
+        month = cal.get(Calendar.MONTH)
+        year = cal.get(Calendar.YEAR)
+    }
+
+    override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+        savedDay = dayOfMonth
+        savedMonth = month + 1          // HELP! HELP! HELP ME!!!! AHHHH!!!!
+        savedYear = year
+
+        getDateTimeCalendar()
+        binding.tvDate.text = "$savedMonth-$savedDay-$savedYear"
+    }
+
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
+
 
 }
