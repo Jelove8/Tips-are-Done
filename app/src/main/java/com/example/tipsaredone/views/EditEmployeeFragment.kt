@@ -39,9 +39,20 @@ class EditEmployeeFragment : Fragment() {
         selectedEmployee = employeeListVM.getSelectedEmployee()
         binding.etEditName.setText(selectedEmployee.name)
 
-        binding.btnDeleteEmployee.setOnClickListener {
-            employeeListVM.deleteSelectedEmployee()
-            findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
+        binding.btnConfirmEmployee.setOnClickListener {
+
+            var whiteSpaceOnlyCheck = true
+            for (char in binding.etEditName.text) {
+                whiteSpaceOnlyCheck = !char.isWhitespace()
+            }
+
+            if (binding.etEditName.text.isEmpty() || !whiteSpaceOnlyCheck) {
+                (context as MainActivity).makeToastMessage("Name must be filled out.")
+            }
+            else {
+                employeeListVM.deleteSelectedEmployee()
+                findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
+            }
         }
 
     }
@@ -59,16 +70,10 @@ class EditEmployeeFragment : Fragment() {
         val employeeListVM: EmployeeListViewModel by activityViewModels()
 
         return when (item.itemId) {
-            R.id.action_confirm_edits -> {
-                if (binding.etEditName.text.isEmpty()) {
-                    (context as MainActivity).makeToastMessage("Name must be filled out.")
-                    false
-                }
-                else {
-                    employeeListVM.confirmEdits(binding.etEditName.text.toString())
-                    findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
-                    true
-                }
+            R.id.action_delete_selected_employee -> {
+                employeeListVM.deleteSelectedEmployee()
+                findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
+                true
             }
             else -> super.onOptionsItemSelected(item)
         }
