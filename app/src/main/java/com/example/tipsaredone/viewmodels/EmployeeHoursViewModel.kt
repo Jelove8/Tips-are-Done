@@ -22,7 +22,6 @@ class EmployeeHoursViewModel : ViewModel() {
     private val _startDate = MutableLiveData<String>()
     private val _endDate = MutableLiveData<String>()
 
-
     fun setEmployeesList(list: MutableList<Employee>) {
         _employeeList.value = list
 
@@ -58,7 +57,6 @@ class EmployeeHoursViewModel : ViewModel() {
             }
         }
     }
-
     fun getDate(dateSelected: Boolean): String? {
         var output: String? = null
         var year: String
@@ -178,6 +176,20 @@ class EmployeeHoursViewModel : ViewModel() {
 
         return output
     }
+    fun checkForNullDate(): Boolean {
+        return when {
+            _startDate.value.isNullOrEmpty() -> {
+                false
+            }
+            _endDate.value.isNullOrEmpty() -> {
+                false
+            }
+            else -> {
+                true
+            }
+        }
+    }
+
 
 
 }

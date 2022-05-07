@@ -50,7 +50,6 @@ class EditEmployeeFragment : Fragment() {
                 (context as MainActivity).makeToastMessage("Name must be filled out.")
             }
             else {
-                employeeListVM.deleteSelectedEmployee()
                 findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
             }
         }
