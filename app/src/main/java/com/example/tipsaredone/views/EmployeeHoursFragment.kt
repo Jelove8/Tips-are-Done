@@ -29,7 +29,7 @@ class EmployeeHoursFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     private var savedMonth = 0
     private var savedYear = 0
 
-    private var dateToSelect: Boolean = false // false = startdate, true = enddate
+    private var selectStartDate: Boolean = true // false = enddate, true = startdate
 
 
     override fun onCreateView(
@@ -64,19 +64,17 @@ class EmployeeHoursFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         binding.rcyEmployeeHours.layoutManager = LinearLayoutManager(context as MainActivity)
         employeeHoursAdapter.setEmployeeAdapterData(employeeListListVM.employeesList.value!!, employeeHoursVM.employeeHours.value!!)
         binding.rcyEmployeeHours.adapter = employeeHoursAdapter
-
-        updateDateText(false)
-        updateDateText(true)
+        updateDateDisplays(null)
 
         binding.etStartDate.setOnClickListener {
             getDateTimeCalendar()
-            dateToSelect = false
+            selectStartDate = true
             DatePickerDialog(context as MainActivity,this,year,month,day).show()
         }
 
         binding.etEndDate.setOnClickListener {
             getDateTimeCalendar()
-            dateToSelect = true
+            selectStartDate = false
             DatePickerDialog(context as MainActivity,this,year,month,day).show()
         }
 
@@ -91,30 +89,30 @@ class EmployeeHoursFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         month = cal.get(Calendar.MONTH)
         year = cal.get(Calendar.YEAR)
     }
-
+    private fun updateDateDisplays(boolean: Boolean?) {
+        val employeeHoursVM: EmployeeHoursViewModel by activityViewModels()
+        when (boolean) {
+            true -> {
+                binding.etStartDate.text = employeeHoursVM.getDateString(true)
+            }
+            false -> {
+                binding.etEndDate.text = employeeHoursVM.getDateString(false)
+            }
+            else -> {
+                binding.etStartDate.text = employeeHoursVM.getDateString(true)
+                binding.etEndDate.text = employeeHoursVM.getDateString(false)
+            }
+        }
+    }
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         val employeeHoursVM: EmployeeHoursViewModel by activityViewModels()
         savedDay = dayOfMonth
-        savedMonth = month + 1          // HELP! HELP! HELP ME!!!! AHHHH!!!!
+        savedMonth = month          // HELP! HELP! HELP ME!!!! AHHHH!!!!
         savedYear = year
 
         getDateTimeCalendar()
-        employeeHoursVM.setDate(savedDay,savedMonth,savedYear,dateToSelect)
-
-        updateDateText(dateToSelect)
-
-    }
-
-    private fun updateDateText(dateSelected: Boolean) {
-        val employeeHoursVM: EmployeeHoursViewModel by activityViewModels()
-        when (dateSelected) {
-            false -> {
-                binding.etStartDate.text = employeeHoursVM.getDate(false)
-            }
-            true -> {
-                binding.etEndDate.text = employeeHoursVM.getDate(true)
-            }
-        }
+        employeeHoursVM.setDate(savedDay,savedMonth,savedYear,selectStartDate)
+        updateDateDisplays(selectStartDate)
     }
 
 
