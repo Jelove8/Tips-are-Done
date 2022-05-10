@@ -6,8 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="4dp"
-    android:layout_marginTop="12dp"
     android:layout_marginEnd="4dp"
+    android:layout_marginBottom="0dp"
+    android:paddingTop="8dp"
     tools:layout_editor_absoluteX="4dp"
     tools:layout_editor_absoluteY="8dp">
 
@@ -25,12 +26,12 @@
         android:typeface="sans"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/et_employee_hours"
-        app:layout_constraintStart_toEndOf="@+id/tv_header1"
+        app:layout_constraintStart_toEndOf="@+id/tv_employees_header"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
 
     <TextView
-        android:id="@+id/tv_header1"
+        android:id="@+id/tv_employees_header"
         android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -52,7 +53,8 @@
         android:layout_height="0dp"
         android:layout_marginEnd="8dp"
         android:background="@android:drawable/editbox_background"
-        android:backgroundTint="@color/warm_neutral"
+        android:backgroundTint="@color/starbucks_green"
+        android:fontFamily="@font/sodo"
         android:hint="00.00"
         android:inputType="numberDecimal"
         android:paddingStart="16dp"
@@ -60,6 +62,8 @@
         android:paddingEnd="16dp"
         android:paddingBottom="4dp"
         android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

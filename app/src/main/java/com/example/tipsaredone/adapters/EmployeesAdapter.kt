@@ -15,7 +15,7 @@ class EmployeesAdapter(private val itemClickCallback: ((Int) -> Unit)?) : Recycl
     private var employees: MutableList<Employee> = mutableListOf()
 
     class EmployeesViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
-        val employeeIndex: TextView = itemView.findViewById(R.id.tv_header1)
+        val employeeIndex: TextView = itemView.findViewById(R.id.tv_employees_header)
         val employeeName: TextView = itemView.findViewById(R.id.tv_employee_name)
         val employeeItem: ConstraintLayout = itemView.findViewById(R.id.cnst_employee_list_header)
     }

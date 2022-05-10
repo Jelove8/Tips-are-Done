@@ -49,6 +49,7 @@ class EmployeeListFragment : Fragment() {
         employeeAdapter.setEmployeeAdapterData(employeeListVM.employeesList.value!!)
         binding.rcyEmployees.adapter = employeeAdapter
 
+
         // New Employee Logic
         binding.btnCancelNewEmployee.setOnClickListener {
             binding.etNewEmployeeName.text.clear()
@@ -88,8 +89,12 @@ class EmployeeListFragment : Fragment() {
 
         return when (item.itemId) {
             R.id.action_add_employee -> {
-                binding.cnstNewEmployee.visibility = View.VISIBLE
-                binding.btnConfirmEmployees.visibility = View.GONE
+                if (binding.cvEdit.visibility == View.VISIBLE) {
+                    binding.cvEdit.visibility = View.GONE
+                }
+                else {
+                    binding.cvEdit.visibility = View.VISIBLE
+                }
                 true
             }
             else -> super.onOptionsItemSelected(item)

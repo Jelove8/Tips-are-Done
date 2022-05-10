@@ -57,6 +57,26 @@ class MockData() {
         Employee(
             "emp_0000012",
             "Marilyn Monroe"
+        ),
+        Employee(
+            "emp_0000013",
+            "Nelson Nandela"
+        ),
+        Employee(
+            "emp_0000014",
+            "Orlando Octavius"
+        ),
+        Employee(
+            "emp_0000015",
+            "Peter Parker"
+        ),
+        Employee(
+            "emp_0000016",
+            "Quail QEggs"
+        ),
+        Employee(
+            "emp_0000017",
+            "Raymond Rey"
         )
     )
 

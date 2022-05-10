@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/tv_header1"
+            android:id="@+id/tv_employees_header"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -32,12 +32,12 @@
             android:textStyle="bold"
             android:typeface="sans"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/tv_header2"
+            app:layout_constraintEnd_toStartOf="@+id/tv_tippable_hours_header"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tv_header2"
+            android:id="@+id/tv_tippable_hours_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -60,9 +60,10 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        android:paddingTop="0dp"
+        android:paddingBottom="0dp"
         app:layout_constraintBottom_toTopOf="@+id/btn_confirm_employees"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -85,88 +86,9 @@
         tools:ignore="SpeakableTextPresentCheck" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cnst_new_employee"
+        android:id="@+id/cnst_employee_list_footer"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@color/house_green"
-        android:padding="8dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            app:cardCornerRadius="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/new_employee_image"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:scaleType="centerCrop"
-                app:srcCompat="@drawable/emp6" />
-        </androidx.cardview.widget.CardView>
-
-        <EditText
-            android:id="@+id/et_new_employee_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:fontFamily="serif"
-            android:gravity="center_vertical"
-            android:hint="Enter new name..."
-            android:inputType="text"
-            android:textAlignment="textStart"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/btn_confirm_new_employee"
-            app:layout_constraintStart_toEndOf="@+id/cardView"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="TouchTargetSizeCheck" />
-
-        <Button
-            android:id="@+id/btn_cancel_new_employee"
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#D84315"
-            android:text="X"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="TouchTargetSizeCheck" />
-
-        <Button
-            android:id="@+id/btn_confirm_new_employee"
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:gravity="center"
-            android:textSize="16sp"
-            app:icon="@drawable/icon_checkmark"
-            app:iconGravity="end|textStart"
-            app:iconSize="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/btn_cancel_new_employee"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:foregroundGravity="center"
-            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="48dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/rounded_square"
         android:backgroundTint="@color/warm_neutral"
@@ -177,7 +99,7 @@
         app:layout_constraintTop_toTopOf="@+id/btn_confirm_employees">
 
         <TextView
-            android:id="@+id/tv_footer1"
+            android:id="@+id/tv_total_hours_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -196,10 +118,27 @@
             android:fontFamily="@font/sodo"
             android:text="0.00"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_footer1"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_total_hours_label"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/tv_footer1"
-            app:layout_constraintTop_toTopOf="@+id/tv_footer1" />
+            app:layout_constraintStart_toEndOf="@+id/tv_total_hours_label"
+            app:layout_constraintTop_toTopOf="@+id/tv_total_hours_label" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:foregroundGravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <include
+            android:id="@+id/include1"
+            layout="@layout/employee_dialog"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
