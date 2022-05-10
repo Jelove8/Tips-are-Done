@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/tv_empoyee_index"
+            android:id="@+id/tv_empoyee_indexascasc"
             android:layout_width="32dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="0dp"
@@ -32,7 +32,7 @@
             tools:text="Ashley Ramirez Johnson" />
 
         <EditText
-            android:id="@+id/et_employee_hours"
+            android:id="@+id/et_employee_hours1231f"
             android:layout_width="64dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"

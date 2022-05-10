@@ -11,7 +11,6 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tipsaredone.R
 import com.example.tipsaredone.model.Employee
-import org.w3c.dom.Text
 
 class EmployeeHoursAdapter(private val itemClickCallback: (Editable, String) -> Unit) : RecyclerView.Adapter<EmployeeHoursAdapter.EmployeeHoursViewHolder>() {
 
@@ -19,9 +18,9 @@ class EmployeeHoursAdapter(private val itemClickCallback: (Editable, String) -> 
     private var hoursMap: MutableMap<String,Double?> = mutableMapOf()
 
     class EmployeeHoursViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
-        val tvIndex: TextView = itemView.findViewById(R.id.tv_empoyee_index)
+        val tvIndex: TextView = itemView.findViewById(R.id.tv_empoyee_indexascasc)
         val tvName: TextView = itemView.findViewById(R.id.tv_employee_hours)
-        val etHours: EditText = itemView.findViewById(R.id.et_employee_hours)
+        val etHours: EditText = itemView.findViewById(R.id.et_employee_hours1231f)
 
     }
 

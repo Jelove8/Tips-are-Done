@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
@@ -16,9 +15,9 @@ class EmployeesAdapter(private val itemClickCallback: ((Int) -> Unit)?) : Recycl
     private var employees: MutableList<Employee> = mutableListOf()
 
     class EmployeesViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
-        val employeeImage: ImageView = itemView.findViewById(R.id.employee_image)
+        val employeeIndex: TextView = itemView.findViewById(R.id.tv_header1)
         val employeeName: TextView = itemView.findViewById(R.id.tv_employee_name)
-        val employeeItem: ConstraintLayout = itemView.findViewById(R.id.cnst_employee)
+        val employeeItem: ConstraintLayout = itemView.findViewById(R.id.cnst_employee_list_header)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EmployeesViewHolder {
@@ -29,6 +28,7 @@ class EmployeesAdapter(private val itemClickCallback: ((Int) -> Unit)?) : Recycl
     }
 
     override fun onBindViewHolder(holder: EmployeesViewHolder, position: Int) {
+        holder.employeeIndex.text = (position + 1).toString()
         holder.employeeName.text = employees[position].name
         holder.employeeItem.setOnClickListener {
             itemClickCallback?.invoke(position)

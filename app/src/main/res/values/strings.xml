@@ -2,7 +2,7 @@
     <string name="app_name">Tips are Done</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="employees_fragment_label">My Employees</string>
+    <string name="employees_fragment_label">Tips R Done</string>
     <string name="edit_employee_label">Edit Employee</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
