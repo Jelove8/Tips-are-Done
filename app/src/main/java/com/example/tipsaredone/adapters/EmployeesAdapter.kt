@@ -54,6 +54,7 @@ class EmployeesAdapter(
                     null
                 }
                 else {
+
                     editedHours.toString()
                 }
 
@@ -77,9 +78,9 @@ class EmployeesAdapter(
         var output = 0.00
         for (emp in employees) {
             if (!emp.currentTippableHours.isNullOrEmpty()) {
-                output += emp.currentTippableHours.toString().toDouble()
+                output += emp.currentTippableHours.toString().toDouble() * 100
             }
         }
-        return output
+        return output / 100
     }
 }

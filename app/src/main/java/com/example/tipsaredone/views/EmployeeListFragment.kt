@@ -54,7 +54,7 @@ class EmployeeListFragment : Fragment() {
             },
             textChangedCallback = fun(sumHours: Double) {
                 
-                binding.tvTotalHours.text =
+                binding.tvTotalHours.text = sumHours.toString()
             }
         )
 
