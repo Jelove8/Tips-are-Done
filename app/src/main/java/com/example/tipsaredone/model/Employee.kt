@@ -3,6 +3,6 @@ package com.example.tipsaredone.model
 data class Employee(
     val id: String,
     var name: String,
-    var currentTippableHours: String? = null,
+    var currentTippableHours: Double? = null,
     val archived: Boolean = false
 )

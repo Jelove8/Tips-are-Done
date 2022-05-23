@@ -25,8 +25,6 @@ class EmployeeListFragment : Fragment() {
     private var _binding: FragmentEmployeesListBinding? = null
     private val binding get() = _binding!!
 
-    private val numpad: NumpadFragment = NumpadFragment(this)
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -53,8 +51,21 @@ class EmployeeListFragment : Fragment() {
                 showEditEmployeeDialog(position)
             },
             textChangedCallback = fun(sumHours: Double) {
-                
-                binding.tvTotalHours.text = sumHours.toString()
+                employeeListViewModel.setSumHours(sumHours)
+
+                binding.tvTotalHours.text =
+                    when {
+                        sumHours == 0.00 -> {
+                            "0.00"
+                        }
+                        // Special case: zero at the hundredths place is removed when converting to string
+                        sumHours.toString()[sumHours.toString().length - 2] == '.' -> {
+                            sumHours.toString() + "0"
+                        }
+                        else -> {
+                            sumHours.toString()
+                        }
+                    }
             }
         )
 
@@ -64,18 +75,29 @@ class EmployeeListFragment : Fragment() {
         binding.rcyEmployees.layoutManager = LinearLayoutManager(context as MainActivity)
         binding.rcyEmployees.adapter = employeeListAdapter
 
+        val sumOfHours = employeeListViewModel.sumHours.value
+        binding.tvTotalHours.text =
+        if (sumOfHours == 0.00) {
+            "0.00"
+        }
+        else {
+            sumOfHours.toString()
+        }
+
         // Cancel employee dialog
         binding.btnCancelEmployeeDialog.setOnClickListener {
             hideEmployeeDialog()
         }
 
-
         // Navigating to EmployeeHoursFragment
         binding.btnConfirmEmployees.setOnClickListener {
-            Log.d("Meow", employeeListVM.employees.value!![0].currentTippableHours.toString())
-            findNavController().navigate(R.id.action_EmployeeFragment_to_InputTipsFragment)
+            if (employeeListAdapter.checkForNullHours()) {
+                findNavController().navigate(R.id.action_EmployeeFragment_to_InputTipsFragment)
+            }
+            else {
+                (context as MainActivity).makeToastMessage("All hours must be filled.")
+            }
         }
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater)  {
@@ -160,7 +182,5 @@ class EmployeeListFragment : Fragment() {
         binding.cnstEmployeeDialog.visibility = View.GONE
         binding.tvEmployeeDialogBackground.visibility = View.GONE
     }
-
-
 
 }

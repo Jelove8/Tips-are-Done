@@ -17,6 +17,9 @@ class EmployeeListViewModel: ViewModel() {
     private val _employees = MutableLiveData<MutableList<Employee>>(MockData().getMockEmployees())  // Don't remove the type-argument
     val employees: LiveData<MutableList<Employee>> = _employees
 
+    private val _sumHours = MutableLiveData(0.00)
+    val sumHours: LiveData<Double> = _sumHours
+
 
     private var selectedIndex: Int = 0
 
@@ -68,7 +71,9 @@ class EmployeeListViewModel: ViewModel() {
     }
 
     // Employee Hours
-
+    fun setSumHours(double: Double) {
+        _sumHours.value = double
+    }
 
 
 }

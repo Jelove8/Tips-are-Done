@@ -39,13 +39,20 @@ class EmployeesAdapter(
         // Display employee data
         holder.employeeIndex.text = (position + 1).toString()
         holder.employeeName.text = employees[position].name
-        holder.employeeHours.setText(employees[position].currentTippableHours)
+
+        val empTippableHours = employees[position].currentTippableHours
+        if (empTippableHours == null) {
+            holder.employeeHours.text = null
+        }
+        else {
+            holder.employeeHours.setText(empTippableHours.toString())
+        }
 
         // Click to edit employee
         holder.employeeItem.setOnClickListener {
             itemClickCallback?.invoke(position)
         }
-
+        
         // Editing employee hours
         holder.employeeHours.doAfterTextChanged {
             val editedHours = holder.employeeHours.text
@@ -54,8 +61,7 @@ class EmployeesAdapter(
                     null
                 }
                 else {
-
-                    editedHours.toString()
+                    editedHours.toString().toDouble()
                 }
 
             // Re-summing total hours
@@ -77,10 +83,20 @@ class EmployeesAdapter(
     private fun getSumHours(): Double {
         var output = 0.00
         for (emp in employees) {
-            if (!emp.currentTippableHours.isNullOrEmpty()) {
+            if (emp.currentTippableHours != null) {
                 output += emp.currentTippableHours.toString().toDouble() * 100
             }
         }
         return output / 100
+    }
+    fun checkForNullHours(): Boolean {
+        var bool = true
+        for (emp in employees) {
+            if (emp.currentTippableHours == null) {
+                bool = false
+                break
+            }
+        }
+        return bool
     }
 }
