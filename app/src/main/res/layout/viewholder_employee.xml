@@ -8,32 +8,14 @@
     android:layout_marginStart="4dp"
     android:layout_marginEnd="4dp"
     android:layout_marginBottom="0dp"
-    android:paddingTop="8dp"
+    android:padding="8dp"
     tools:layout_editor_absoluteX="4dp"
     tools:layout_editor_absoluteY="8dp">
 
     <TextView
-        android:id="@+id/tv_employee_name"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:fontFamily="@font/sodo"
-        android:gravity="center_vertical"
-        android:hint="Ashley Ramirez Johnson"
-        android:textAlignment="textStart"
-        android:textSize="16sp"
-        android:typeface="sans"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/et_employee_hours"
-        app:layout_constraintStart_toEndOf="@+id/tv_employees_header"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <TextView
-        android:id="@+id/tv_employees_header"
+        android:id="@+id/tv_employee_index"
         android:layout_width="40dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:fontFamily="@font/sodo"
         android:gravity="center_vertical"
@@ -44,30 +26,43 @@
         android:typeface="sans"
         app:layout_constraintBottom_toBottomOf="@+id/tv_employee_name"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tv_employee_name"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/tv_employee_name"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/sodo"
+        android:gravity="center_vertical"
+        android:hint="Ashley Ramirez Johnson"
+        android:textAlignment="textStart"
+        android:textSize="16sp"
+        android:typeface="sans"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/et_employee_hours"
+        app:layout_constraintStart_toEndOf="@+id/tv_employee_index"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
 
     <EditText
         android:id="@+id/et_employee_hours"
         android:layout_width="80dp"
-        android:layout_height="0dp"
+        android:layout_height="40dp"
         android:layout_marginEnd="8dp"
-        android:background="@android:drawable/editbox_background"
+        android:background="@drawable/rounded_square"
         android:backgroundTint="@color/starbucks_green"
         android:fontFamily="@font/sodo"
+        android:gravity="center"
         android:hint="00.00"
         android:inputType="numberDecimal"
-        android:paddingStart="16dp"
-        android:paddingTop="4dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="4dp"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
         tools:ignore="TouchTargetSizeCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
