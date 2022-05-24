@@ -276,7 +276,7 @@
             tools:ignore="SpeakableTextPresentCheck" />
 
         <TextView
-            android:id="@+id/tv_total_hours_label2"
+            android:id="@+id/tv_total_tips_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -288,16 +288,16 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tv_total_hours2"
+            android:id="@+id/tv_total_tips"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:fontFamily="@font/sodo"
             android:text="0.00"
             android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_total_hours_label2"
-            app:layout_constraintStart_toEndOf="@+id/tv_total_hours_label2"
-            app:layout_constraintTop_toTopOf="@+id/tv_total_hours_label2"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_total_tips_label"
+            app:layout_constraintStart_toEndOf="@+id/tv_total_tips_label"
+            app:layout_constraintTop_toTopOf="@+id/tv_total_tips_label"
             app:layout_constraintVertical_bias="0.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

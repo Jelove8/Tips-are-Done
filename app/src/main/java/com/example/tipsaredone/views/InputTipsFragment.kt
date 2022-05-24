@@ -18,6 +18,8 @@ class InputTipsFragment : Fragment() {
     private var _binding: FragmentInputTipsBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var tipsViewModel: TipsViewModel
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -30,6 +32,7 @@ class InputTipsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val tipsVM: TipsViewModel by activityViewModels()
+        tipsViewModel = tipsVM
 
         val listOfEditTexts = listOf(binding.etOnes,binding.etTwos,binding.etFives,binding.etTens,binding.etTwenties)
 
@@ -44,6 +47,8 @@ class InputTipsFragment : Fragment() {
             }
 
             et.doAfterTextChanged {
+
+                // Updating input-tips viewmodel
                 if (et.text.isNullOrEmpty()) {
                     tipsVM.updateBillAmount(i,0.00)
                 }
@@ -51,6 +56,8 @@ class InputTipsFragment : Fragment() {
                     tipsVM.updateBillAmount(i,et.text.toString().toDouble())
                 }
 
+                // Updating total tips textview
+                sumInputTips()
             }
         }
 
@@ -64,24 +71,24 @@ class InputTipsFragment : Fragment() {
 
 
     private fun checkBillAmounts(list: List<EditText>): Boolean {
-        val listOfAmounts = mutableListOf<Int>()
+        val listOfAmounts = mutableListOf<Double>()
         for (et in list) {
             if (et.text.isNullOrEmpty()) {
-                listOfAmounts.add(0)
+                listOfAmounts.add(0.00)
             }
             else {
-                listOfAmounts.add(et.text.toString().toInt())
+                listOfAmounts.add(et.text.toString().toDouble())
             }
         }
 
         val sumOfMods = (listOfAmounts[1] % 2) + (listOfAmounts[2] % 5) + (listOfAmounts[3] % 10) + (listOfAmounts[4] % 20)
 
         return when {
-            listOfAmounts.sum() == 0 -> {
+            listOfAmounts.sum() == 0.0 -> {
                 (context as MainActivity).makeToastMessage("No bills inputted.")
                 false
             }
-            sumOfMods != 0 -> {
+            sumOfMods != 0.0 -> {
                 (context as MainActivity).makeToastMessage("Incorrect amount detected.")
                 false
             }
@@ -90,6 +97,17 @@ class InputTipsFragment : Fragment() {
                 true
             }
         }
+    }
+
+    private fun sumInputTips() {
+        var sum = 0.00
+        for (amt in tipsViewModel.getBillsList()) {
+            if (amt != null) {
+                sum += amt
+            }
+        }
+
+        binding.tvTotalTips.text = sum.toString()
     }
 
     override fun onDestroyView() {
