@@ -8,13 +8,13 @@ import com.example.tipsaredone.model.MockData
 
 class TipsViewModel : ViewModel() {
 
-    private val _billsList = MutableLiveData<MutableList<Int?>>(mutableListOf(null,null,null,null,null))
-    // Index: [0] Ones, [1] Twos, [3] Fives, [4] Tens, [5] Twenties
+    private val _billsList = MutableLiveData<MutableList<Double?>>(mutableListOf(null,null,null,null,null))
+    // Index: [0] Ones, [1] Twos, [2] Fives, [3] Tens, [4] Twenties
 
-    fun getBillsList(): MutableList<Int?> {
+    fun getBillsList(): MutableList<Double?> {
         return _billsList.value!!
     }
-    fun updateBillAmount(index: Int, dollarAmount: Int?) {
+    fun updateBillAmount(index: Int, dollarAmount: Double?) {
         _billsList.value!![index] = dollarAmount
     }
 

@@ -36,7 +36,7 @@ class InputTipsFragment : Fragment() {
         for ((i, et) in listOfEditTexts.withIndex()) {
 
             // Initial data to display
-            if (tipsVM.getBillsList()[i] == null || tipsVM.getBillsList()[i] == 0) {
+            if (tipsVM.getBillsList()[i] == null || tipsVM.getBillsList()[i] == 0.0) {
                 et.text.clear()
             }
             else {
@@ -45,10 +45,10 @@ class InputTipsFragment : Fragment() {
 
             et.doAfterTextChanged {
                 if (et.text.isNullOrEmpty()) {
-                    tipsVM.updateBillAmount(i,null)
+                    tipsVM.updateBillAmount(i,0.00)
                 }
                 else {
-                    tipsVM.updateBillAmount(i,et.text.toString().toInt())
+                    tipsVM.updateBillAmount(i,et.text.toString().toDouble())
                 }
 
             }
