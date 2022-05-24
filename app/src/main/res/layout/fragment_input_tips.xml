@@ -4,47 +4,83 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/warm_neutral"
     tools:context=".views.InputTipsFragment">
 
-    <TableLayout
-        android:id="@+id/tbl_input_tips"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cnst_employee_list_header2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:padding="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <TextView
+            android:id="@+id/tv_employees_header2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/sodo"
+            android:text="Bill Type"
+            android:textAlignment="textStart"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:typeface="sans"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tv_tippable_hours_header2"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <TextView
+            android:id="@+id/tv_tippable_hours_header2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="40dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/sodo"
+            android:text="$ Amount"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:typeface="sans"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TableLayout
+        android:id="@+id/tbl_input_tips"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/rounded_square"
+        android:backgroundTint="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/cnst_employee_list_footer2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cnst_employee_list_header2">
+
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center_horizontal">
-
-            <TextView
-                android:id="@+id/textView2333"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:text="Bill Type"
-                android:textAlignment="center"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/textView2349"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="100dp"
-                android:padding="8dp"
-                android:text="$ Amount"
-                android:textAlignment="center"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="32dp"
-            android:gravity="center_horizontal">
+            android:gravity="center_horizontal"
+            android:paddingLeft="8dp"
+            android:paddingTop="16dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="16dp">
 
             <TextView
                 android:id="@+id/tv_ones"
@@ -58,22 +94,28 @@
             <EditText
                 android:id="@+id/et_ones"
                 android:layout_width="100dp"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:layout_marginStart="100dp"
-                android:background="@android:drawable/editbox_background"
+                android:background="@drawable/rounded_square"
+                android:backgroundTint="@color/starbucks_green"
+                android:fontFamily="@font/sodo"
                 android:hint="0"
                 android:inputType="number"
                 android:padding="8dp"
                 android:textAlignment="center"
-                android:textSize="20sp"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
                 tools:ignore="TouchTargetSizeCheck" />
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="32dp"
-            android:gravity="center_horizontal">
+            android:gravity="center_horizontal"
+            android:paddingLeft="8dp"
+            android:paddingTop="16dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="16dp">
 
             <TextView
                 android:id="@+id/tv_twos"
@@ -87,22 +129,28 @@
             <EditText
                 android:id="@+id/et_twos"
                 android:layout_width="100dp"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:layout_marginStart="100dp"
-                android:background="@android:drawable/editbox_background"
+                android:background="@drawable/rounded_square"
+                android:backgroundTint="@color/starbucks_green"
+                android:fontFamily="@font/sodo"
                 android:hint="0"
                 android:inputType="number"
                 android:padding="8dp"
                 android:textAlignment="center"
-                android:textSize="20sp"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
                 tools:ignore="TouchTargetSizeCheck" />
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="32dp"
-            android:gravity="center_horizontal">
+            android:gravity="center_horizontal"
+            android:paddingLeft="8dp"
+            android:paddingTop="16dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="16dp">
 
             <TextView
                 android:id="@+id/tv_fives"
@@ -116,22 +164,28 @@
             <EditText
                 android:id="@+id/et_fives"
                 android:layout_width="100dp"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:layout_marginStart="100dp"
-                android:background="@android:drawable/editbox_background"
+                android:background="@drawable/rounded_square"
+                android:backgroundTint="@color/starbucks_green"
+                android:fontFamily="@font/sodo"
                 android:hint="0"
                 android:inputType="number"
                 android:padding="8dp"
                 android:textAlignment="center"
-                android:textSize="20sp"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
                 tools:ignore="TouchTargetSizeCheck" />
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="32dp"
-            android:gravity="center_horizontal">
+            android:gravity="center_horizontal"
+            android:paddingLeft="8dp"
+            android:paddingTop="16dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="16dp">
 
             <TextView
                 android:id="@+id/tv_tens"
@@ -145,22 +199,28 @@
             <EditText
                 android:id="@+id/et_tens"
                 android:layout_width="100dp"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:layout_marginStart="100dp"
-                android:background="@android:drawable/editbox_background"
+                android:background="@drawable/rounded_square"
+                android:backgroundTint="@color/starbucks_green"
+                android:fontFamily="@font/sodo"
                 android:hint="0"
                 android:inputType="number"
                 android:padding="8dp"
                 android:textAlignment="center"
-                android:textSize="20sp"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
                 tools:ignore="TouchTargetSizeCheck" />
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="32dp"
-            android:gravity="center_horizontal">
+            android:gravity="center_horizontal"
+            android:paddingLeft="8dp"
+            android:paddingTop="16dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="16dp">
 
             <TextView
                 android:id="@+id/tv_twenties"
@@ -174,27 +234,72 @@
             <EditText
                 android:id="@+id/et_twenties"
                 android:layout_width="100dp"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:layout_marginStart="100dp"
-                android:background="@android:drawable/editbox_background"
+                android:background="@drawable/rounded_square"
+                android:backgroundTint="@color/starbucks_green"
+                android:fontFamily="@font/sodo"
                 android:hint="0"
                 android:inputType="number"
                 android:padding="8dp"
                 android:textAlignment="center"
-                android:textSize="20sp"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
                 tools:ignore="TouchTargetSizeCheck" />
         </TableRow>
 
     </TableLayout>
 
-    <Button
-        android:id="@+id/btn_confirm_bills"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cnst_employee_list_footer2"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:text="Confirm Bills"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tbl_input_tips" />
+        android:layout_marginBottom="16dp"
+        android:padding="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <Button
+            android:id="@+id/btn_confirm_bills"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:background="@drawable/rounded_square"
+            android:elevation="64dp"
+            android:fontFamily="@font/sodo"
+            android:text="Confirm"
+            app:icon="@drawable/icon_checkmark"
+            app:iconGravity="textEnd"
+            app:iconSize="24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <TextView
+            android:id="@+id/tv_total_hours_label2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:fontFamily="@font/sodo"
+            android:text="Total Tips    $"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_total_hours2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:fontFamily="@font/sodo"
+            android:text="0.00"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_total_hours_label2"
+            app:layout_constraintStart_toEndOf="@+id/tv_total_hours_label2"
+            app:layout_constraintTop_toTopOf="@+id/tv_total_hours_label2"
+            app:layout_constraintVertical_bias="0.0" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

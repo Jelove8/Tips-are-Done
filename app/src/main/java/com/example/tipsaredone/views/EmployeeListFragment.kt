@@ -54,17 +54,11 @@ class EmployeeListFragment : Fragment() {
                 employeeListViewModel.setSumHours(sumHours)
 
                 binding.tvTotalHours.text =
-                    when {
-                        sumHours == 0.00 -> {
-                            "0.00"
-                        }
-                        // Special case: zero at the hundredths place is removed when converting to string
-                        sumHours.toString()[sumHours.toString().length - 2] == '.' -> {
-                            sumHours.toString() + "0"
-                        }
-                        else -> {
-                            sumHours.toString()
-                        }
+                    if (sumHours == 0.00) {
+                         "0.00"
+                    }
+                    else {
+                        sumHours.toString()
                     }
             }
         )

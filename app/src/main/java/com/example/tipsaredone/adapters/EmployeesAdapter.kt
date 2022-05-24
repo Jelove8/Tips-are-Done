@@ -52,7 +52,7 @@ class EmployeesAdapter(
         holder.employeeItem.setOnClickListener {
             itemClickCallback?.invoke(position)
         }
-        
+
         // Editing employee hours
         holder.employeeHours.doAfterTextChanged {
             val editedHours = holder.employeeHours.text
