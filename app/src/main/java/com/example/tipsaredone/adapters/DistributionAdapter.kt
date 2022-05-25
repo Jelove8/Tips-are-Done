@@ -1,5 +1,6 @@
 package com.example.tipsaredone.adapters
 
+import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tipsaredone.R
 import com.example.tipsaredone.model.Employee
+import java.math.BigDecimal
+import java.math.RoundingMode
 
 class DistributionAdapter(private val employees: MutableList<Employee>) : RecyclerView.Adapter<DistributionAdapter.EmployeesViewHolder>() {
 
@@ -29,8 +32,11 @@ class DistributionAdapter(private val employees: MutableList<Employee>) : Recycl
     override fun onBindViewHolder(holder: EmployeesViewHolder, position: Int) {
         holder.employeeIndex.text = (position + 1).toString()
         holder.employeeName.text = employees[position].name
-        holder.employeeTips.setText("$ ${employees[position].distributedTips}")
-        holder.employeeTips.isClickable = false
+
+        val distributedTips = employees[position].distributedTips.toInt()
+
+        holder.employeeTips.setText("$  $distributedTips.00")
+        holder.employeeTips.inputType = InputType.TYPE_NULL
 
     }
 

@@ -114,7 +114,7 @@ class InputTipsFragment : Fragment() {
                 sum += amt
             }
         }
-
+        tipsViewModel.updateTotalTips(sum)
         binding.tvTotalTips.text = sum.toString()
     }
 

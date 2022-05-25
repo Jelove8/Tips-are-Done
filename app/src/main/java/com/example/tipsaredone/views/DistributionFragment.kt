@@ -9,9 +9,12 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tipsaredone.adapters.DistributionAdapter
 import com.example.tipsaredone.databinding.FragmentDistributionBinding
+import com.example.tipsaredone.model.TipCalculations
 import com.example.tipsaredone.viewmodels.DistributionViewModel
 import com.example.tipsaredone.viewmodels.EmployeeListViewModel
 import com.example.tipsaredone.viewmodels.TipsViewModel
+import java.math.BigDecimal
+import java.math.RoundingMode
 
 class DistributionFragment : Fragment() {
 
@@ -35,6 +38,16 @@ class DistributionFragment : Fragment() {
         val tipsViewModel: TipsViewModel by activityViewModels()
         val distributionViewModel: DistributionViewModel by activityViewModels()
 
+        val tipCalculations = TipCalculations()
+
+        // Displaying tipRate
+        val tipRate = tipCalculations.getTipRate(employeeListViewModel.sumHours.value!!, tipsViewModel.getTotalTips())
+        val roundedTipRate = BigDecimal(tipRate).setScale(2, RoundingMode.HALF_EVEN).toString()
+        binding.tvTipRate.text = roundedTipRate
+
+        // Calculating & Distributing tips
+        tipCalculations.distributeTips(employeeListViewModel.employees.value!!)
+
         //  CALCULATE TIPS BEFORE THIS LINE
         //  SET TIP VALUES FOR EACH EMPLOYEE OBJECT
         distributionAdapter = DistributionAdapter(employeeListViewModel.employees.value!!)
@@ -42,6 +55,7 @@ class DistributionFragment : Fragment() {
         // Populating recycler view
         binding.rcyTipDistribution.layoutManager = LinearLayoutManager(context as MainActivity)
         binding.rcyTipDistribution.adapter = distributionAdapter
+
 
 
 
