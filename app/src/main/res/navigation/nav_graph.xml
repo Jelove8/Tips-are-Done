@@ -39,7 +39,7 @@
     </fragment>
     <fragment
         android:id="@+id/outputTipsFragment"
-        android:name="com.example.tipsaredone.views.OutputTipsFragment"
+        android:name="com.example.tipsaredone.views.DistributionFragment"
         android:label="fragment_output_tips"
-        tools:layout="@layout/fragment_output_tips" />
+        tools:layout="@layout/fragment_distribution" />
 </navigation>

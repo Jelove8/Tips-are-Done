@@ -74,6 +74,5 @@ class EmployeeListViewModel: ViewModel() {
     fun setSumHours(double: Double) {
         _sumHours.value = double
     }
-
-
+    
 }
