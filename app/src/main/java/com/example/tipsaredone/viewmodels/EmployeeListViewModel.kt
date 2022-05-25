@@ -14,7 +14,7 @@ class EmployeeListViewModel: ViewModel() {
     }
 
 
-    private val _employees = MutableLiveData<MutableList<Employee>>(MockData().getMockEmployees())  // Don't remove the type-argument
+    private val _employees = MutableLiveData<MutableList<Employee>>(mutableListOf())
     val employees: LiveData<MutableList<Employee>> = _employees
 
     private val _sumHours = MutableLiveData(0.00)

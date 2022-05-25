@@ -38,12 +38,20 @@ class InputTipsFragment : Fragment() {
 
         for ((i, et) in listOfEditTexts.withIndex()) {
 
+            val currentBillType = tipsViewModel.getBillsList()[i]
             // Initial data to display
-            if (tipsVM.getBillsList()[i] == null || tipsVM.getBillsList()[i] == 0.0) {
+            if (currentBillType == null || tipsVM.getBillsList()[i] == 0.0) {
                 et.text.clear()
             }
             else {
-                et.setText(tipsVM.getBillsList()[i].toString())
+
+                if (currentBillType.toString().endsWith(".0")) {
+                    et.setText(currentBillType.toString() + "0")
+                }
+                else {
+                    et.setText(currentBillType.toString())
+                }
+
             }
 
             et.doAfterTextChanged {
@@ -61,6 +69,8 @@ class InputTipsFragment : Fragment() {
             }
         }
 
+        sumInputTips()
+
         binding.btnConfirmBills.setOnClickListener {
             if (checkBillAmounts(listOfEditTexts)) {
                 findNavController().navigate(R.id.action_InputTipsFragment_toOutputTipsFragment)
@@ -68,7 +78,6 @@ class InputTipsFragment : Fragment() {
         }
 
     }
-
 
     private fun checkBillAmounts(list: List<EditText>): Boolean {
         val listOfAmounts = mutableListOf<Double>()
@@ -81,7 +90,7 @@ class InputTipsFragment : Fragment() {
             }
         }
 
-        val sumOfMods = (listOfAmounts[1] % 2) + (listOfAmounts[2] % 5) + (listOfAmounts[3] % 10) + (listOfAmounts[4] % 20)
+        val sumOfMods = (listOfAmounts[0] % 1.00) + (listOfAmounts[1] % 2.00) + (listOfAmounts[2] % 5.00) + (listOfAmounts[3] % 10.00) + (listOfAmounts[4] % 20.00)
 
         return when {
             listOfAmounts.sum() == 0.0 -> {
@@ -93,7 +102,6 @@ class InputTipsFragment : Fragment() {
                 false
             }
             else -> {
-                (context as MainActivity).makeToastMessage("Bills confirmed")
                 true
             }
         }
