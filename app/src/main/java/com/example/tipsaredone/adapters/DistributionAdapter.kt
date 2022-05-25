@@ -33,9 +33,10 @@ class DistributionAdapter(private val employees: MutableList<Employee>) : Recycl
         holder.employeeIndex.text = (position + 1).toString()
         holder.employeeName.text = employees[position].name
 
-        val distributedTips = employees[position].distributedTips.toInt()
+        val rawTips = employees[position].distributedTips
+        val roundedTips = BigDecimal(rawTips).setScale(0, RoundingMode.HALF_EVEN).toString()
 
-        holder.employeeTips.setText("$  $distributedTips.00")
+        holder.employeeTips.setText("$  $roundedTips.00")
         holder.employeeTips.inputType = InputType.TYPE_NULL
 
     }
