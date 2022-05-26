@@ -57,7 +57,7 @@ class InputTipsFragment : Fragment() {
             et.doAfterTextChanged {
 
                 // Updating input-tips viewmodel
-                if (et.text.isNullOrEmpty()) {
+                if (et.text.isNullOrEmpty() || et.text.toString() == ".") {
                     tipsVM.updateBillAmount(i,0.00)
                 }
                 else {

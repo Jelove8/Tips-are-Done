@@ -15,7 +15,8 @@
         <action
             android:id="@+id/action_EmployeeFragment_to_InputTipsFragment"
             app:destination="@id/InputTipsFragment"
-            app:enterAnim="@anim/slide_to_the_right" />
+            app:enterAnim="@anim/slide_to_the_left"
+            app:popEnterAnim="@anim/slide_to_the_right" />
     </fragment>
     <fragment
         android:id="@+id/InputTipsFragment"
@@ -25,7 +26,8 @@
         <action
             android:id="@+id/action_InputTipsFragment_toOutputTipsFragment"
             app:destination="@id/outputTipsFragment"
-            app:enterAnim="@anim/slide_to_the_right" />
+            app:enterAnim="@anim/slide_to_the_left"
+            app:popEnterAnim="@anim/slide_to_the_right" />
     </fragment>
     <fragment
         android:id="@+id/outputTipsFragment"
