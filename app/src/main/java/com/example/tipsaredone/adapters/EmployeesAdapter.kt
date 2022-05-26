@@ -100,4 +100,7 @@ class EmployeesAdapter(
         }
         return bool
     }
+    fun checkEmployees(): Boolean {
+        return employees.size > 1
+    }
 }

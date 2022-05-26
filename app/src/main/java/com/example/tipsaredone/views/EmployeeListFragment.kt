@@ -1,7 +1,6 @@
 package com.example.tipsaredone.views
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -11,8 +10,6 @@ import com.example.tipsaredone.R
 import com.example.tipsaredone.adapters.EmployeesAdapter
 import com.example.tipsaredone.databinding.FragmentEmployeesListBinding
 import com.example.tipsaredone.viewmodels.EmployeeListViewModel
-import java.math.BigDecimal
-import java.math.RoundingMode
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -96,13 +93,18 @@ class EmployeeListFragment : Fragment() {
 
         // Navigating to EmployeeHoursFragment
         binding.btnConfirmEmployees.setOnClickListener {
-            if (employeeListAdapter.checkForNullHours()) {
+
+            if (!employeeListAdapter.checkEmployees()) {
+                (context as MainActivity).makeToastMessage("At least two employees must be entered.")
+            }
+            else if (!employeeListAdapter.checkForNullHours()) {
+                (context as MainActivity).makeToastMessage("All hours must be filled.")
+            }
+            else {
                 employeeListViewModel.setInitialUse(false)
                 findNavController().navigate(R.id.action_EmployeeFragment_to_InputTipsFragment)
             }
-            else {
-                (context as MainActivity).makeToastMessage("All hours must be filled.")
-            }
+
         }
     }
 

@@ -11,6 +11,7 @@
         android:label=""
         tools:layout="@layout/fragment_employees_list">
 
+
         <action
             android:id="@+id/action_EmployeeFragment_to_InputTipsFragment"
             app:destination="@id/InputTipsFragment"

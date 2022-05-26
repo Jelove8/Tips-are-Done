@@ -17,6 +17,11 @@
         <item name="android:editTextStyle">@font/sodo</item>
         <item name="android:textColor">@color/default_text</item>
 
+
+    </style>
+
+    <style name="TextAppearance.AppCompat.Widget.ActionBar.Title." parent="@android:style/TextAppearance">
+        <item name="android:fontFamily">lander</item>
     </style>
 
     <style name="Theme.TipsAreDone.NoActionBar">
