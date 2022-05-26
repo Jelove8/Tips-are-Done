@@ -84,8 +84,8 @@
         <Button
             android:id="@+id/btn_confirm_employees"
             android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:background="@drawable/rounded_square"
+            android:layout_height="56dp"
+            android:backgroundTint="@color/accent_green"
             android:elevation="64dp"
             android:fontFamily="@font/sodo"
             android:text="Confirm"

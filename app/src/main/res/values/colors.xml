@@ -15,4 +15,5 @@
     <color name="house_green">#1E3932</color>
     <color name="warm_neutral">#F2F0EB</color>
     <color name="cool_neutral">#F9F9F9</color>
+    <color name="default_text">#808080</color>
 </resources>

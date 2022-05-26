@@ -269,22 +269,6 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent">
 
-        <Button
-            android:id="@+id/btn_confirm_bills"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:background="@drawable/rounded_square"
-            android:elevation="64dp"
-            android:fontFamily="@font/sodo"
-            android:text="Confirm"
-            app:icon="@drawable/icon_checkmark"
-            app:iconGravity="textEnd"
-            app:iconSize="24dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="SpeakableTextPresentCheck" />
-
         <TextView
             android:id="@+id/tv_total_tips_label"
             android:layout_width="wrap_content"
@@ -309,6 +293,22 @@
             app:layout_constraintStart_toEndOf="@+id/tv_total_tips_label"
             app:layout_constraintTop_toTopOf="@+id/tv_total_tips_label"
             app:layout_constraintVertical_bias="0.0" />
+
+        <Button
+            android:id="@+id/btn_confirm_bills"
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:backgroundTint="@color/accent_green"
+            android:elevation="64dp"
+            android:fontFamily="@font/sodo"
+            android:text="Confirm"
+            app:icon="@drawable/icon_checkmark"
+            app:iconGravity="textEnd"
+            app:iconSize="24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="SpeakableTextPresentCheck" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

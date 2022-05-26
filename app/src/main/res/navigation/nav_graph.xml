@@ -8,38 +8,27 @@
     <fragment
         android:id="@+id/EmployeeFragment"
         android:name="com.example.tipsaredone.views.EmployeeListFragment"
-        android:label="@string/employees_fragment_label"
+        android:label="Welcome Partner!"
         tools:layout="@layout/fragment_employees_list">
 
         <action
-            android:id="@+id/action_empList_to_empEdit"
-            app:destination="@id/EditEmployeeFragment" />
-        <action
             android:id="@+id/action_EmployeeFragment_to_InputTipsFragment"
-            app:destination="@id/InputTipsFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/EditEmployeeFragment"
-        android:name="com.example.tipsaredone.views.EditEmployeeFragment"
-        android:label="@string/edit_employee_label"
-        tools:layout="@layout/fragment_edit_employee">
-
-        <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/EmployeeFragment" />
+            app:destination="@id/InputTipsFragment"
+            app:enterAnim="@anim/slide_to_the_right" />
     </fragment>
     <fragment
         android:id="@+id/InputTipsFragment"
         android:name="com.example.tipsaredone.views.InputTipsFragment"
-        android:label="Input Weekly Tips"
+        android:label="Exchange all the coins."
         tools:layout="@layout/fragment_input_tips" >
         <action
             android:id="@+id/action_InputTipsFragment_toOutputTipsFragment"
-            app:destination="@id/outputTipsFragment" />
+            app:destination="@id/outputTipsFragment"
+            app:enterAnim="@anim/slide_to_the_right" />
     </fragment>
     <fragment
         android:id="@+id/outputTipsFragment"
         android:name="com.example.tipsaredone.views.DistributionFragment"
-        android:label="fragment_output_tips"
+        android:label="Thank you for doing tips today!"
         tools:layout="@layout/fragment_distribution" />
 </navigation>
