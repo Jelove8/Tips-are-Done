@@ -22,4 +22,10 @@
 
     <include layout="@layout/content_main" />
 
+    <include
+        android:id="@+id/title_screen"
+        layout="@layout/title_screen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

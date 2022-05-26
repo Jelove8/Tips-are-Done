@@ -1,6 +1,10 @@
 package com.example.tipsaredone.views
 
+import android.content.Context
 import android.os.Bundle
+import android.util.AttributeSet
+import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -9,6 +13,9 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.tipsaredone.R
 import com.example.tipsaredone.databinding.ActivityMainBinding
+import java.util.Timer
+import kotlin.concurrent.schedule
+import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,6 +34,16 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
+        Timer().schedule(2000){
+            this@MainActivity.runOnUiThread {
+                hideTitleScreen()
+            }
+        }
+
+    }
+
+    override fun onCreateView(name: String, context: Context, attrs: AttributeSet): View? {
+        return super.onCreateView(name, context, attrs)
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -42,5 +59,9 @@ class MainActivity : AppCompatActivity() {
         else {
             Toast.makeText(this,message,Toast.LENGTH_LONG).show()
         }
+    }
+
+    private fun hideTitleScreen() {
+        binding.titleScreen.root.visibility = View.GONE
     }
 }

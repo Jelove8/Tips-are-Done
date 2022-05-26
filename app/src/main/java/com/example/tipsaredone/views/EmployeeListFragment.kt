@@ -46,6 +46,7 @@ class EmployeeListFragment : Fragment() {
         // Clearing view model values upon "restart"    (Except for employee names, these are the only things saved internally)
         if (employeeListViewModel.getInitialUse()) {
             for (emp in employeeListViewModel.employees.value!!) {
+                binding.tvTotalHours.text = "0.0"
                 emp.distributedTips = 0.00
                 emp.currentTippableHours = null
             }

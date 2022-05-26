@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/EmployeeFragment"
         android:name="com.example.tipsaredone.views.EmployeeListFragment"
-        android:label="Welcome Partner!"
+        android:label=""
         tools:layout="@layout/fragment_employees_list">
 
         <action
@@ -19,7 +19,7 @@
     <fragment
         android:id="@+id/InputTipsFragment"
         android:name="com.example.tipsaredone.views.InputTipsFragment"
-        android:label="Exchange all the coins."
+        android:label=""
         tools:layout="@layout/fragment_input_tips" >
         <action
             android:id="@+id/action_InputTipsFragment_toOutputTipsFragment"
@@ -29,7 +29,7 @@
     <fragment
         android:id="@+id/outputTipsFragment"
         android:name="com.example.tipsaredone.views.DistributionFragment"
-        android:label="Thank you for doing tips today!"
+        android:label=""
         tools:layout="@layout/fragment_distribution" >
         <action
             android:id="@+id/action_outputTipsFragment_to_EmployeeFragment"

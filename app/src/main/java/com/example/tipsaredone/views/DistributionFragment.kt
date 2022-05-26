@@ -17,6 +17,8 @@ import com.example.tipsaredone.viewmodels.EmployeeListViewModel
 import com.example.tipsaredone.viewmodels.TipsViewModel
 import java.math.BigDecimal
 import java.math.RoundingMode
+import java.util.*
+import kotlin.concurrent.schedule
 
 class DistributionFragment : Fragment() {
 
@@ -42,6 +44,13 @@ class DistributionFragment : Fragment() {
 
         val tipCalculations = TipCalculations()
 
+        // Displaying loading screen
+        Timer().schedule(2000){
+            (context as MainActivity).runOnUiThread {
+                hideLoadingScreen()
+            }
+        }
+
         // Displaying tipRate
         val tipRate = tipCalculations.getTipRate(employeeListViewModel.sumHours.value!!, tipsViewModel.getTotalTips())
         val roundedTipRate = BigDecimal(tipRate).setScale(2, RoundingMode.HALF_EVEN).toString()
@@ -64,6 +73,10 @@ class DistributionFragment : Fragment() {
         }
 
 
+    }
+
+    private fun hideLoadingScreen() {
+        binding.loadingScreen.root.visibility = View.GONE
     }
 
     override fun onDestroyView() {
