@@ -18,6 +18,7 @@ class EmployeesAdapter(
     private val textChangedCallback: ((Double) -> Unit)?
 ) : RecyclerView.Adapter<EmployeesAdapter.EmployeesViewHolder>() {
 
+    private var initialUse: Boolean = true
     private var employees: MutableList<Employee> = mutableListOf()
 
     class EmployeesViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {

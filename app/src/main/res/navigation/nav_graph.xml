@@ -30,5 +30,9 @@
         android:id="@+id/outputTipsFragment"
         android:name="com.example.tipsaredone.views.DistributionFragment"
         android:label="Thank you for doing tips today!"
-        tools:layout="@layout/fragment_distribution" />
+        tools:layout="@layout/fragment_distribution" >
+        <action
+            android:id="@+id/action_outputTipsFragment_to_EmployeeFragment"
+            app:destination="@id/EmployeeFragment" />
+    </fragment>
 </navigation>

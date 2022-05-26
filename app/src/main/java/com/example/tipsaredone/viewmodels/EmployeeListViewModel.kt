@@ -13,6 +13,7 @@ class EmployeeListViewModel: ViewModel() {
         const val EMPLOYEE_VM = "empVM"
     }
 
+    private var initialUse = true
 
     private val _employees = MutableLiveData<MutableList<Employee>>(MockData().getMockEmployees())
     val employees: LiveData<MutableList<Employee>> = _employees
@@ -73,6 +74,14 @@ class EmployeeListViewModel: ViewModel() {
     // Employee Hours
     fun setSumHours(double: Double) {
         _sumHours.value = double
+    }
+
+    // Initial Use
+    fun setInitialUse(bool: Boolean) {
+        initialUse = bool
+    }
+    fun getInitialUse(): Boolean {
+        return initialUse
     }
     
 }

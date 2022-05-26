@@ -43,6 +43,14 @@ class EmployeeListFragment : Fragment() {
         val employeeListVM: EmployeeListViewModel by activityViewModels()
         employeeListViewModel = employeeListVM
 
+        // Clearing view model values upon "restart"    (Except for employee names, these are the only things saved internally)
+        if (employeeListViewModel.getInitialUse()) {
+            for (emp in employeeListViewModel.employees.value!!) {
+                emp.distributedTips = 0.00
+                emp.currentTippableHours = null
+            }
+        }
+
         employeeListAdapter = EmployeesAdapter(
 
             // Click employee item to edit their name
@@ -69,6 +77,8 @@ class EmployeeListFragment : Fragment() {
         binding.rcyEmployees.layoutManager = LinearLayoutManager(context as MainActivity)
         binding.rcyEmployees.adapter = employeeListAdapter
 
+
+        // Sum Hours Footer
         val sumOfHours = employeeListViewModel.sumHours.value
         binding.tvTotalHours.text =
         if (sumOfHours == 0.00) {
@@ -86,6 +96,7 @@ class EmployeeListFragment : Fragment() {
         // Navigating to EmployeeHoursFragment
         binding.btnConfirmEmployees.setOnClickListener {
             if (employeeListAdapter.checkForNullHours()) {
+                employeeListViewModel.setInitialUse(false)
                 findNavController().navigate(R.id.action_EmployeeFragment_to_InputTipsFragment)
             }
             else {
