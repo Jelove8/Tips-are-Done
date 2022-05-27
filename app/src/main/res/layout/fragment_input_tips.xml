@@ -7,63 +7,58 @@
     android:background="@color/warm_neutral"
     tools:context=".views.InputTipsFragment">
 
+
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cnst_tip_distribution"
+        android:id="@+id/cnst_tip_distribution_header"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
+        android:background="@drawable/rounded_square"
+        android:backgroundTint="@color/white"
         android:padding="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/tv_tip_distribution_header1"
-            android:layout_width="0dp"
+            android:id="@+id/tv_bills_header"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginStart="32dp"
             android:fontFamily="@font/sodo"
-            android:text="Bill Type"
+            android:text="B I L L S"
             android:textAlignment="textStart"
             android:textSize="16sp"
             android:textStyle="bold"
             android:typeface="sans"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/tv_tips_header"
-            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tv_tips_header"
+            android:id="@+id/tv_dollar_amount_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="40dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="24dp"
             android:fontFamily="@font/sodo"
-            android:text="$ Amount"
+            android:text="$  A M O U N T"
             android:textAlignment="center"
             android:textSize="16sp"
             android:textStyle="bold"
             android:typeface="sans"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/rounded_square"
@@ -72,8 +67,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cnst_tip_distribution"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toBottomOf="@+id/cnst_tip_distribution_header">
 
         <TableLayout
             android:id="@+id/tbl_input_tips"
@@ -109,6 +103,7 @@
                     android:hint="0.00"
                     android:inputType="numberDecimal"
                     android:padding="8dp"
+                    android:text="85.00"
                     android:textAlignment="center"
                     android:textColor="#FFFFFF"
                     android:textSize="16sp"
@@ -144,6 +139,7 @@
                     android:hint="0.00"
                     android:inputType="numberDecimal"
                     android:padding="8dp"
+                    android:text="4.00"
                     android:textAlignment="center"
                     android:textColor="#FFFFFF"
                     android:textSize="16sp"
@@ -179,6 +175,7 @@
                     android:hint="0.00"
                     android:inputType="numberDecimal"
                     android:padding="8dp"
+                    android:text="35.00"
                     android:textAlignment="center"
                     android:textColor="#FFFFFF"
                     android:textSize="16sp"
@@ -214,6 +211,7 @@
                     android:hint="0.00"
                     android:inputType="numberDecimal"
                     android:padding="8dp"
+                    android:text="20.00"
                     android:textAlignment="center"
                     android:textColor="#FFFFFF"
                     android:textSize="16sp"
@@ -249,6 +247,7 @@
                     android:hint="0.00"
                     android:inputType="numberDecimal"
                     android:padding="8dp"
+                    android:text="40.00"
                     android:textAlignment="center"
                     android:textColor="#FFFFFF"
                     android:textSize="16sp"

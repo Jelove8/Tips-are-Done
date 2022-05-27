@@ -62,7 +62,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun hideTitleScreen() {
-        binding.titleScreen.root.visibility = View.GONE
+        binding.cnstTitleScreen.visibility = View.GONE
+        binding.toolbar.visibility = View.VISIBLE
+    }
+    fun hideToolbar() {
+        binding.toolbar.visibility = View.GONE
+    }
+    fun showToolbar() {
         binding.toolbar.visibility = View.VISIBLE
     }
 }

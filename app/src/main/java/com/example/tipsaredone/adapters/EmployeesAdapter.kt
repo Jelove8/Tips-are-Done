@@ -23,7 +23,7 @@ class EmployeesAdapter(
     class EmployeesViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
         val employeeIndex: TextView = itemView.findViewById(R.id.tv_employee_index)
         val employeeName: TextView = itemView.findViewById(R.id.tv_employee_name)
-        val employeeItem: ConstraintLayout = itemView.findViewById(R.id.cnst_employee_list_header)
+        val employeeItem: ConstraintLayout = itemView.findViewById(R.id.cnst_tip_distribution_header)
         val employeeHours: EditText = itemView.findViewById(R.id.et_employee_hours)
     }
 
@@ -37,7 +37,8 @@ class EmployeesAdapter(
     override fun onBindViewHolder(holder: EmployeesViewHolder, position: Int) {
 
         // Display employee data
-        holder.employeeIndex.text = (position + 1).toString()
+        val index = position + 1
+        holder.employeeIndex.text = "$index"
         holder.employeeName.text = employees[position].name
 
         val empTippableHours = employees[position].tippableHours

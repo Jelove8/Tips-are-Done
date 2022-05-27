@@ -8,24 +8,26 @@
     tools:context=".views.EmployeeListFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cnst_tip_distribution"
+        android:id="@+id/cnst_tip_distribution_header"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/rounded_square"
+        android:backgroundTint="@color/white"
         android:padding="4dp"
-        app:layout_constraintEnd_toEndOf="@+id/rcy_tip_distribution"
-        app:layout_constraintStart_toStartOf="@+id/rcy_tip_distribution"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/tv_tip_distribution_header1"
-            android:layout_width="0dp"
+            android:id="@+id/tv_employees_header2"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginStart="32dp"
             android:fontFamily="@font/sodo"
-            android:text="Employees"
+            android:text="E M P L O Y E E S"
             android:textAlignment="textStart"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -35,14 +37,12 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tv_tip_distribution_header2"
+            android:id="@+id/tv_tips_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="44dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="52dp"
             android:fontFamily="@font/sodo"
-            android:text="Tips"
+            android:text="T I P S"
             android:textAlignment="center"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -58,6 +58,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/rounded_square"
@@ -66,8 +67,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cnst_tip_distribution"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/cnst_tip_distribution_header" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cnst_tip_distribution_footer"

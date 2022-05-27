@@ -44,9 +44,11 @@ class DistributionFragment : Fragment() {
 
         val tipCalculations = TipCalculations()
 
+        (context as MainActivity).hideToolbar()
         // Displaying loading screen
         Timer().schedule(2000){
             (context as MainActivity).runOnUiThread {
+                (context as MainActivity).showToolbar()
                 hideLoadingScreen()
             }
         }
@@ -68,7 +70,7 @@ class DistributionFragment : Fragment() {
         binding.rcyTipDistribution.adapter = distributionAdapter
 
         binding.btnSaveEmployees.setOnClickListener {
-            employeesViewModel.setInitialUse(true)
+            employeesViewModel.clearEmployeeHoursAndDistributedTips()
             findNavController().navigate(R.id.action_outputTipsFragment_to_EmployeeFragment)
         }
 

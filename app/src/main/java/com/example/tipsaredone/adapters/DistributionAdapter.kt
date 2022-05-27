@@ -26,7 +26,7 @@ class DistributionAdapter(private val employees: MutableList<Employee>) : Recycl
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.viewholder_employee, parent, false)
 
-        return DistributionAdapter.EmployeesViewHolder(view)
+        return EmployeesViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: EmployeesViewHolder, position: Int) {

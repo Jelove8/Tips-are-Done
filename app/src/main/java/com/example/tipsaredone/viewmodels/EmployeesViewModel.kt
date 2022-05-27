@@ -16,16 +16,15 @@ class EmployeesViewModel: ViewModel() {
         const val EMPLOYEE_VM = "empVM"
     }
 
-    private var initialUse = true
-
     private val _employees = MutableLiveData<MutableList<Employee>>(MockData().getMockEmployees())
     val employees: LiveData<MutableList<Employee>> = _employees
 
     private val _sumHours = MutableLiveData(0.00)
     val sumHours: LiveData<Double> = _sumHours
 
-
     private var selectedIndex: Int = 0
+
+
 
     // Adding a new employee
     private fun getRandom8CharString() : String {
@@ -63,9 +62,6 @@ class EmployeesViewModel: ViewModel() {
     fun selectEmployee(index: Int) {
         selectedIndex = index
     }
-    fun getSelectedEmployee(): Employee {
-        return _employees.value!![selectedIndex]
-    }
     fun deleteSelectedEmployee() {
         _employees.value!!.removeAt(selectedIndex)
     }
@@ -79,12 +75,12 @@ class EmployeesViewModel: ViewModel() {
         _sumHours.value = double
     }
 
-    // Initial Use
-    fun setInitialUse(bool: Boolean) {
-        initialUse = bool
-    }
-    fun getInitialUse(): Boolean {
-        return initialUse
+    // Clearing inputted hours & tips
+    fun clearEmployeeHoursAndDistributedTips() {
+        for (emp in _employees.value!!) {
+            emp.distributedTips = 0.0
+            emp.tippableHours = null
+        }
     }
 
 

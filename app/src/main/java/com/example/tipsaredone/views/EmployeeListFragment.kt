@@ -40,36 +40,23 @@ class EmployeeListFragment : Fragment() {
         // Initializing employees view model
         val employeesVM: EmployeesViewModel by activityViewModels()
         employeesViewModel = employeesVM
-        employeesVM.loadDataFromInternalStorage(context as MainActivity)
+        // employeesVM.loadDataFromInternalStorage(context as MainActivity)
 
         // Clearing view model values upon "restart"    (Except for employee names, these are the only things saved internally)
-        if (employeesViewModel.getInitialUse()) {
-            for (emp in employeesViewModel.employees.value!!) {
-                binding.tvTotalHours.text = "0.0"
-                emp.distributedTips = 0.00
-                emp.tippableHours = null
-            }
-        }
-
-
+        setSumHours()
 
         employeeListAdapter = EmployeesAdapter(
 
-            // Click employee item to edit their name
+            // Click employee item to edit their name...
             itemClickCallback = fun(position: Int) {
                 employeesViewModel.selectEmployee(position)
                 showEditEmployeeDialog(position)
             },
+
+            // When user inputs employee's hours...
             textChangedCallback = fun(sumHours: Double) {
                 employeesViewModel.setSumHours(sumHours)
-
-                binding.tvTotalHours.text =
-                    if (sumHours == 0.00) {
-                         "0.00"
-                    }
-                    else {
-                        sumHours.toString()
-                    }
+                setSumHours()
             }
         )
 
@@ -78,17 +65,6 @@ class EmployeeListFragment : Fragment() {
         // Populating employee list recycler
         binding.rcyEmployees.layoutManager = LinearLayoutManager(context as MainActivity)
         binding.rcyEmployees.adapter = employeeListAdapter
-
-
-        // Sum Hours Footer
-        val sumOfHours = employeesViewModel.sumHours.value
-        binding.tvTotalHours.text =
-        if (sumOfHours == 0.00) {
-            "0.00"
-        }
-        else {
-            sumOfHours.toString()
-        }
 
         // Cancel employee dialog
         binding.btnCancelEmployeeDialog.setOnClickListener {
@@ -105,7 +81,6 @@ class EmployeeListFragment : Fragment() {
                 (context as MainActivity).makeToastMessage("All hours must be filled.")
             }
             else {
-                employeesViewModel.setInitialUse(false)
                 findNavController().navigate(R.id.action_EmployeeFragment_to_InputTipsFragment)
             }
 
@@ -193,6 +168,13 @@ class EmployeeListFragment : Fragment() {
     private fun hideEmployeeDialog() {
         binding.cnstEmployeeDialog.visibility = View.GONE
         binding.tvEmployeeDialogBackground.visibility = View.GONE
+    }
+
+    private fun setSumHours() {
+        val sumOfHours = employeesViewModel.sumHours.value
+        binding.tvTotalHours.text =
+            if (sumOfHours == 0.00) { "0.00" }
+            else { sumOfHours.toString() }
     }
 
 }
