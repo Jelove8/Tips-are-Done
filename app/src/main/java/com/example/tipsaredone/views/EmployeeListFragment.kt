@@ -9,14 +9,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tipsaredone.R
 import com.example.tipsaredone.adapters.EmployeesAdapter
 import com.example.tipsaredone.databinding.FragmentEmployeesListBinding
-import com.example.tipsaredone.viewmodels.EmployeeListViewModel
+import com.example.tipsaredone.viewmodels.EmployeesViewModel
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
 class EmployeeListFragment : Fragment() {
 
-    private lateinit var employeeListViewModel: EmployeeListViewModel
+    private lateinit var employeesViewModel: EmployeesViewModel
     private lateinit var employeeListAdapter: EmployeesAdapter
 
     private var _binding: FragmentEmployeesListBinding? = null
@@ -36,28 +36,32 @@ class EmployeeListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Init
-        val employeeListVM: EmployeeListViewModel by activityViewModels()
-        employeeListViewModel = employeeListVM
+
+        // Initializing employees view model
+        val employeesVM: EmployeesViewModel by activityViewModels()
+        employeesViewModel = employeesVM
+        employeesVM.loadDataFromInternalStorage(context as MainActivity)
 
         // Clearing view model values upon "restart"    (Except for employee names, these are the only things saved internally)
-        if (employeeListViewModel.getInitialUse()) {
-            for (emp in employeeListViewModel.employees.value!!) {
+        if (employeesViewModel.getInitialUse()) {
+            for (emp in employeesViewModel.employees.value!!) {
                 binding.tvTotalHours.text = "0.0"
                 emp.distributedTips = 0.00
-                emp.currentTippableHours = null
+                emp.tippableHours = null
             }
         }
+
+
 
         employeeListAdapter = EmployeesAdapter(
 
             // Click employee item to edit their name
             itemClickCallback = fun(position: Int) {
-                employeeListViewModel.selectEmployee(position)
+                employeesViewModel.selectEmployee(position)
                 showEditEmployeeDialog(position)
             },
             textChangedCallback = fun(sumHours: Double) {
-                employeeListViewModel.setSumHours(sumHours)
+                employeesViewModel.setSumHours(sumHours)
 
                 binding.tvTotalHours.text =
                     if (sumHours == 0.00) {
@@ -69,7 +73,7 @@ class EmployeeListFragment : Fragment() {
             }
         )
 
-        employeeListAdapter.setEmployeeAdapterData(employeeListViewModel.employees.value!!)
+        employeeListAdapter.setEmployeeAdapterData(employeesViewModel.employees.value!!)
 
         // Populating employee list recycler
         binding.rcyEmployees.layoutManager = LinearLayoutManager(context as MainActivity)
@@ -77,7 +81,7 @@ class EmployeeListFragment : Fragment() {
 
 
         // Sum Hours Footer
-        val sumOfHours = employeeListViewModel.sumHours.value
+        val sumOfHours = employeesViewModel.sumHours.value
         binding.tvTotalHours.text =
         if (sumOfHours == 0.00) {
             "0.00"
@@ -101,7 +105,7 @@ class EmployeeListFragment : Fragment() {
                 (context as MainActivity).makeToastMessage("All hours must be filled.")
             }
             else {
-                employeeListViewModel.setInitialUse(false)
+                employeesViewModel.setInitialUse(false)
                 findNavController().navigate(R.id.action_EmployeeFragment_to_InputTipsFragment)
             }
 
@@ -144,7 +148,7 @@ class EmployeeListFragment : Fragment() {
         binding.tvEmployeeDialogBackground.visibility = View.VISIBLE
         binding.btnDeleteEmployeeDialog.visibility = View.VISIBLE
         binding.tvEmployeeDialog.text = "Edit Employee"
-        binding.etEmployeeDialog.setText(employeeListViewModel.employees.value!![position].name)
+        binding.etEmployeeDialog.setText(employeesViewModel.employees.value!![position].name)
 
         binding.btnConfirmEmployeeDialog.setOnClickListener {
             val newName = binding.etEmployeeDialog.text
@@ -152,15 +156,15 @@ class EmployeeListFragment : Fragment() {
                 (context as MainActivity).makeToastMessage("A name is required.")
             }
             else {
-                employeeListViewModel.confirmSelectedEmployee(newName.toString())
-                employeeListAdapter.setEmployeeAdapterData(employeeListViewModel.employees.value!!)
+                employeesViewModel.confirmSelectedEmployee(newName.toString())
+                employeeListAdapter.setEmployeeAdapterData(employeesViewModel.employees.value!!)
                 hideEmployeeDialog()
             }
         }
 
         binding.btnDeleteEmployeeDialog.setOnClickListener {
-            employeeListViewModel.deleteSelectedEmployee()
-            employeeListAdapter.setEmployeeAdapterData(employeeListViewModel.employees.value!!)
+            employeesViewModel.deleteSelectedEmployee()
+            employeeListAdapter.setEmployeeAdapterData(employeesViewModel.employees.value!!)
             hideEmployeeDialog()
         }
 
@@ -179,8 +183,8 @@ class EmployeeListFragment : Fragment() {
                 (context as MainActivity).makeToastMessage("A name is required.")
             }
             else {
-                employeeListViewModel.addNewEmployee(newName.toString())
-                employeeListAdapter.setEmployeeAdapterData(employeeListViewModel.employees.value!!)
+                employeesViewModel.addNewEmployee(newName.toString())
+                employeeListAdapter.setEmployeeAdapterData(employeesViewModel.employees.value!!)
                 hideEmployeeDialog()
             }
         }

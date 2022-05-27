@@ -6,10 +6,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.tipsaredone.model.Employee
 import com.example.tipsaredone.model.MockData
+import com.example.tipsaredone.model.MyEmployees
+import com.example.tipsaredone.views.MainActivity
 
-class EmployeeListViewModel: ViewModel() {
+class EmployeesViewModel: ViewModel() {
 
     companion object {
+        const val INTERNAL_STORAGE = "internal_storage"
         const val EMPLOYEE_VM = "empVM"
     }
 
@@ -82,6 +85,24 @@ class EmployeeListViewModel: ViewModel() {
     }
     fun getInitialUse(): Boolean {
         return initialUse
+    }
+
+
+    // Internal Storage
+    fun loadDataFromInternalStorage(mainActivity: MainActivity) {
+
+        // Initializes _employees with data within internal storage
+        val employeesFromIntStorage: MutableList<Employee> = MyEmployees().loadEmployeesAsList(mainActivity)
+
+        if (employeesFromIntStorage.isNullOrEmpty()) {
+            _employees.value = mutableListOf()
+            Log.d(INTERNAL_STORAGE, "EmployeesViewModel did not receive data from internal storage.")
+        }
+        else {
+            _employees.value = employeesFromIntStorage
+            Log.d(INTERNAL_STORAGE, "EmployeesViewModel receives data from internal storage.")
+        }
+
     }
     
 }

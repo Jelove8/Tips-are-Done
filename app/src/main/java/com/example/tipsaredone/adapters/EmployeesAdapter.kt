@@ -1,7 +1,6 @@
 package com.example.tipsaredone.adapters
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,7 +40,7 @@ class EmployeesAdapter(
         holder.employeeIndex.text = (position + 1).toString()
         holder.employeeName.text = employees[position].name
 
-        val empTippableHours = employees[position].currentTippableHours
+        val empTippableHours = employees[position].tippableHours
         if (empTippableHours == null) {
             holder.employeeHours.text = null
         }
@@ -57,7 +56,7 @@ class EmployeesAdapter(
         // Editing employee hours
         holder.employeeHours.doAfterTextChanged {
             val editedHours = holder.employeeHours.text
-            employees[position].currentTippableHours =
+            employees[position].tippableHours =
                 if (editedHours.isNullOrEmpty()) {
                     null
                 }
@@ -84,8 +83,8 @@ class EmployeesAdapter(
     private fun getSumHours(): Double {
         var output = 0.00
         for (emp in employees) {
-            if (emp.currentTippableHours != null) {
-                output += emp.currentTippableHours.toString().toDouble() * 100
+            if (emp.tippableHours != null) {
+                output += emp.tippableHours.toString().toDouble() * 100
             }
         }
         return output / 100
@@ -93,7 +92,7 @@ class EmployeesAdapter(
     fun checkForNullHours(): Boolean {
         var bool = true
         for (emp in employees) {
-            if (emp.currentTippableHours == null) {
+            if (emp.tippableHours == null) {
                 bool = false
                 break
             }

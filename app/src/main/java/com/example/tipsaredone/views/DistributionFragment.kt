@@ -13,7 +13,7 @@ import com.example.tipsaredone.adapters.DistributionAdapter
 import com.example.tipsaredone.databinding.FragmentDistributionBinding
 import com.example.tipsaredone.model.TipCalculations
 import com.example.tipsaredone.viewmodels.DistributionViewModel
-import com.example.tipsaredone.viewmodels.EmployeeListViewModel
+import com.example.tipsaredone.viewmodels.EmployeesViewModel
 import com.example.tipsaredone.viewmodels.TipsViewModel
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -38,7 +38,7 @@ class DistributionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val employeeListViewModel: EmployeeListViewModel by activityViewModels()
+        val employeesViewModel: EmployeesViewModel by activityViewModels()
         val tipsViewModel: TipsViewModel by activityViewModels()
         val distributionViewModel: DistributionViewModel by activityViewModels()
 
@@ -52,23 +52,23 @@ class DistributionFragment : Fragment() {
         }
 
         // Displaying tipRate
-        val tipRate = tipCalculations.getTipRate(employeeListViewModel.sumHours.value!!, tipsViewModel.getTotalTips())
+        val tipRate = tipCalculations.getTipRate(employeesViewModel.sumHours.value!!, tipsViewModel.getTotalTips())
         val roundedTipRate = BigDecimal(tipRate).setScale(2, RoundingMode.HALF_EVEN).toString()
         binding.tvTipRate.text = roundedTipRate
 
         // Calculating & Distributing tips
-        tipCalculations.distributeTips(employeeListViewModel.employees.value!!)
+        tipCalculations.distributeTips(employeesViewModel.employees.value!!)
 
         //  CALCULATE TIPS BEFORE THIS LINE
         //  SET TIP VALUES FOR EACH EMPLOYEE OBJECT
-        distributionAdapter = DistributionAdapter(employeeListViewModel.employees.value!!)
+        distributionAdapter = DistributionAdapter(employeesViewModel.employees.value!!)
 
         // Populating recycler view
         binding.rcyTipDistribution.layoutManager = LinearLayoutManager(context as MainActivity)
         binding.rcyTipDistribution.adapter = distributionAdapter
 
         binding.btnSaveEmployees.setOnClickListener {
-            employeeListViewModel.setInitialUse(true)
+            employeesViewModel.setInitialUse(true)
             findNavController().navigate(R.id.action_outputTipsFragment_to_EmployeeFragment)
         }
 
