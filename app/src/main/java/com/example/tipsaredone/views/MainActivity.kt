@@ -1,6 +1,7 @@
 package com.example.tipsaredone.views
 
 import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.AttributeSet
 import android.util.Log
@@ -22,6 +23,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
 
+    private var showTitleScreenOnCreate: Boolean = true     // Set to FALSE after title screen is hidden, Set to TRUE only onDestroy
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -34,16 +37,26 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
-        Timer().schedule(2000){
-            this@MainActivity.runOnUiThread {
-                hideTitleScreen()
-            }
-        }
+        // Shows title screen once
+        showTitleScreen()
 
     }
 
-    override fun onCreateView(name: String, context: Context, attrs: AttributeSet): View? {
-        return super.onCreateView(name, context, attrs)
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+
+        // If screen is rotated, prevents title screen from reappearing
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            showTitleScreenOnCreate = false
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            showTitleScreenOnCreate = false
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        showTitleScreenOnCreate = true
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -61,10 +74,23 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun hideTitleScreen() {
-        binding.cnstTitleScreen.visibility = View.GONE
-        binding.toolbar.visibility = View.VISIBLE
+    private fun showTitleScreen() {
+        if (showTitleScreenOnCreate) {
+            binding.includeTitleScreen.root.visibility = View.VISIBLE
+
+            Timer().schedule(2000){
+                this@MainActivity.runOnUiThread {
+                    // Hiding title screen & showing toolbar
+                    binding.includeTitleScreen.root.visibility = View.GONE
+                    binding.toolbar.visibility = View.VISIBLE
+                    showTitleScreenOnCreate = false
+                }
+            }
+
+        }
     }
+
+    // Used by "calculating tips" loading screen in DistributionFragment
     fun hideToolbar() {
         binding.toolbar.visibility = View.GONE
     }
