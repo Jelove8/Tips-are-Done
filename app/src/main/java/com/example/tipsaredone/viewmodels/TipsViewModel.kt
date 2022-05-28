@@ -19,6 +19,9 @@ class TipsViewModel : ViewModel() {
     fun updateBillAmount(index: Int, dollarAmount: Double?) {
         _billsList.value!![index] = dollarAmount
     }
+    fun clearBillsList() {
+        _billsList.value = mutableListOf(null,null,null,null,null)
+    }
 
     fun updateTotalTips(value: Double) {
         _totalTips.value = value

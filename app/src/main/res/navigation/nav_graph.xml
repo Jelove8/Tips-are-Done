@@ -32,7 +32,7 @@
     <fragment
         android:id="@+id/outputTipsFragment"
         android:name="com.example.tipsaredone.views.DistributionFragment"
-        android:label=""
+        android:label="Thank you for doing tips today   "
         tools:layout="@layout/fragment_distribution" >
         <action
             android:id="@+id/action_outputTipsFragment_to_EmployeeFragment"

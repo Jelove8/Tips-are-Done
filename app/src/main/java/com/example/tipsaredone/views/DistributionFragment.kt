@@ -70,7 +70,10 @@ class DistributionFragment : Fragment() {
         binding.rcyTipDistribution.adapter = distributionAdapter
 
         binding.btnSaveEmployees.setOnClickListener {
+            // Clearing inputted data, except for employee names
             employeesViewModel.clearEmployeeHoursAndDistributedTips()
+            tipsViewModel.clearBillsList()
+            (context as MainActivity).showTitleScreen(true)
             findNavController().navigate(R.id.action_outputTipsFragment_to_EmployeeFragment)
         }
 

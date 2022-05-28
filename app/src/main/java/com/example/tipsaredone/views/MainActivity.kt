@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
 
-    private var showTitleScreenOnCreate: Boolean = true     // Set to FALSE after title screen is hidden, Set to TRUE only onDestroy
+    private var showTitleScreenOnCreate: Boolean = true     // Set to FALSE after title screen is hidden, Set to TRUE onDestroy or when employees are saved to int_storage
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,16 +65,13 @@ class MainActivity : AppCompatActivity() {
                 || super.onSupportNavigateUp()
     }
 
-    fun makeToastMessage(message: String, isDurationShort: Boolean = true) {
-        if (isDurationShort) {
-            Toast.makeText(this,message,Toast.LENGTH_SHORT).show()
-        }
-        else {
-            Toast.makeText(this,message,Toast.LENGTH_LONG).show()
-        }
-    }
+    fun showTitleScreen(resetBool: Boolean? = null) {
 
-    private fun showTitleScreen() {
+        if (resetBool == true) {
+            binding.toolbar.visibility = View.GONE
+            showTitleScreenOnCreate = true
+        }
+
         if (showTitleScreenOnCreate) {
             binding.includeTitleScreen.root.visibility = View.VISIBLE
 
@@ -86,7 +83,6 @@ class MainActivity : AppCompatActivity() {
                     showTitleScreenOnCreate = false
                 }
             }
-
         }
     }
 
@@ -96,5 +92,14 @@ class MainActivity : AppCompatActivity() {
     }
     fun showToolbar() {
         binding.toolbar.visibility = View.VISIBLE
+    }
+
+    fun makeToastMessage(message: String, isDurationShort: Boolean = true) {
+        if (isDurationShort) {
+            Toast.makeText(this,message,Toast.LENGTH_SHORT).show()
+        }
+        else {
+            Toast.makeText(this,message,Toast.LENGTH_LONG).show()
+        }
     }
 }

@@ -118,6 +118,15 @@ class InputTipsFragment : Fragment() {
         binding.tvTotalTips.text = sum.toString()
     }
 
+    fun clearBillInputs() {
+        binding.etOnes.text.clear()
+        binding.etTwos.text.clear()
+        binding.etFives.text.clear()
+        binding.etTens.text.clear()
+        binding.etTwenties.text.clear()
+        tipsViewModel.clearBillsList()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
