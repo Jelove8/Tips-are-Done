@@ -14,6 +14,10 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.tipsaredone.R
 import com.example.tipsaredone.databinding.ActivityMainBinding
+import com.example.tipsaredone.model.Employee
+import com.example.tipsaredone.model.MyEmployees
+import com.google.gson.Gson
+import java.io.FileInputStream
 import java.util.Timer
 import kotlin.concurrent.schedule
 import kotlin.system.exitProcess
@@ -84,6 +88,25 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    fun saveEmployeeData(employees: MutableList<Employee>) {
+
+        val jsonString = MyEmployees().convertEmployeeObjectsToJson(employees)
+        val jsonFileName = "myEmployees"
+
+        // Saving the Json data to internal storage
+        this.openFileOutput(jsonFileName, Context.MODE_PRIVATE).use {
+            it.write(jsonString.toByteArray())
+            it.close()
+        }
+
+        Log.d(MyEmployees.INTERNAL_STORAGE, "Json data saved:\n${jsonString}")
+    }
+
+    fun loadEmployeeData() {
+
+       
     }
 
     // Used by "calculating tips" loading screen in DistributionFragment

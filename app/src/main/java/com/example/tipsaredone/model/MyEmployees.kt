@@ -18,18 +18,18 @@ class MyEmployees() {
 
     fun saveEmployeesAsJson(mainActivity: MainActivity, employees: MutableList<Employee>) {
 
+
+
+
+    }
+
+    fun convertEmployeeObjectsToJson(employees: MutableList<Employee>): String {
+
         // Converting the Employee Data Class into Json string.
         val gson = GsonBuilder().setPrettyPrinting().create()
         val jsonEmployeeData: String = gson.toJson(employees)
-
-        // Saving the Json data to internal storage
-        val jsonFileName = "myEmployees"
-        mainActivity.openFileOutput(jsonFileName, Context.MODE_PRIVATE).use {
-            it.write(jsonEmployeeData.toByteArray())
-
-            Log.d(INTERNAL_STORAGE, "Json data saved:\n${jsonEmployeeData}")
-        }
-
+        Log.d(INTERNAL_STORAGE, "Employee objects converted to Json string:\n${jsonEmployeeData}")
+        return jsonEmployeeData
     }
 
     fun loadEmployeesAsList(mainActivity: MainActivity): MutableList<Employee> {
