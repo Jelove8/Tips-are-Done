@@ -40,7 +40,6 @@ class EmployeeListFragment : Fragment() {
         // Initializing employees view model
         val employeesVM: EmployeesViewModel by activityViewModels()
         employeesViewModel = employeesVM
-        // employeesVM.loadDataFromInternalStorage(context as MainActivity)
 
         // Clearing view model values upon "restart"    (Except for employee names, these are the only things saved internally)
         setSumHours()

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -15,6 +16,7 @@ import com.example.tipsaredone.R
 import com.example.tipsaredone.databinding.ActivityMainBinding
 import com.example.tipsaredone.model.Employee
 import com.example.tipsaredone.model.MyEmployees
+import com.example.tipsaredone.viewmodels.EmployeesViewModel
 import java.util.Timer
 import kotlin.concurrent.schedule
 
@@ -28,6 +30,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
@@ -38,15 +41,14 @@ class MainActivity : AppCompatActivity() {
 
         // Shows title screen once
         showTitleScreen()
-
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         // If screen is rotated, prevents title screen from reappearing
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE && !showTitleScreenOnCreate) {
             showTitleScreenOnCreate = false
-        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT && !showTitleScreenOnCreate) {
             showTitleScreenOnCreate = false
         }
     }
@@ -87,22 +89,24 @@ class MainActivity : AppCompatActivity() {
 
     fun saveEmployeeData(employees: MutableList<Employee>) {
 
-        val jsonString = MyEmployees().convertEmployeeObjectsToJson(employees)
+        val employeeNames = mutableListOf<String>()
+        for (emp in employees) {
+            employeeNames.add(emp.name)
+        }
+
+        val jsonString = MyEmployees().convertEmployeeNamesToJson(employeeNames)
         val jsonFileName = "myEmployees"
 
         // Saving the Json data to internal storage
         this.openFileOutput(jsonFileName, Context.MODE_PRIVATE).use {
             it.write(jsonString.toByteArray())
             it.close()
+            Log.d(MyEmployees.INTERNAL_STORAGE, "Employee names saved as Json:\n${jsonString}")
         }
 
-        Log.d(MyEmployees.INTERNAL_STORAGE, "Json data saved:\n${jsonString}")
     }
 
-    fun loadEmployeeData() {
 
-
-    }
 
     // Used by "calculating tips" loading screen in DistributionFragment
     fun hideToolbar() {

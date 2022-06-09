@@ -16,6 +16,7 @@ class EmployeesViewModel: ViewModel() {
         const val EMPLOYEE_VM = "empVM"
     }
 
+
     private val _employees = MutableLiveData<MutableList<Employee>>(MockData().getMockEmployees())
     val employees: LiveData<MutableList<Employee>> = _employees
 
@@ -27,35 +28,19 @@ class EmployeesViewModel: ViewModel() {
 
 
     // Adding a new employee
-    private fun getRandom8CharString() : String {
-        val allowedChars = ('A'..'Z') + ('a'..'z') + ('0'..'9')
-        return (1..8)
-            .map { allowedChars.random() }
-            .joinToString("")
-    }
-    private fun generateUniqueID(): String {
-        var newID = getRandom8CharString()
-        for (employee in _employees.value!!) {
-            if (employee.id.contains(newID)) {
-                newID = generateUniqueID()
-            }
-        }
-        return "employeeID_$newID"
-    }
     fun addNewEmployee(newName: String) {
 
         if (newName[0].isLowerCase()) {
             newName[0].uppercase()
         }
 
-        val uniqueID = generateUniqueID()
         _employees.value!!.add(
-            Employee(uniqueID,newName)
+            Employee(newName)
         )
 
         _employees.value!!.sortBy { it.name }
 
-        Log.d(EMPLOYEE_VM,"New Employee Added: $newName, $uniqueID")
+        Log.d(EMPLOYEE_VM,"New Employee Added: $newName")
     }
 
     // Editing or Deleting an existing employee
@@ -83,22 +68,7 @@ class EmployeesViewModel: ViewModel() {
         }
     }
 
-
     // Internal Storage
-    fun loadDataFromInternalStorage(mainActivity: MainActivity) {
 
-        // Initializes _employees with data within internal storage
-        val employeesFromIntStorage: MutableList<Employee> = MyEmployees().loadEmployeesAsList(mainActivity)
-
-        if (employeesFromIntStorage.isNullOrEmpty()) {
-            _employees.value = mutableListOf()
-            Log.d(INTERNAL_STORAGE, "EmployeesViewModel did not receive data from internal storage.")
-        }
-        else {
-            _employees.value = employeesFromIntStorage
-            Log.d(INTERNAL_STORAGE, "EmployeesViewModel receives data from internal storage.")
-        }
-
-    }
     
 }
