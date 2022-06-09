@@ -3,7 +3,6 @@ package com.example.tipsaredone.views
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.AttributeSet
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -16,11 +15,8 @@ import com.example.tipsaredone.R
 import com.example.tipsaredone.databinding.ActivityMainBinding
 import com.example.tipsaredone.model.Employee
 import com.example.tipsaredone.model.MyEmployees
-import com.google.gson.Gson
-import java.io.FileInputStream
 import java.util.Timer
 import kotlin.concurrent.schedule
-import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity() {
 
@@ -34,10 +30,9 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         setSupportActionBar(binding.toolbar)
 
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
+        val navController = findNavController(R.id.nav_host_fragment)
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
@@ -48,7 +43,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-
         // If screen is rotated, prevents title screen from reappearing
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             showTitleScreenOnCreate = false
@@ -64,13 +58,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
+        val navController = findNavController(R.id.nav_host_fragment)
         return navController.navigateUp(appBarConfiguration)
                 || super.onSupportNavigateUp()
     }
 
     fun showTitleScreen(resetBool: Boolean? = null) {
 
+        // showTitleScreen(true) is only called when user presses "SAVE" button at DistributionFragment
         if (resetBool == true) {
             binding.toolbar.visibility = View.GONE
             showTitleScreenOnCreate = true
@@ -106,7 +101,7 @@ class MainActivity : AppCompatActivity() {
 
     fun loadEmployeeData() {
 
-       
+
     }
 
     // Used by "calculating tips" loading screen in DistributionFragment

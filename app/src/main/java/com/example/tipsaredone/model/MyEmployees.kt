@@ -6,10 +6,12 @@ import com.example.tipsaredone.views.MainActivity
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
+import kotlinx.serialization.Serializable
 import java.io.BufferedReader
 import java.io.File
 import java.io.FileReader
 
+@Serializable
 class MyEmployees() {
 
     companion object {
@@ -20,6 +22,10 @@ class MyEmployees() {
 
 
 
+
+    }
+
+    fun convertEmployeesToJson(employees: MutableList<Employee>) {
 
     }
 

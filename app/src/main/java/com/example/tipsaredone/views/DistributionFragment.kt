@@ -61,7 +61,7 @@ class DistributionFragment : Fragment() {
         // Calculating & Distributing tips
         tipCalculations.distributeTips(employeesViewModel.employees.value!!)
 
-        //  CALCULATE TIPS BEFORE THIS LINE
+
         //  SET TIP VALUES FOR EACH EMPLOYEE OBJECT
         distributionAdapter = DistributionAdapter(employeesViewModel.employees.value!!)
 
@@ -81,6 +81,24 @@ class DistributionFragment : Fragment() {
 
     }
 
+
+    private fun checkForRoundingErrors(employeesViewModel: EmployeesViewModel, tipsViewModel: TipsViewModel) {
+
+        var roundedTotal = 0.0
+        for (emp in employeesViewModel.employees.value!!) {
+            roundedTotal += emp.distributedTips
+        }
+
+        // If error > 0, User will have some money leftover
+        // If error = 0, User has no need to worry
+        // If error < 0, A recalculation must occur
+        // Pick employees at random to take away tip money
+
+
+        var error = tipsViewModel.getTotalTips()
+
+    }
+
     private fun hideLoadingScreen() {
         binding.loadingScreen.root.visibility = View.GONE
     }
@@ -89,5 +107,7 @@ class DistributionFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+
 
 }
