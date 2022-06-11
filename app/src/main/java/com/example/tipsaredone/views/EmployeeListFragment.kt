@@ -143,12 +143,16 @@ class EmployeeListFragment : Fragment() {
             binding.btnDeleteEmployeeDialog.visibility = View.VISIBLE
             binding.tvEmployeeDialog.setText(R.string.edit_employee)
             binding.etEmployeeDialog.setText(employeesViewModel.employees.value!![position].name)
+            binding.tvEmployeeDialogBackground.visibility = View.VISIBLE
+            binding.cnstEmployeeDialog.visibility = View.VISIBLE
         }
         else {
             // Prepares for the adding of a new employee.
             binding.btnDeleteEmployeeDialog.visibility = View.GONE
             binding.tvEmployeeDialog.setText(R.string.new_employee)
             binding.etEmployeeDialog.text.clear()
+            binding.tvEmployeeDialogBackground.visibility = View.VISIBLE
+            binding.cnstEmployeeDialog.visibility = View.VISIBLE
         }
     }
     private fun hideEmployeeDialog() {

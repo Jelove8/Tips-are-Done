@@ -73,6 +73,4 @@ class EmployeesViewModel: ViewModel() {
     fun getEditingEmployeeBool(): Boolean {
         return editingEmployee
     }
-
-    
 }

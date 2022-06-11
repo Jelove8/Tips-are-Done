@@ -47,7 +47,7 @@ class DistributionFragment : Fragment() {
         (context as MainActivity).hideToolbar()
         binding.loadingScreen.root.visibility = View.VISIBLE
         // Displaying loading screen
-        Timer().schedule(2000){
+        Timer().schedule(1600){
             (context as MainActivity).runOnUiThread {
                 (context as MainActivity).showToolbar()
                 hideLoadingScreen()
