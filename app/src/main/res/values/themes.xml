@@ -16,8 +16,10 @@
         <item name="android:buttonStyle">@font/sodo</item>
         <item name="android:editTextStyle">@font/sodo</item>
         <item name="android:textColor">@color/default_text</item>
+    </style>
 
-
+    <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:fontFamily">@font/sodo</item>
     </style>
 
     <style name="TextAppearance.AppCompat.Widget.ActionBar.Title." parent="@android:style/TextAppearance">

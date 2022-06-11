@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/EmployeeFragment"
         android:name="com.example.tipsaredone.views.EmployeeListFragment"
-        android:label=""
+        android:label="Tips Are Done"
         tools:layout="@layout/fragment_employees_list">
 
 

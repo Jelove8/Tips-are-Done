@@ -10,13 +10,13 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cnst_employees_header"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/rounded_square"
-        android:backgroundTint="@color/white"
+        android:layout_height="0dp"
+        android:layout_marginBottom="80dp"
+        android:background="@color/white"
         android:padding="4dp"
-        app:layout_constraintEnd_toEndOf="@+id/rcy_employees"
-        app:layout_constraintStart_toStartOf="@+id/rcy_employees"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
@@ -24,13 +24,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
             android:fontFamily="@font/sodo"
             android:text="E M P L O Y E E S"
             android:textAlignment="textStart"
             android:textSize="16sp"
             android:textStyle="bold"
             android:typeface="sans"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -38,6 +38,7 @@
             android:id="@+id/tv_hours_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="32dp"
             android:fontFamily="@font/sodo"
             android:text="H O U R S"
@@ -45,45 +46,40 @@
             android:textSize="16sp"
             android:textStyle="bold"
             android:typeface="sans"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcy_employees"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_employees_header1" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcy_employees"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/rounded_square"
-        android:backgroundTint="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/cnst_employee_list_footer"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cnst_employees_header"
-        app:layout_constraintVertical_bias="0.0" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cnst_employee_list_footer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_height="0dp"
+        android:elevation="8dp"
         android:padding="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cnst_employees_header">
 
         <Button
             android:id="@+id/btn_confirm_employees"
             android:layout_width="wrap_content"
             android:layout_height="56dp"
-            android:backgroundTint="@color/accent_green"
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="@color/starbucks_green"
             android:elevation="64dp"
             android:fontFamily="@font/sodo"
             android:text="Confirm"
@@ -101,11 +97,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:fontFamily="@font/sodo"
-            android:text="Total Hours"
+            android:text="hours"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toEndOf="@+id/tv_total_hours"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.509" />
 
         <TextView
             android:id="@+id/tv_total_hours"
@@ -115,10 +112,9 @@
             android:fontFamily="@font/sodo"
             android:text="0.00"
             android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_total_hours_label"
-            app:layout_constraintStart_toEndOf="@+id/tv_total_hours_label"
-            app:layout_constraintTop_toTopOf="@+id/tv_total_hours_label"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
