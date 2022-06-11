@@ -6,8 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.tipsaredone.model.Employee
 import com.example.tipsaredone.model.MockData
-import com.example.tipsaredone.model.MyEmployees
-import com.example.tipsaredone.views.MainActivity
 
 class EmployeesViewModel: ViewModel() {
 
@@ -23,9 +21,8 @@ class EmployeesViewModel: ViewModel() {
     private val _sumHours = MutableLiveData(0.00)
     val sumHours: LiveData<Double> = _sumHours
 
-    private var selectedIndex: Int = 0
-
-
+    private var selectedEmployeePosition: Int = 0
+    private var editingEmployee: Boolean = false    // false = adding an employee, true = editing an employee
 
     // Adding a new employee
     fun addNewEmployee(newName: String) {
@@ -45,13 +42,13 @@ class EmployeesViewModel: ViewModel() {
 
     // Editing or Deleting an existing employee
     fun selectEmployee(index: Int) {
-        selectedIndex = index
+        selectedEmployeePosition = index
     }
     fun deleteSelectedEmployee() {
-        _employees.value!!.removeAt(selectedIndex)
+        _employees.value!!.removeAt(selectedEmployeePosition)
     }
     fun confirmSelectedEmployee(editedName: String) {
-        _employees.value!![selectedIndex].name = editedName
+        _employees.value!![selectedEmployeePosition].name = editedName
         _employees.value!!.sortBy { it.name }
     }
 
@@ -68,7 +65,13 @@ class EmployeesViewModel: ViewModel() {
         }
     }
 
-    // Internal Storage
+    // Discerning between editing vs adding an employee
+    fun setEditingEmployeeBool(boolean: Boolean) {
+        editingEmployee = boolean
+    }
+    fun getEditingEmployeeBool(): Boolean {
+        return editingEmployee
+    }
 
     
 }

@@ -36,11 +36,12 @@ class EmployeesAdapter(
 
     override fun onBindViewHolder(holder: EmployeesViewHolder, position: Int) {
 
-        // Display employee data
+        // Displaying employee index & name.
+        holder.employeeName.text = employees[position].name
         val index = position + 1
         holder.employeeIndex.text = "$index"
-        holder.employeeName.text = employees[position].name
 
+        // Displaying employee hours.
         val empTippableHours = employees[position].tippableHours
         if (empTippableHours == null) {
             holder.employeeHours.text = null
@@ -57,17 +58,23 @@ class EmployeesAdapter(
         // Editing employee hours
         holder.employeeHours.doAfterTextChanged {
             val editedHours = holder.employeeHours.text
+
+            // Updating employee data within view model.
             employees[position].tippableHours =
-                if (editedHours.isNullOrEmpty()) {
-                    null
-                }
-                else {
-                    editedHours.toString().toDouble()
+                when {
+                    editedHours.isNullOrEmpty() -> {
+                        null
+                    }
+                    editedHours.toString().toDouble() == 0.0 -> {
+                        0.0
+                    }
+                    else -> {
+                        editedHours.toString().toDouble()
+                    }
                 }
 
             // Re-summing total hours
             textChangedCallback?.invoke(getSumHours())
-
         }
     }
 
@@ -81,6 +88,7 @@ class EmployeesAdapter(
         employees.sortBy { it.name }
         notifyDataSetChanged()
     }
+
     private fun getSumHours(): Double {
         var output = 0.00
         for (emp in employees) {
@@ -90,6 +98,7 @@ class EmployeesAdapter(
         }
         return output / 100
     }
+
     fun checkForNullHours(): Boolean {
         var bool = true
         for (emp in employees) {
