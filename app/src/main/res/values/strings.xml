@@ -11,5 +11,8 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="done">DONE</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="edit_employee">Edit Employee</string>
+    <string name="new_employee">New Employee</string>
+
 </resources>

@@ -11,9 +11,6 @@ import com.example.tipsaredone.adapters.EmployeesAdapter
 import com.example.tipsaredone.databinding.FragmentEmployeesListBinding
 import com.example.tipsaredone.viewmodels.EmployeesViewModel
 
-/**
- * A simple [Fragment] subclass as the default destination in the navigation.
- */
 class EmployeeListFragment : Fragment() {
 
     private lateinit var employeesViewModel: EmployeesViewModel
@@ -26,11 +23,9 @@ class EmployeeListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         setHasOptionsMenu(true)
         _binding = FragmentEmployeesListBinding.inflate(inflater, container, false)
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -146,13 +141,13 @@ class EmployeeListFragment : Fragment() {
         if (position != null) {
             // Prepares for the editing of an employee.
             binding.btnDeleteEmployeeDialog.visibility = View.VISIBLE
-            binding.tvEmployeeDialog.text = "Edit Employee"
-            binding.etEmployeeDialog.setText(employeesViewModel.employees.value!![position!!].name)
+            binding.tvEmployeeDialog.setText(R.string.edit_employee)
+            binding.etEmployeeDialog.setText(employeesViewModel.employees.value!![position].name)
         }
         else {
             // Prepares for the adding of a new employee.
             binding.btnDeleteEmployeeDialog.visibility = View.GONE
-            binding.tvEmployeeDialog.text = "New Employee"
+            binding.tvEmployeeDialog.setText(R.string.new_employee)
             binding.etEmployeeDialog.text.clear()
         }
     }

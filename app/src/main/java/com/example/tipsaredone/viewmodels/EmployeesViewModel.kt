@@ -14,7 +14,6 @@ class EmployeesViewModel: ViewModel() {
         const val EMPLOYEE_VM = "empVM"
     }
 
-
     private val _employees = MutableLiveData<MutableList<Employee>>(MockData().getMockEmployees())
     val employees: LiveData<MutableList<Employee>> = _employees
 
@@ -22,9 +21,10 @@ class EmployeesViewModel: ViewModel() {
     val sumHours: LiveData<Double> = _sumHours
 
     private var selectedEmployeePosition: Int = 0
+
     private var editingEmployee: Boolean = false    // false = adding an employee, true = editing an employee
 
-    // Adding a new employee
+    // Adding a new employee.
     fun addNewEmployee(newName: String) {
 
         if (newName[0].isLowerCase()) {
@@ -40,7 +40,7 @@ class EmployeesViewModel: ViewModel() {
         Log.d(EMPLOYEE_VM,"New Employee Added: $newName")
     }
 
-    // Editing or Deleting an existing employee
+    // Editing or Deleting an existing employee.
     fun selectEmployee(index: Int) {
         selectedEmployeePosition = index
     }
@@ -52,7 +52,7 @@ class EmployeesViewModel: ViewModel() {
         _employees.value!!.sortBy { it.name }
     }
 
-    // Employee Hours
+    // Sum of Hours
     fun setSumHours(double: Double) {
         _sumHours.value = double
     }
@@ -62,10 +62,11 @@ class EmployeesViewModel: ViewModel() {
         for (emp in _employees.value!!) {
             emp.distributedTips = 0.0
             emp.tippableHours = null
+            setSumHours(0.00)
         }
     }
 
-    // Discerning between editing vs adding an employee
+    // Discerning between editing vs adding an employee (both occur on the same dialog view).
     fun setEditingEmployeeBool(boolean: Boolean) {
         editingEmployee = boolean
     }
