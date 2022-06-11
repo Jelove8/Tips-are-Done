@@ -45,6 +45,7 @@ class DistributionFragment : Fragment() {
         val tipCalculations = TipCalculations()
 
         (context as MainActivity).hideToolbar()
+        binding.loadingScreen.root.visibility = View.VISIBLE
         // Displaying loading screen
         Timer().schedule(2000){
             (context as MainActivity).runOnUiThread {

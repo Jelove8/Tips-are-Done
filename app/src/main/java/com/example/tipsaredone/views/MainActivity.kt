@@ -48,7 +48,8 @@ class MainActivity : AppCompatActivity() {
         // If screen is rotated, prevents title screen from reappearing
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE && !showTitleScreenOnCreate) {
             showTitleScreenOnCreate = false
-        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT && !showTitleScreenOnCreate) {
+        }
+        else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT && !showTitleScreenOnCreate) {
             showTitleScreenOnCreate = false
         }
     }

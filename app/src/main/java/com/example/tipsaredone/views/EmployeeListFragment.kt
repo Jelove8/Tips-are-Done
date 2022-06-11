@@ -36,7 +36,6 @@ class EmployeeListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         // Initializing employees view model
         val employeesVM: EmployeesViewModel by activityViewModels()
         employeesViewModel = employeesVM
@@ -164,11 +163,13 @@ class EmployeeListFragment : Fragment() {
         }
     }
 
+
     private fun hideEmployeeDialog() {
         binding.cnstEmployeeDialog.visibility = View.GONE
         binding.tvEmployeeDialogBackground.visibility = View.GONE
     }
 
+    // Calculates sum of hours via employee data objects
     private fun setSumHours() {
         val sumOfHours = employeesViewModel.sumHours.value
         binding.tvTotalHours.text =

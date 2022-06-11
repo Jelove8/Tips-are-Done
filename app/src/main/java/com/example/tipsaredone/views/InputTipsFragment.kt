@@ -1,6 +1,7 @@
 package com.example.tipsaredone.views
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -72,14 +73,15 @@ class InputTipsFragment : Fragment() {
         sumInputTips()
 
         binding.btnConfirmBills.setOnClickListener {
-            if (checkBillAmounts(listOfEditTexts)) {
-                findNavController().navigate(R.id.action_InputTipsFragment_toOutputTipsFragment)
-            }
+            // Navigates up if checkBillAmounts() returns true
+            if (checkBillAmounts(listOfEditTexts)) findNavController().navigate(R.id.action_InputTipsFragment_toOutputTipsFragment)
         }
 
     }
 
     private fun checkBillAmounts(list: List<EditText>): Boolean {
+
+        // Putting EditText inputs into a mutableListOf<Double> (where [0] = ones & [4] = twenties)
         val listOfAmounts = mutableListOf<Double>()
         for (et in list) {
             if (et.text.isNullOrEmpty()) {
@@ -90,19 +92,29 @@ class InputTipsFragment : Fragment() {
             }
         }
 
-        val sumOfMods = (listOfAmounts[0] % 1.00) + (listOfAmounts[1] % 2.00) + (listOfAmounts[2] % 5.00) + (listOfAmounts[3] % 10.00) + (listOfAmounts[4] % 20.00)
+        // Value that will be checked when testing for valid inputs
+        val sumOfModulos = (listOfAmounts[0] % 1.00) + (listOfAmounts[1] % 2.00) + (listOfAmounts[2] % 5.00) + (listOfAmounts[3] % 10.00) + (listOfAmounts[4] % 20.00)
 
+        // Testing inputs for validity
         return when {
+            // At least one EditText input must be filled.
             listOfAmounts.sum() == 0.0 -> {
                 (context as MainActivity).makeToastMessage("No bills inputted.")
                 false
             }
-            sumOfMods != 0.0 -> {
+            // An input(s) is not divisible by their corresponding bill type.
+            sumOfModulos != 0.0 -> {
                 (context as MainActivity).makeToastMessage("Incorrect amount detected.")
                 false
             }
-            else -> {
+            // Inputs are valid.
+            sumOfModulos == 0.0 -> {
                 true
+            }
+            // This branch should never be returned.
+            else -> {
+                Log.d(TipsViewModel.INPUT_TIPS, "InputTipsFragment / checkBillAmounts() / else branch returned.")
+                false
             }
         }
     }
@@ -110,9 +122,7 @@ class InputTipsFragment : Fragment() {
     private fun sumInputTips() {
         var sum = 0.00
         for (amt in tipsViewModel.getBillsList()) {
-            if (amt != null) {
-                sum += amt
-            }
+            if (amt != null) sum += amt
         }
         tipsViewModel.updateTotalTips(sum)
         binding.tvTotalTips.text = sum.toString()

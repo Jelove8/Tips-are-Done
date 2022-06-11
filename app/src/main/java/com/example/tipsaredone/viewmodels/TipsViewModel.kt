@@ -8,6 +8,10 @@ import com.example.tipsaredone.model.MockData
 
 class TipsViewModel : ViewModel() {
 
+    companion object {
+        const val INPUT_TIPS = "input_tips"
+    }
+
     private val _billsList = MutableLiveData<MutableList<Double?>>(mutableListOf(null,null,null,null,null))
     // Index: [0] Ones, [1] Twos, [2] Fives, [3] Tens, [4] Twenties
 
