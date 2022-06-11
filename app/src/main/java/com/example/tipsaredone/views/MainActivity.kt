@@ -29,16 +29,16 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setSupportActionBar(binding.toolbar)
 
+        // Configuring Navigation and ActionBar components.
+        setSupportActionBar(binding.toolbar)
         val navController = findNavController(R.id.nav_host_fragment)
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
-        // Shows title screen once
+        // Displays title screen if configurations are set to default.
         showTitleScreen()
     }
 
@@ -70,16 +70,16 @@ class MainActivity : AppCompatActivity() {
                 || super.onSupportNavigateUp()
     }
 
-    fun showTitleScreen(reset: Boolean? = null) {   // showTitleScreen(true) is only called when user presses "SAVE" button at DistributionFragment
+    fun showTitleScreen(reset: Boolean? = null) {
 
-        if (reset == true) {    // Resets title screen configurations
+        if (reset == true) {    // Resets title screen configurations to default (Only called when user presses "SAVE" button @DistributionFragment)
             visibleTitleScreen = true
             binding.includeTitleScreen.root.visibility = View.VISIBLE
             visibleToolBar = false
             binding.toolbar.visibility = View.GONE
         }
 
-        if (visibleTitleScreen && !visibleToolBar) {
+        if (visibleTitleScreen && !visibleToolBar) {    // if (default title screen configurations)
             // Makes title screen view visible.
             binding.includeTitleScreen.root.visibility = View.VISIBLE
 
@@ -95,7 +95,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // Reading & Writing employee names from & to internal storage.
+    // Internal Storage
     fun saveEmployeeNamesToInternalStorage(employees: MutableList<Employee>) {        // Called whenever the "CONTINUE" button is pressed @EmployeeListFragment.
         // Converting list of employee objects into list of employee names (string).
         val listOfNames = mutableListOf<String>()
@@ -116,16 +116,17 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
-
-    // Used by "calculating tips" loading screen in DistributionFragment
+    // Toolbar Visibility (used @DistributionFragment)
     fun hideToolbar() {
         binding.toolbar.visibility = View.GONE
+        visibleToolBar = false
     }
     fun showToolbar() {
         binding.toolbar.visibility = View.VISIBLE
+        visibleToolBar = true
     }
 
+    // Misc
     fun makeToastMessage(message: String, isDurationShort: Boolean = true) {
         if (isDurationShort) {
             Toast.makeText(this,message,Toast.LENGTH_SHORT).show()
