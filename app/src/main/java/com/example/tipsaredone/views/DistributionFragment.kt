@@ -75,7 +75,7 @@ class DistributionFragment : Fragment() {
             employeesViewModel.clearEmployeeHoursAndDistributedTips()
             tipsViewModel.clearBillsList()
             (context as MainActivity).showTitleScreen(true)
-            (context as MainActivity).saveEmployeeData(employeesViewModel.employees.value!!)
+            (context as MainActivity).saveEmployeeNamesToInternalStorage(employeesViewModel.employees.value!!)
             findNavController().navigate(R.id.action_outputTipsFragment_to_EmployeeFragment)
         }
 

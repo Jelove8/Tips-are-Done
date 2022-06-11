@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -16,7 +15,6 @@ import com.example.tipsaredone.R
 import com.example.tipsaredone.databinding.ActivityMainBinding
 import com.example.tipsaredone.model.Employee
 import com.example.tipsaredone.model.MyEmployees
-import com.example.tipsaredone.viewmodels.EmployeesViewModel
 import java.util.Timer
 import kotlin.concurrent.schedule
 
@@ -25,11 +23,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
 
-    private var showTitleScreenOnCreate: Boolean = true     // Set to FALSE after title screen is hidden, Set to TRUE onDestroy or when employees are saved to int_storage
+    // Title Screen Configurations
+    private var visibleTitleScreen: Boolean = true
+    private var visibleToolBar: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -45,19 +44,24 @@ class MainActivity : AppCompatActivity() {
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        // If screen is rotated, prevents title screen from reappearing
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE && !showTitleScreenOnCreate) {
-            showTitleScreenOnCreate = false
+
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE && !visibleTitleScreen) {
+            // Title Screen Configurations set to HIDDEN
+            visibleTitleScreen = false
+            visibleToolBar = true
         }
-        else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT && !showTitleScreenOnCreate) {
-            showTitleScreenOnCreate = false
+        else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT && !visibleTitleScreen) {
+            // Title Screen Configurations set to HIDDEN
+            visibleTitleScreen = false
+            visibleToolBar = true
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-
-        showTitleScreenOnCreate = true
+        // If MainActivity is destroyed, resets title screen configurations.
+        visibleTitleScreen = true
+        visibleToolBar = false
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -66,36 +70,41 @@ class MainActivity : AppCompatActivity() {
                 || super.onSupportNavigateUp()
     }
 
-    fun showTitleScreen(resetBool: Boolean? = null) {
+    fun showTitleScreen(reset: Boolean? = null) {   // showTitleScreen(true) is only called when user presses "SAVE" button at DistributionFragment
 
-        // showTitleScreen(true) is only called when user presses "SAVE" button at DistributionFragment
-        if (resetBool == true) {
+        if (reset == true) {    // Resets title screen configurations
+            visibleTitleScreen = true
+            binding.includeTitleScreen.root.visibility = View.VISIBLE
+            visibleToolBar = false
             binding.toolbar.visibility = View.GONE
-            showTitleScreenOnCreate = true
         }
 
-        if (showTitleScreenOnCreate) {
+        if (visibleTitleScreen && !visibleToolBar) {
+            // Makes title screen view visible.
             binding.includeTitleScreen.root.visibility = View.VISIBLE
 
+            // Hiding title screen & showing toolbar after a delay.
             Timer().schedule(2000){
                 this@MainActivity.runOnUiThread {
-                    // Hiding title screen & showing toolbar
+                    visibleTitleScreen = false
                     binding.includeTitleScreen.root.visibility = View.GONE
+                    visibleToolBar = true
                     binding.toolbar.visibility = View.VISIBLE
-                    showTitleScreenOnCreate = false
                 }
             }
         }
     }
 
-    fun saveEmployeeData(employees: MutableList<Employee>) {
-
-        val employeeNames = mutableListOf<String>()
+    // Reading & Writing employee names from & to internal storage.
+    fun saveEmployeeNamesToInternalStorage(employees: MutableList<Employee>) {        // Called whenever the "CONTINUE" button is pressed @EmployeeListFragment.
+        // Converting list of employee objects into list of employee names (string).
+        val listOfNames = mutableListOf<String>()
         for (emp in employees) {
-            employeeNames.add(emp.name)
+            listOfNames.add(emp.name)
         }
 
-        val jsonString = MyEmployees().convertEmployeeNamesToJson(employeeNames)
+        // Converting listOfNames to Json
+        val jsonString = MyEmployees().convertEmployeeNamesToJson(listOfNames)
         val jsonFileName = "myEmployees"
 
         // Saving the Json data to internal storage
