@@ -11,13 +11,11 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cnst_tip_distribution_header"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:background="@drawable/rounded_square"
-        android:backgroundTint="@color/white"
+        android:layout_height="0dp"
+        android:layout_marginBottom="80dp"
+        android:background="@color/white"
         android:padding="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -27,13 +25,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
             android:fontFamily="@font/sodo"
             android:text="B I L L S"
             android:textAlignment="textStart"
             android:textSize="16sp"
             android:textStyle="bold"
             android:typeface="sans"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -41,232 +39,225 @@
             android:id="@+id/tv_dollar_amount_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="32dp"
             android:fontFamily="@font/sodo"
             android:text="$  A M O U N T"
             android:textAlignment="center"
             android:textSize="16sp"
             android:textStyle="bold"
             android:typeface="sans"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_bills_header">
+
+            <TableLayout
+                android:id="@+id/tbl_input_tips"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal"
+                    android:paddingLeft="8dp"
+                    android:paddingTop="16dp"
+                    android:paddingRight="8dp"
+                    android:paddingBottom="16dp">
+
+                    <TextView
+                        android:id="@+id/tv_ones"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="O N E S"
+                        android:textAlignment="textStart"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/et_ones"
+                        android:layout_width="100dp"
+                        android:layout_height="48dp"
+                        android:layout_marginStart="100dp"
+                        android:background="@drawable/rounded_square"
+                        android:backgroundTint="@color/warm_neutral"
+                        android:fontFamily="@font/sodo"
+                        android:hint="0.00"
+                        android:inputType="numberDecimal"
+                        android:padding="8dp"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        tools:ignore="TouchTargetSizeCheck" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal"
+                    android:paddingLeft="8dp"
+                    android:paddingTop="16dp"
+                    android:paddingRight="8dp"
+                    android:paddingBottom="16dp">
+
+                    <TextView
+                        android:id="@+id/tv_twos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="T W O S"
+                        android:textAlignment="textStart"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/et_twos"
+                        android:layout_width="100dp"
+                        android:layout_height="48dp"
+                        android:layout_marginStart="100dp"
+                        android:background="@drawable/rounded_square"
+                        android:backgroundTint="@color/warm_neutral"
+                        android:fontFamily="@font/sodo"
+                        android:hint="0.00"
+                        android:inputType="numberDecimal"
+                        android:padding="8dp"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        tools:ignore="TouchTargetSizeCheck" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal"
+                    android:paddingLeft="8dp"
+                    android:paddingTop="16dp"
+                    android:paddingRight="8dp"
+                    android:paddingBottom="16dp">
+
+                    <TextView
+                        android:id="@+id/tv_fives"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="F I V E S"
+                        android:textAlignment="textStart"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/et_fives"
+                        android:layout_width="100dp"
+                        android:layout_height="48dp"
+                        android:layout_marginStart="100dp"
+                        android:background="@drawable/rounded_square"
+                        android:backgroundTint="@color/warm_neutral"
+                        android:fontFamily="@font/sodo"
+                        android:hint="0.00"
+                        android:inputType="numberDecimal"
+                        android:padding="8dp"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        tools:ignore="TouchTargetSizeCheck" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal"
+                    android:paddingLeft="8dp"
+                    android:paddingTop="16dp"
+                    android:paddingRight="8dp"
+                    android:paddingBottom="16dp">
+
+                    <TextView
+                        android:id="@+id/tv_tens"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="T E N S"
+                        android:textAlignment="textStart"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/et_tens"
+                        android:layout_width="100dp"
+                        android:layout_height="48dp"
+                        android:layout_marginStart="100dp"
+                        android:background="@drawable/rounded_square"
+                        android:backgroundTint="@color/warm_neutral"
+                        android:fontFamily="@font/sodo"
+                        android:hint="0.00"
+                        android:inputType="numberDecimal"
+                        android:padding="8dp"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        tools:ignore="TouchTargetSizeCheck" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal"
+                    android:paddingLeft="8dp"
+                    android:paddingTop="16dp"
+                    android:paddingRight="8dp"
+                    android:paddingBottom="16dp">
+
+                    <TextView
+                        android:id="@+id/tv_twenties"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="T W E N T I E S"
+                        android:textAlignment="textStart"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/et_twenties"
+                        android:layout_width="100dp"
+                        android:layout_height="48dp"
+                        android:layout_marginStart="100dp"
+                        android:background="@drawable/rounded_square"
+                        android:backgroundTint="@color/warm_neutral"
+                        android:fontFamily="@font/sodo"
+                        android:hint="0.00"
+                        android:inputType="numberDecimal"
+                        android:padding="8dp"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        tools:ignore="TouchTargetSizeCheck" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"/>
+
+            </TableLayout>
+        </ScrollView>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <ScrollView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/rounded_square"
-        android:backgroundTint="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/cnst_tip_distribution_footer"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cnst_tip_distribution_header">
-
-        <TableLayout
-            android:id="@+id/tbl_input_tips"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_horizontal"
-                android:paddingLeft="8dp"
-                android:paddingTop="16dp"
-                android:paddingRight="8dp"
-                android:paddingBottom="16dp">
-
-                <TextView
-                    android:id="@+id/tv_ones"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="O N E S"
-                    android:textAlignment="textStart"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <EditText
-                    android:id="@+id/et_ones"
-                    android:layout_width="100dp"
-                    android:layout_height="48dp"
-                    android:layout_marginStart="100dp"
-                    android:background="@drawable/rounded_square"
-                    android:backgroundTint="@color/starbucks_green"
-                    android:fontFamily="@font/sodo"
-                    android:hint="0.00"
-                    android:inputType="numberDecimal"
-                    android:padding="8dp"
-                    android:text="85.00"
-                    android:textAlignment="center"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp"
-                    tools:ignore="TouchTargetSizeCheck" />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_horizontal"
-                android:paddingLeft="8dp"
-                android:paddingTop="16dp"
-                android:paddingRight="8dp"
-                android:paddingBottom="16dp">
-
-                <TextView
-                    android:id="@+id/tv_twos"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="T W O S"
-                    android:textAlignment="textStart"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <EditText
-                    android:id="@+id/et_twos"
-                    android:layout_width="100dp"
-                    android:layout_height="48dp"
-                    android:layout_marginStart="100dp"
-                    android:background="@drawable/rounded_square"
-                    android:backgroundTint="@color/starbucks_green"
-                    android:fontFamily="@font/sodo"
-                    android:hint="0.00"
-                    android:inputType="numberDecimal"
-                    android:padding="8dp"
-                    android:text="4.00"
-                    android:textAlignment="center"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp"
-                    tools:ignore="TouchTargetSizeCheck" />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_horizontal"
-                android:paddingLeft="8dp"
-                android:paddingTop="16dp"
-                android:paddingRight="8dp"
-                android:paddingBottom="16dp">
-
-                <TextView
-                    android:id="@+id/tv_fives"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="F I V E S"
-                    android:textAlignment="textStart"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <EditText
-                    android:id="@+id/et_fives"
-                    android:layout_width="100dp"
-                    android:layout_height="48dp"
-                    android:layout_marginStart="100dp"
-                    android:background="@drawable/rounded_square"
-                    android:backgroundTint="@color/starbucks_green"
-                    android:fontFamily="@font/sodo"
-                    android:hint="0.00"
-                    android:inputType="numberDecimal"
-                    android:padding="8dp"
-                    android:text="35.00"
-                    android:textAlignment="center"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp"
-                    tools:ignore="TouchTargetSizeCheck" />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_horizontal"
-                android:paddingLeft="8dp"
-                android:paddingTop="16dp"
-                android:paddingRight="8dp"
-                android:paddingBottom="16dp">
-
-                <TextView
-                    android:id="@+id/tv_tens"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="T E N S"
-                    android:textAlignment="textStart"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <EditText
-                    android:id="@+id/et_tens"
-                    android:layout_width="100dp"
-                    android:layout_height="48dp"
-                    android:layout_marginStart="100dp"
-                    android:background="@drawable/rounded_square"
-                    android:backgroundTint="@color/starbucks_green"
-                    android:fontFamily="@font/sodo"
-                    android:hint="0.00"
-                    android:inputType="numberDecimal"
-                    android:padding="8dp"
-                    android:text="20.00"
-                    android:textAlignment="center"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp"
-                    tools:ignore="TouchTargetSizeCheck" />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_horizontal"
-                android:paddingLeft="8dp"
-                android:paddingTop="16dp"
-                android:paddingRight="8dp"
-                android:paddingBottom="16dp">
-
-                <TextView
-                    android:id="@+id/tv_twenties"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="T W E N T I E S"
-                    android:textAlignment="textStart"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <EditText
-                    android:id="@+id/et_twenties"
-                    android:layout_width="100dp"
-                    android:layout_height="48dp"
-                    android:layout_marginStart="100dp"
-                    android:background="@drawable/rounded_square"
-                    android:backgroundTint="@color/starbucks_green"
-                    android:fontFamily="@font/sodo"
-                    android:hint="0.00"
-                    android:inputType="numberDecimal"
-                    android:padding="8dp"
-                    android:text="40.00"
-                    android:textAlignment="center"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp"
-                    tools:ignore="TouchTargetSizeCheck" />
-            </TableRow>
-
-        </TableLayout>
-    </ScrollView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cnst_tip_distribution_footer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_height="0dp"
         android:padding="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cnst_tip_distribution_header">
 
         <TextView
             android:id="@+id/tv_total_tips_label"
@@ -274,11 +265,24 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:fontFamily="@font/sodo"
-            android:text="Total Tips    $"
+            android:text="$"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_total_tips_label2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:fontFamily="@font/sodo"
+            android:text="total"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tv_total_tips"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.509" />
 
         <TextView
             android:id="@+id/tv_total_tips"

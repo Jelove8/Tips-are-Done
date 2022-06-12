@@ -20,6 +20,10 @@ import kotlin.concurrent.schedule
 
 class MainActivity : AppCompatActivity() {
 
+    companion object {
+        const val MISC: String = "misc"
+    }
+
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
 
