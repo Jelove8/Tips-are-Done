@@ -15,6 +15,10 @@ import com.example.tipsaredone.viewmodels.EmployeesViewModel
 
 class EmployeeListFragment : Fragment() {
 
+    companion object {
+        const val THIS: String = "EmployeeListFragment"
+    }
+
     private lateinit var employeesViewModel: EmployeesViewModel
     private lateinit var employeeListAdapter: EmployeesAdapter
 
@@ -41,23 +45,23 @@ class EmployeeListFragment : Fragment() {
 
         // Adapter Logic
         employeeListAdapter = EmployeesAdapter(
+            employeesViewModel.employees.value!!,
 
             // Click employee item to edit their name...
             itemClickCallback = fun(position: Int) {
                 employeesViewModel.setEditingEmployeeBool(true)
                 employeesViewModel.selectEmployee(position)
                 showDialogView(position)
-                checkForValidInputs()                       // Checks if user should be able to click the Confirm button.
+                checkForValidInputs()                               // Checks if user should be able to click the Confirm button.
             },
 
             // When user inputs employee hours...
             textChangedCallback = fun(sumHours: Double) {
-                employeesViewModel.setSumHours(sumHours)    // Setting sum of hours within view model.
-                setSumHours()                               // Displaying previously stored value from view model.
-                checkForValidInputs()                       // Checks if user should be able to click the Confirm button.
+                employeesViewModel.setSumHours(sumHours)            // Setting sum of hours within view model.
+                setSumHours()                                       // Displaying previously stored value from view model.
+                checkForValidInputs()                               // Checks if user should be able to click the Confirm button.
             }
         )
-        employeeListAdapter.setEmployeeAdapterData(employeesViewModel.employees.value!!)
 
         // Displays the sum of employee hours, from the viewmodel.
         setSumHours()
@@ -92,7 +96,7 @@ class EmployeeListFragment : Fragment() {
 
         binding.btnDeleteEmployeeDialog.setOnClickListener {
             employeesViewModel.deleteSelectedEmployee()
-            employeeListAdapter.setEmployeeAdapterData(employeesViewModel.employees.value!!)
+            employeeListAdapter.deleteEmployeeFromAdapter(employeesViewModel.getSelectedPosition())
             hideEmployeeDialog()
             checkForValidInputs()
         }

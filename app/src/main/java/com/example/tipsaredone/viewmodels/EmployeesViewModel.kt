@@ -47,6 +47,9 @@ class EmployeesViewModel: ViewModel() {
     }
 
     // Editing or Deleting an existing employee.
+    fun getSelectedPosition(): Int {
+        return selectedEmployeePosition
+    }
     fun selectEmployee(index: Int) {
         selectedEmployeePosition = index
     }

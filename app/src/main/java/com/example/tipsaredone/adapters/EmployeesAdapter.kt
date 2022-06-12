@@ -1,6 +1,7 @@
 package com.example.tipsaredone.adapters
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,12 +14,16 @@ import com.example.tipsaredone.R
 import com.example.tipsaredone.model.Employee
 
 class EmployeesAdapter(
+    private var employees: MutableList<Employee> = mutableListOf(),
     private val itemClickCallback: ((Int) -> Unit)?,
     private val textChangedCallback: ((Double) -> Unit)?
 ) : RecyclerView.Adapter<EmployeesAdapter.EmployeesViewHolder>() {
 
+    companion object {
+        const val THIS: String = "EmployeesAdapter"
+    }
 
-    private var employees: MutableList<Employee> = mutableListOf()
+
 
     class EmployeesViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
         val employeeIndex: TextView = itemView.findViewById(R.id.tv_employee_index)
@@ -86,7 +91,14 @@ class EmployeesAdapter(
     fun setEmployeeAdapterData(list: MutableList<Employee>) {
         employees = list
         notifyDataSetChanged()
+    }
+
+    fun deleteEmployeeFromAdapter(position: Int) {
+        val empToRemove = employees[position].name
+        employees.removeAt(position)
+        notifyItemRemoved(position)
         textChangedCallback?.invoke(getSumHours())
+        Log.d(THIS,"Employee deleted from adapter: $empToRemove, position = $position")
     }
 
     private fun getSumHours(): Double {
