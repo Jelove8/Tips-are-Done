@@ -10,7 +10,6 @@ import com.example.tipsaredone.model.MockData
 class EmployeesViewModel: ViewModel() {
 
     companion object {
-        const val INTERNAL_STORAGE = "internal_storage"
         const val EMPLOYEE_VM = "empVM"
     }
 
@@ -23,6 +22,13 @@ class EmployeesViewModel: ViewModel() {
     private var selectedEmployeePosition: Int = 0
 
     private var editingEmployee: Boolean = false    // false = adding an employee, true = editing an employee
+
+    init {
+        // Loading names from internal storage
+        // Get json file -> mutableListOf<String>
+        // for (name in mutableList) {
+        //      addNewEmployee(name) }
+    }
 
     // Adding a new employee.
     fun addNewEmployee(newName: String) {

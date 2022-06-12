@@ -7,10 +7,52 @@ class MockData() {
 
     private val mockEmployees = mutableListOf(
         Employee(
-            "Ashley Alms"
+            "Ashley Amari"
         ),
         Employee(
             "Brandon Butter"
+        ),
+        Employee(
+            "Calvin Clein"
+        ),
+        Employee(
+            "David Duster"
+        ),
+        Employee(
+            "Eduardo Ent"
+        ),
+        Employee(
+            "Fuego French"
+        ),
+        Employee(
+            "Gordon Gamsey"
+        ),
+        Employee(
+            "Helena"
+        ),
+        Employee(
+            "Ipis"
+        ),
+        Employee(
+            "Jordan Jordanson"
+        ),
+        Employee(
+            "Kalvin Klein"
+        ),
+        Employee(
+            "Lorax"
+        ),
+        Employee(
+            "M"
+        ),
+        Employee(
+            "Nick Ramirez"
+        ),
+        Employee(
+            "Osaro Ramirez"
+        ),
+        Employee(
+            "Pia Piper"
         )
     )
 

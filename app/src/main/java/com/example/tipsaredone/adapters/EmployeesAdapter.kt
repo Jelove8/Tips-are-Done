@@ -17,7 +17,7 @@ class EmployeesAdapter(
     private val textChangedCallback: ((Double) -> Unit)?
 ) : RecyclerView.Adapter<EmployeesAdapter.EmployeesViewHolder>() {
 
-    private var initialUse: Boolean = true
+
     private var employees: MutableList<Employee> = mutableListOf()
 
     class EmployeesViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
@@ -85,8 +85,8 @@ class EmployeesAdapter(
     @SuppressLint("NotifyDataSetChanged")
     fun setEmployeeAdapterData(list: MutableList<Employee>) {
         employees = list
-        employees.sortBy { it.name }
         notifyDataSetChanged()
+        textChangedCallback?.invoke(getSumHours())
     }
 
     private fun getSumHours(): Double {
