@@ -94,10 +94,10 @@ class EmployeesAdapter(
     }
 
     fun deleteEmployeeFromAdapter(position: Int) {
-        val empToRemove = employees[position].name
-        employees.removeAt(position)
         notifyItemRemoved(position)
         textChangedCallback?.invoke(getSumHours())
+
+        val empToRemove = employees[position].name
         Log.d(THIS,"Employee deleted from adapter: $empToRemove, position = $position")
     }
 

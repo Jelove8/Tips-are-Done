@@ -52,18 +52,32 @@ class EmployeesViewModel: ViewModel() {
     }
     fun selectEmployee(index: Int) {
         selectedEmployeePosition = index
+        Log.d("EmployeeList", "Selected Employee in VM @position: $selectedEmployeePosition")
     }
     fun deleteSelectedEmployee() {
         _employees.value!!.removeAt(selectedEmployeePosition)
+
+        Log.d("EmployeeList", "Deleted Employee in VM @position: $selectedEmployeePosition")
+        Log.d("EmployeeList", "New Employee Order in VM")
+        for ((i,emp) in employees.value!!.withIndex()) {
+            Log.d("EmployeesList","$i ${emp.name}, ${emp.distributedTips} hrs")
+        }
     }
     fun confirmSelectedEmployee(editedName: String) {
         _employees.value!![selectedEmployeePosition].name = editedName
         _employees.value!!.sortBy { it.name }
+
+        Log.d("EmployeeList", "Edited Employee in VM: $selectedEmployeePosition")
+        Log.d("EmployeeList", "New Employee Order in VM")
+        for ((i,emp) in employees.value!!.withIndex()) {
+            Log.d("EmployeesList","$i ${emp.name}, ${emp.distributedTips} hrs")
+        }
     }
 
     // Sum of Hours
     fun setSumHours(double: Double) {
         _sumHours.value = double
+        Log.d("EmployeesList","New Hours set in VM: $double")
     }
 
     // Clearing inputted hours & tips
@@ -78,6 +92,13 @@ class EmployeesViewModel: ViewModel() {
     // Discerning between editing vs adding an employee (both occur on the same dialog view).
     fun setEditingEmployeeBool(boolean: Boolean) {
         editingEmployee = boolean
+        if (boolean) {
+            Log.d("EmployeesList","Editing an Employee")
+        }
+        else {
+            Log.d("EmployeesList","Adding an Employee")
+        }
+
     }
     fun getEditingEmployeeBool(): Boolean {
         return editingEmployee

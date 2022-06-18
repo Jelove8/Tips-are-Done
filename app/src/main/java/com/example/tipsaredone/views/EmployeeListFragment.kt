@@ -96,7 +96,7 @@ class EmployeeListFragment : Fragment() {
 
         binding.btnDeleteEmployeeDialog.setOnClickListener {
             employeesViewModel.deleteSelectedEmployee()
-            employeeListAdapter.deleteEmployeeFromAdapter(employeesViewModel.getSelectedPosition())
+            employeeListAdapter.setEmployeeAdapterData(employeesViewModel.employees.value!!)
             hideEmployeeDialog()
             checkForValidInputs()
         }
