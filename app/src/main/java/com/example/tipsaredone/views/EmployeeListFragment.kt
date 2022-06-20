@@ -1,5 +1,6 @@
 package com.example.tipsaredone.views
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -11,6 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tipsaredone.R
 import com.example.tipsaredone.adapters.EmployeesAdapter
 import com.example.tipsaredone.databinding.FragmentEmployeesListBinding
+import com.example.tipsaredone.model.Employee
+import com.example.tipsaredone.model.MyEmployees
 import com.example.tipsaredone.viewmodels.EmployeesViewModel
 
 class EmployeeListFragment : Fragment() {
@@ -43,6 +46,7 @@ class EmployeeListFragment : Fragment() {
         val employeesVM: EmployeesViewModel by activityViewModels()
         employeesViewModel = employeesVM
 
+
         // Adapter Logic
         employeeListAdapter = EmployeesAdapter(
             employeesViewModel.employees.value!!,
@@ -71,6 +75,8 @@ class EmployeeListFragment : Fragment() {
         // Populating recycler view
         binding.rcyEmployees.layoutManager = LinearLayoutManager(context as MainActivity)
         binding.rcyEmployees.adapter = employeeListAdapter
+
+
 
         // Dialog View Logic
         binding.btnConfirmEmployeeDialog.setOnClickListener {
@@ -116,6 +122,7 @@ class EmployeeListFragment : Fragment() {
             }
             else if (visibleConfirmButton) {  // Proceed to next fragment.
                 findNavController().navigate(R.id.action_EmployeeFragment_to_InputTipsFragment)
+                MyEmployees().saveEmployeeNamesToInternalStorage(employeesViewModel.employees.value!!,context as MainActivity)
             }
             else {
                 Log.d(MainActivity.MISC,"EmployeesListFrag-btnConfirmEmployees.onClickListen-elseBranch")
@@ -212,6 +219,7 @@ class EmployeeListFragment : Fragment() {
         }
         displayConfirmButton()
     }
+
 
 
 }

@@ -1,28 +1,31 @@
 package com.example.tipsaredone.views
 
-import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.tipsaredone.R
 import com.example.tipsaredone.databinding.ActivityMainBinding
-import com.example.tipsaredone.model.Employee
 import com.example.tipsaredone.model.MyEmployees
-import java.util.Timer
+import com.example.tipsaredone.viewmodels.EmployeesViewModel
+import java.util.*
 import kotlin.concurrent.schedule
+
 
 class MainActivity : AppCompatActivity() {
 
     companion object {
         const val MISC: String = "misc"
     }
+
+    private lateinit var employeesViewModel: EmployeesViewModel
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
@@ -44,6 +47,12 @@ class MainActivity : AppCompatActivity() {
 
         // Displays title screen if configurations are set to default.
         showTitleScreen()
+
+        // Initialize viewmodels
+        employeesViewModel = ViewModelProvider(this)[EmployeesViewModel::class.java]
+
+        loadEmployeesFromInternalStorage()
+
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
@@ -99,26 +108,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // Internal Storage
-    fun saveEmployeeNamesToInternalStorage(employees: MutableList<Employee>) {        // Called whenever the "CONTINUE" button is pressed @EmployeeListFragment.
-        // Converting list of employee objects into list of employee names (string).
-        val listOfNames = mutableListOf<String>()
-        for (emp in employees) {
-            listOfNames.add(emp.name)
-        }
 
-        // Converting listOfNames to Json
-        val jsonString = MyEmployees().convertEmployeeNamesToJson(listOfNames)
-        val jsonFileName = "myEmployees"
-
-        // Saving the Json data to internal storage
-        this.openFileOutput(jsonFileName, Context.MODE_PRIVATE).use {
-            it.write(jsonString.toByteArray())
-            it.close()
-            Log.d(MyEmployees.INTERNAL_STORAGE, "Employee names saved as Json:\n${jsonString}")
-        }
-
-    }
 
     // Toolbar Visibility (used @DistributionFragment)
     fun hideToolbar() {
@@ -128,6 +118,13 @@ class MainActivity : AppCompatActivity() {
     fun showToolbar() {
         binding.toolbar.visibility = View.VISIBLE
         visibleToolBar = true
+    }
+
+    // Initialize Employees in ViewModel
+    fun loadEmployeesFromInternalStorage() {
+        val loadedEmployees = MyEmployees().loadEmployeeNamesFromInternalStorage(this)
+        employeesViewModel.initializeEmployees(loadedEmployees)
+        Log.d(MyEmployees.INTERNAL_STORAGE,"Employees loaded into Main: $loadedEmployees")
     }
 
     // Misc

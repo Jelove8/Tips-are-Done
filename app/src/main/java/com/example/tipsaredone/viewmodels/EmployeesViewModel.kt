@@ -1,11 +1,19 @@
 package com.example.tipsaredone.viewmodels
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.tipsaredone.model.Employee
 import com.example.tipsaredone.model.MockData
+import com.example.tipsaredone.model.MyEmployees
+import com.example.tipsaredone.views.MainActivity
+import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
+import java.io.BufferedReader
+import java.io.FileInputStream
+import java.io.InputStreamReader
 
 class EmployeesViewModel: ViewModel() {
 
@@ -13,7 +21,7 @@ class EmployeesViewModel: ViewModel() {
         const val EMPLOYEE_VM = "empVM"
     }
 
-    private val _employees = MutableLiveData<MutableList<Employee>>(MockData().getMockEmployees())
+    private val _employees = MutableLiveData<MutableList<Employee>>(mutableListOf())
     val employees: LiveData<MutableList<Employee>> = _employees
 
     private val _sumHours = MutableLiveData(0.00)
@@ -103,4 +111,12 @@ class EmployeesViewModel: ViewModel() {
     fun getEditingEmployeeBool(): Boolean {
         return editingEmployee
     }
+
+    // Internal Storage
+    fun initializeEmployees(data: MutableList<Employee>) {
+        _employees.value = data
+        Log.d(MyEmployees.INTERNAL_STORAGE, "Employees loaded into ViewModel: $data")
+    }
+
+
 }

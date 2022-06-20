@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tipsaredone.R
 import com.example.tipsaredone.adapters.DistributionAdapter
 import com.example.tipsaredone.databinding.FragmentDistributionBinding
+import com.example.tipsaredone.model.MyEmployees
 import com.example.tipsaredone.model.TipCalculations
 import com.example.tipsaredone.viewmodels.DistributionViewModel
 import com.example.tipsaredone.viewmodels.EmployeesViewModel
@@ -75,7 +76,7 @@ class DistributionFragment : Fragment() {
             employeesViewModel.clearEmployeeHoursAndDistributedTips()
             tipsViewModel.clearBillsList()
             (context as MainActivity).showTitleScreen(true)
-            (context as MainActivity).saveEmployeeNamesToInternalStorage(employeesViewModel.employees.value!!)
+            MyEmployees().saveEmployeeNamesToInternalStorage(employeesViewModel.employees.value!!,context as MainActivity)
             findNavController().navigate(R.id.action_outputTipsFragment_to_EmployeeFragment)
         }
 
