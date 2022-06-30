@@ -17,6 +17,10 @@ import java.io.InputStreamReader
 
 class EmployeesViewModel: ViewModel() {
 
+    init {
+        Log.d("Initial","ViewModel initialized.")
+    }
+
     companion object {
         const val EMPLOYEE_VM = "empVM"
     }

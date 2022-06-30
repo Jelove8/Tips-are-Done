@@ -25,10 +25,15 @@ class MainActivity : AppCompatActivity() {
         const val MISC: String = "misc"
     }
 
-    private lateinit var employeesViewModel: EmployeesViewModel
+    init {
+        Log.d("Initial","MainActivity initialized.")
+    }
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+
+    // Other Components
+    private lateinit var employeesViewModel: EmployeesViewModel
 
     // Title Screen Configurations
     private var visibleTitleScreen: Boolean = true
@@ -51,7 +56,6 @@ class MainActivity : AppCompatActivity() {
         // Initialize viewmodels
         employeesViewModel = ViewModelProvider(this)[EmployeesViewModel::class.java]
 
-        loadEmployeesFromInternalStorage()
 
     }
 
@@ -121,11 +125,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     // Initialize Employees in ViewModel
-    fun loadEmployeesFromInternalStorage() {
-        val loadedEmployees = MyEmployees().loadEmployeeNamesFromInternalStorage(this)
-        employeesViewModel.initializeEmployees(loadedEmployees)
-        Log.d(MyEmployees.INTERNAL_STORAGE,"Employees loaded into Main: $loadedEmployees")
-    }
 
     // Misc
     fun makeToastMessage(message: String, isDurationShort: Boolean = true) {

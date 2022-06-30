@@ -1,6 +1,7 @@
 package com.example.tipsaredone.views
 
 import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -22,8 +23,13 @@ class EmployeeListFragment : Fragment() {
         const val THIS: String = "EmployeeListFragment"
     }
 
+    init {
+        Log.d("Initial","Fragment initialized.")
+    }
+
     private lateinit var employeesViewModel: EmployeesViewModel
     private lateinit var employeeListAdapter: EmployeesAdapter
+    private lateinit var myEmployees: MyEmployees
 
     private var _binding: FragmentEmployeesListBinding? = null
     private val binding get() = _binding!!
@@ -45,6 +51,8 @@ class EmployeeListFragment : Fragment() {
         // Initializing employees view model
         val employeesVM: EmployeesViewModel by activityViewModels()
         employeesViewModel = employeesVM
+
+        initializeMyEmployees(context as MainActivity)
 
 
         // Adapter Logic
@@ -75,6 +83,7 @@ class EmployeeListFragment : Fragment() {
         // Populating recycler view
         binding.rcyEmployees.layoutManager = LinearLayoutManager(context as MainActivity)
         binding.rcyEmployees.adapter = employeeListAdapter
+        Log.d("Initial","Adapter set in fragment.")
 
 
 
@@ -135,6 +144,22 @@ class EmployeeListFragment : Fragment() {
         _binding = null
     }
 
+    // Configuration Changes
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+
+        }
+        else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+
+
+        }
+    }
+
+
+
+
     // Menu Logic
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater)  {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -183,6 +208,13 @@ class EmployeeListFragment : Fragment() {
     private fun hideEmployeeDialog() {
         binding.cnstEmployeeDialog.visibility = View.GONE
         binding.tvEmployeeDialogBackground.visibility = View.GONE
+    }
+
+    // MyEmployees
+    private fun initializeMyEmployees(context: Context) {
+        myEmployees = MyEmployees()
+        val data = myEmployees.loadEmployeeNamesFromInternalStorage(context)
+        employeesViewModel.initializeEmployees(data)
     }
 
     // Displays sum of hours from view model.

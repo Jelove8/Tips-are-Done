@@ -23,6 +23,10 @@ class EmployeesAdapter(
         const val THIS: String = "EmployeesAdapter"
     }
 
+    init {
+        Log.d("Initial","Adapter initialized.")
+    }
+
 
 
     class EmployeesViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
