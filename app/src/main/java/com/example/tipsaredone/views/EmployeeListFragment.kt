@@ -68,15 +68,14 @@ class EmployeeListFragment : Fragment() {
             },
 
             // When user inputs employee hours...
-            textChangedCallback = fun(sumHours: Double) {
-                employeesViewModel.setSumHours(sumHours)            // Setting sum of hours within view model.
-                setSumHours()                                       // Displaying previously stored value from view model.
+            textChangedCallback = fun(_: Int) {
+                setSumHours(employeesViewModel.getSumHours())                                       // Displaying previously stored value from view model.
                 checkForValidInputs()                               // Checks if user should be able to click the Confirm button.
             }
         )
 
         // Displays the sum of employee hours, from the viewmodel.
-        setSumHours()
+        setSumHours(employeesViewModel.getSumHours())
         // If user inputs are valid, confirm button is clickable.
         checkForValidInputs()
 
@@ -114,6 +113,7 @@ class EmployeeListFragment : Fragment() {
             employeeListAdapter.setEmployeeAdapterData(employeesViewModel.employees.value!!)
             hideEmployeeDialog()
             checkForValidInputs()
+            Log.d("debug","fragment function")
         }
 
         binding.btnCancelEmployeeDialog.setOnClickListener {
@@ -218,11 +218,10 @@ class EmployeeListFragment : Fragment() {
     }
 
     // Displays sum of hours from view model.
-    private fun setSumHours() {
-        val sumOfHours = employeesViewModel.sumHours.value
+    private fun setSumHours(newSum: Double) {
         binding.tvTotalHours.text =
-            if (sumOfHours == 0.00) { "0.00" }
-            else { sumOfHours.toString() }
+            if (newSum == 0.00) { "0.00" }
+            else { newSum.toString() }
     }
 
     private fun displayConfirmButton(){

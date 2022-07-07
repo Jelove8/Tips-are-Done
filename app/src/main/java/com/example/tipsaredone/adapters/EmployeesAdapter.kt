@@ -16,7 +16,7 @@ import com.example.tipsaredone.model.Employee
 class EmployeesAdapter(
     private var employees: MutableList<Employee> = mutableListOf(),
     private val itemClickCallback: ((Int) -> Unit)?,
-    private val textChangedCallback: ((Double) -> Unit)?
+    private val textChangedCallback: ((Int) -> Unit)?
 ) : RecyclerView.Adapter<EmployeesAdapter.EmployeesViewHolder>() {
 
     companion object {
@@ -30,10 +30,30 @@ class EmployeesAdapter(
 
 
     class EmployeesViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
-        val employeeIndex: TextView = itemView.findViewById(R.id.tv_employee_index)
-        val employeeName: TextView = itemView.findViewById(R.id.tv_employee_name)
+        private val employeeIndex: TextView = itemView.findViewById(R.id.tv_employee_index)
+        private val employeeName: TextView = itemView.findViewById(R.id.tv_employee_name)
         val employeeItem: ConstraintLayout = itemView.findViewById(R.id.cnst_tip_distribution_header)
         val employeeHours: EditText = itemView.findViewById(R.id.et_employee_hours)
+
+        fun displayEmployeeInfo(employee: Employee, position: Int) {
+
+            // Displaying index and name.
+            val index = position + 1
+            employeeIndex.text = index.toString()
+            employeeName.text = employee.name
+
+            // Displaying hours within EditText.
+            val empTippableHours = employee.tippableHours
+            if (empTippableHours == null) {
+                employeeHours.text = null
+            }
+            else {
+                employeeHours.setText(empTippableHours.toString())
+            }
+
+        }
+
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EmployeesViewHolder {
@@ -45,19 +65,7 @@ class EmployeesAdapter(
 
     override fun onBindViewHolder(holder: EmployeesViewHolder, position: Int) {
 
-        // Displaying employee index & name.
-        holder.employeeName.text = employees[position].name
-        val index = position + 1
-        holder.employeeIndex.text = "$index"
-
-        // Displaying employee hours.
-        val empTippableHours = employees[position].tippableHours
-        if (empTippableHours == null) {
-            holder.employeeHours.text = null
-        }
-        else {
-            holder.employeeHours.setText(empTippableHours.toString())
-        }
+        holder.displayEmployeeInfo(employees[position],position)
 
         // Click to edit employee
         holder.employeeItem.setOnClickListener {
@@ -66,24 +74,12 @@ class EmployeesAdapter(
 
         // Editing employee hours
         holder.employeeHours.doAfterTextChanged {
-            val editedHours = holder.employeeHours.text
 
             // Updating employee data within view model.
-            employees[position].tippableHours =
-                when {
-                    editedHours.isNullOrEmpty() -> {
-                        null
-                    }
-                    editedHours.toString().toDouble() == 0.0 -> {
-                        0.0
-                    }
-                    else -> {
-                        editedHours.toString().toDouble()
-                    }
-                }
+            updateEmployeeHours(holder.employeeHours.text.toString(), position)
 
             // Re-summing total hours
-            textChangedCallback?.invoke(getSumHours())
+            textChangedCallback?.invoke(position)
         }
     }
 
@@ -95,25 +91,26 @@ class EmployeesAdapter(
     fun setEmployeeAdapterData(list: MutableList<Employee>) {
         employees = list
         notifyDataSetChanged()
+        Log.d("debug","adapter function")
     }
 
-    fun deleteEmployeeFromAdapter(position: Int) {
-        notifyItemRemoved(position)
-        textChangedCallback?.invoke(getSumHours())
-
-        val empToRemove = employees[position].name
-        Log.d(THIS,"Employee deleted from adapter: $empToRemove, position = $position")
-    }
-
-    private fun getSumHours(): Double {
-        var output = 0.00
-        for (emp in employees) {
-            if (emp.tippableHours != null) {
-                output += emp.tippableHours.toString().toDouble() * 100
+    private fun updateEmployeeHours(editedHours: String, position: Int) {
+        employees[position].tippableHours =
+            when {
+                editedHours.isEmpty() -> {
+                    null
+                }
+                editedHours.toDouble() == 0.0 -> {
+                    0.0
+                }
+                else -> {
+                    editedHours.toDouble()
+                }
             }
-        }
-        return output / 100
     }
+
+
+
 
     fun checkForNullHours(): Boolean {
         var bool = true

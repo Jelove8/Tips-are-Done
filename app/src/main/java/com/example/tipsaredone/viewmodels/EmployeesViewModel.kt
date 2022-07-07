@@ -68,6 +68,7 @@ class EmployeesViewModel: ViewModel() {
     }
     fun deleteSelectedEmployee() {
         _employees.value!!.removeAt(selectedEmployeePosition)
+        Log.d("debug","viewmodel function")
 
         Log.d("EmployeeList", "Deleted Employee in VM @position: $selectedEmployeePosition")
         Log.d("EmployeeList", "New Employee Order in VM")
@@ -114,6 +115,16 @@ class EmployeesViewModel: ViewModel() {
     }
     fun getEditingEmployeeBool(): Boolean {
         return editingEmployee
+    }
+
+    fun getSumHours(): Double {
+        var output = 0.00
+        for (emp in _employees.value!!) {
+            if (emp.tippableHours != null) {
+                output += emp.tippableHours.toString().toDouble() * 100
+            }
+        }
+        return output / 100
     }
 
     // Internal Storage
