@@ -94,6 +94,8 @@ class EmployeesAdapter(
         Log.d("debug","adapter function")
     }
 
+    fun deleteEmployee()
+
     private fun updateEmployeeHours(editedHours: String, position: Int) {
         employees[position].tippableHours =
             when {

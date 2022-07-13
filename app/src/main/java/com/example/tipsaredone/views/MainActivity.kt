@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
         // Initialize viewmodels
         employeesViewModel = ViewModelProvider(this)[EmployeesViewModel::class.java]
 
-
+        
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {

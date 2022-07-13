@@ -65,12 +65,14 @@ class EmployeeListFragment : Fragment() {
                 employeesViewModel.selectEmployee(position)
                 showDialogView(position)
                 checkForValidInputs()                               // Checks if user should be able to click the Confirm button.
+                Log.d("meow","item click")
             },
 
             // When user inputs employee hours...
             textChangedCallback = fun(_: Int) {
                 setSumHours(employeesViewModel.getSumHours())                                       // Displaying previously stored value from view model.
                 checkForValidInputs()                               // Checks if user should be able to click the Confirm button.
+                Log.d("meow","text changed")
             }
         )
 
