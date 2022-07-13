@@ -76,7 +76,6 @@ class EmployeesAdapter(
         holder.employeeHours.doAfterTextChanged {
 
             // Updating employee data within view model.
-            updateEmployeeHours(holder.employeeHours.text.toString(), position)
 
             // Re-summing total hours
             textChangedCallback?.invoke(position)
@@ -94,7 +93,11 @@ class EmployeesAdapter(
         Log.d("debug","adapter function")
     }
 
-    fun deleteEmployee()
+    fun deleteEmployee(position: Int) {
+        employees.removeAt(position)
+        notifyDataSetChanged()
+        Log.d("meow","Adapter: $employees")
+    }
 
     private fun updateEmployeeHours(editedHours: String, position: Int) {
         employees[position].tippableHours =

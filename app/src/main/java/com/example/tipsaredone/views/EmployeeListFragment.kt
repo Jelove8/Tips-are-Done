@@ -110,12 +110,11 @@ class EmployeeListFragment : Fragment() {
             checkForValidInputs()
         }
 
+
         binding.btnDeleteEmployeeDialog.setOnClickListener {
-            employeesViewModel.deleteSelectedEmployee()
-            employeeListAdapter.setEmployeeAdapterData(employeesViewModel.employees.value!!)
+            employeeListAdapter.deleteEmployee(employeesViewModel.getSelectedPosition())
             hideEmployeeDialog()
             checkForValidInputs()
-            Log.d("debug","fragment function")
         }
 
         binding.btnCancelEmployeeDialog.setOnClickListener {
