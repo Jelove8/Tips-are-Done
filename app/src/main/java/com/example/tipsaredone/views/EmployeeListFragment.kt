@@ -1,7 +1,6 @@
 package com.example.tipsaredone.views
 
 import android.content.Context
-import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -69,15 +68,15 @@ class EmployeeListFragment : Fragment() {
             },
 
             // When user inputs employee hours...
-            textChangedCallback = fun(_: Int) {
-                setSumHours(employeesViewModel.getSumHours())                                       // Displaying previously stored value from view model.
-                checkForValidInputs()                               // Checks if user should be able to click the Confirm button.
-                Log.d("meow","text changed")
+            textChangedCallback = fun(position: Int, newHours: Double?) {
+                employeeListAdapter.editEmployeeHours(position,newHours)
+                setSumHours()                                       // Displaying previously stored value from view model.
+                checkForValidInputs()                               // Checks if user should be able to click the Confirm button.\
             }
         )
 
         // Displays the sum of employee hours, from the viewmodel.
-        setSumHours(employeesViewModel.getSumHours())
+        setSumHours()
         // If user inputs are valid, confirm button is clickable.
         checkForValidInputs()
 
@@ -96,14 +95,12 @@ class EmployeeListFragment : Fragment() {
             }
             else {
                 if (employeesViewModel.getEditingEmployeeBool()) {
-                    // Updates the edited employee name & the adapter.
-                    employeesViewModel.confirmSelectedEmployee(newName.toString())
-                    employeeListAdapter.setEmployeeAdapterData(employeesViewModel.employees.value!!)
+                    // Updates the edited employee name & the adapter
+                    employeeListAdapter.editEmployeeName(employeesViewModel.getSelectedPosition(), newName.toString())
                 }
                 else {
                     // Adds a new employee to viewmodel & updates the adapter.
-                    employeesViewModel.addNewEmployee(newName.toString())
-                    employeeListAdapter.setEmployeeAdapterData(employeesViewModel.employees.value!!)
+                    employeeListAdapter.addNewEmployee(Employee(newName.toString()))
                 }
                 hideEmployeeDialog()
             }
@@ -145,20 +142,6 @@ class EmployeeListFragment : Fragment() {
         _binding = null
     }
 
-    // Configuration Changes
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
-
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-
-        }
-        else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-
-
-        }
-    }
-
-
 
 
     // Menu Logic
@@ -167,6 +150,7 @@ class EmployeeListFragment : Fragment() {
         inflater.inflate(R.menu.menu_frag_employees, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle action bar item clicks here.
         // The action bar will automatically handle clicks on the Home/Up button, so long as you specify a parent activity in AndroidManifest.xml.
@@ -219,7 +203,8 @@ class EmployeeListFragment : Fragment() {
     }
 
     // Displays sum of hours from view model.
-    private fun setSumHours(newSum: Double) {
+    private fun setSumHours() {
+        val newSum = employeesViewModel.getSumHours()
         binding.tvTotalHours.text =
             if (newSum == 0.00) { "0.00" }
             else { newSum.toString() }

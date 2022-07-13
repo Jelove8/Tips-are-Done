@@ -64,7 +64,6 @@ class EmployeesViewModel: ViewModel() {
     }
     fun selectEmployee(index: Int) {
         selectedEmployeePosition = index
-        Log.d("EmployeeList", "Selected Employee in VM @position: $selectedEmployeePosition")
     }
     fun deleteSelectedEmployee() {
         _employees.value!!.removeAt(selectedEmployeePosition)
@@ -132,6 +131,8 @@ class EmployeesViewModel: ViewModel() {
         _employees.value = data
         Log.d(MyEmployees.INTERNAL_STORAGE, "Employees loaded into ViewModel: $data")
     }
+
+
 
 
 }

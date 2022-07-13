@@ -16,7 +16,7 @@ import com.example.tipsaredone.model.Employee
 class EmployeesAdapter(
     private var employees: MutableList<Employee> = mutableListOf(),
     private val itemClickCallback: ((Int) -> Unit)?,
-    private val textChangedCallback: ((Int) -> Unit)?
+    private val textChangedCallback: ((Int,Double?) -> Unit)?
 ) : RecyclerView.Adapter<EmployeesAdapter.EmployeesViewHolder>() {
 
     companion object {
@@ -35,6 +35,7 @@ class EmployeesAdapter(
         val employeeItem: ConstraintLayout = itemView.findViewById(R.id.cnst_tip_distribution_header)
         val employeeHours: EditText = itemView.findViewById(R.id.et_employee_hours)
 
+
         fun displayEmployeeInfo(employee: Employee, position: Int) {
 
             // Displaying index and name.
@@ -44,7 +45,7 @@ class EmployeesAdapter(
 
             // Displaying hours within EditText.
             val empTippableHours = employee.tippableHours
-            if (empTippableHours == null) {
+            if (empTippableHours == null || empTippableHours == 0.00) {
                 employeeHours.text = null
             }
             else {
@@ -75,10 +76,8 @@ class EmployeesAdapter(
         // Editing employee hours
         holder.employeeHours.doAfterTextChanged {
 
-            // Updating employee data within view model.
+            Log.d("EmployeeList","ECHANGE!!!!!")
 
-            // Re-summing total hours
-            textChangedCallback?.invoke(position)
         }
     }
 
@@ -86,33 +85,35 @@ class EmployeesAdapter(
         return employees.size
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    fun setEmployeeAdapterData(list: MutableList<Employee>) {
-        employees = list
+
+
+
+    fun addNewEmployee(newEmployee: Employee) {
+        employees.add(newEmployee)
+        employees.sortBy { it.name }
         notifyDataSetChanged()
-        Log.d("debug","adapter function")
+        Log.d("EmployeeList","New employee added: ${newEmployee.name}")
     }
 
     fun deleteEmployee(position: Int) {
         employees.removeAt(position)
         notifyDataSetChanged()
-        Log.d("meow","Adapter: $employees")
+        Log.d("EmployeeList","Employee deleted: ${employees[position].name}")
     }
 
-    private fun updateEmployeeHours(editedHours: String, position: Int) {
-        employees[position].tippableHours =
-            when {
-                editedHours.isEmpty() -> {
-                    null
-                }
-                editedHours.toDouble() == 0.0 -> {
-                    0.0
-                }
-                else -> {
-                    editedHours.toDouble()
-                }
-            }
+    fun editEmployeeName(position: Int, newName: String) {
+        employees[position].name = newName
+        employees.sortBy { it.name }
+        notifyDataSetChanged()
+        Log.d("EmployeeList","Employee name changed @ [$position]: ${employees[position].name}")
     }
+
+    fun editEmployeeHours(position: Int, newHours: Double?) {
+        employees[position].tippableHours = newHours
+        notifyDataSetChanged()
+        Log.d("EmployeeList","Employee hours changed @ [$position]: ${employees[position].tippableHours}")
+    }
+
 
 
 
