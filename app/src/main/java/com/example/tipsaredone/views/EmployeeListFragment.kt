@@ -51,8 +51,7 @@ class EmployeeListFragment : Fragment() {
         val employeesVM: EmployeesViewModel by activityViewModels()
         employeesViewModel = employeesVM
 
-        initializeMyEmployees(context as MainActivity)
-
+        (context as MainActivity).initializeMyEmployees()
 
         // Adapter Logic
         employeeListAdapter = EmployeesAdapter(
@@ -70,13 +69,12 @@ class EmployeeListFragment : Fragment() {
             // When user inputs employee hours...
             textChangedCallback = fun(position: Int, newHours: Double?) {
                 employeeListAdapter.editEmployeeHours(position,newHours)
-                setSumHours()                                       // Displaying previously stored value from view model.
+                                               // Displaying previously stored value from view model.
                 checkForValidInputs()                               // Checks if user should be able to click the Confirm button.\
             }
         )
 
-        // Displays the sum of employee hours, from the viewmodel.
-        setSumHours()
+
         // If user inputs are valid, confirm button is clickable.
         checkForValidInputs()
 
@@ -196,19 +194,9 @@ class EmployeeListFragment : Fragment() {
     }
 
     // MyEmployees
-    private fun initializeMyEmployees(context: Context) {
-        myEmployees = MyEmployees()
-        val data = myEmployees.loadEmployeeNamesFromInternalStorage(context)
-        employeesViewModel.initializeEmployees(data)
-    }
 
     // Displays sum of hours from view model.
-    private fun setSumHours() {
-        val newSum = employeesViewModel.getSumHours()
-        binding.tvTotalHours.text =
-            if (newSum == 0.00) { "0.00" }
-            else { newSum.toString() }
-    }
+
 
     private fun displayConfirmButton(){
         // https://stackoverflow.com/questions/23517879/set-background-color-programmatically

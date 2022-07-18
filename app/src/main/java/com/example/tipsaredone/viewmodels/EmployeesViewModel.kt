@@ -96,7 +96,7 @@ class EmployeesViewModel: ViewModel() {
     fun clearEmployeeHoursAndDistributedTips() {
         for (emp in _employees.value!!) {
             emp.distributedTips = 0.0
-            emp.tippableHours = null
+            emp.tippableHours = 0.0
             setSumHours(0.00)
         }
     }
@@ -119,9 +119,9 @@ class EmployeesViewModel: ViewModel() {
     fun getSumHours(): Double {
         var output = 0.00
         for (emp in _employees.value!!) {
-            if (emp.tippableHours != null) {
-                output += emp.tippableHours.toString().toDouble() * 100
-            }
+
+            output += emp.tippableHours.toString().toDouble() * 100
+
         }
         return output / 100
     }
@@ -129,7 +129,7 @@ class EmployeesViewModel: ViewModel() {
     // Internal Storage
     fun initializeEmployees(data: MutableList<Employee>) {
         _employees.value = data
-        Log.d(MyEmployees.INTERNAL_STORAGE, "Employees loaded into ViewModel: $data")
+        Log.d("Initial", "Employees loaded into ViewModel: $data")
     }
 
 

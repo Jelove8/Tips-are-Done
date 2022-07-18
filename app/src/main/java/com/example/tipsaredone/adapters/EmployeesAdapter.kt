@@ -1,6 +1,8 @@
 package com.example.tipsaredone.adapters
 
 import android.annotation.SuppressLint
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -29,12 +31,34 @@ class EmployeesAdapter(
 
 
 
-    class EmployeesViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
+    class EmployeesViewHolder(ItemView: View, adapter: EmployeesAdapter) : RecyclerView.ViewHolder(ItemView) {
         private val employeeIndex: TextView = itemView.findViewById(R.id.tv_employee_index)
         private val employeeName: TextView = itemView.findViewById(R.id.tv_employee_name)
         val employeeItem: ConstraintLayout = itemView.findViewById(R.id.cnst_tip_distribution_header)
         val employeeHours: EditText = itemView.findViewById(R.id.et_employee_hours)
 
+        init {
+            employeeHours.addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(s: Editable?) {
+                    if (employeeHours.text.isNullOrEmpty()) {
+                        adapter.editEmployeeHours(adapterPosition,null)
+                    }
+                    else {
+                        adapter.editEmployeeHours(adapterPosition,s.toString().toDouble())
+                    }
+                }
+
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+                }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+                }
+
+            })
+
+        }
 
         fun displayEmployeeInfo(employee: Employee, position: Int) {
 
@@ -43,15 +67,12 @@ class EmployeesAdapter(
             employeeIndex.text = index.toString()
             employeeName.text = employee.name
 
-            // Displaying hours within EditText.
-            val empTippableHours = employee.tippableHours
-            if (empTippableHours == null || empTippableHours == 0.00) {
-                employeeHours.text = null
+            if (employee.tippableHours == null) {
+                employeeHours.text.clear()
             }
             else {
-                employeeHours.setText(empTippableHours.toString())
+                employeeHours.setText(employee.tippableHours.toString())
             }
-
         }
 
 
@@ -61,7 +82,7 @@ class EmployeesAdapter(
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.viewholder_employee, parent, false)
 
-        return EmployeesViewHolder(view)
+        return EmployeesViewHolder(view, this)
     }
 
     override fun onBindViewHolder(holder: EmployeesViewHolder, position: Int) {
@@ -76,7 +97,7 @@ class EmployeesAdapter(
         // Editing employee hours
         holder.employeeHours.doAfterTextChanged {
 
-            Log.d("EmployeeList","ECHANGE!!!!!")
+            Log.d("meow","text change: on bind")
 
         }
     }
@@ -109,10 +130,12 @@ class EmployeesAdapter(
     }
 
     fun editEmployeeHours(position: Int, newHours: Double?) {
-        employees[position].tippableHours = newHours
-        notifyDataSetChanged()
+        employees[position].tippableHours = newHours ?: 0.00
+
         Log.d("EmployeeList","Employee hours changed @ [$position]: ${employees[position].tippableHours}")
     }
+
+
 
 
 

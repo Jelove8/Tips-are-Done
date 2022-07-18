@@ -1,5 +1,6 @@
 package com.example.tipsaredone.views
 
+import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
@@ -39,6 +40,9 @@ class MainActivity : AppCompatActivity() {
     private var visibleTitleScreen: Boolean = true
     private var visibleToolBar: Boolean = false
 
+    // Internal Storage Boolean
+    private var loadInternalStorage: Boolean = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -56,7 +60,7 @@ class MainActivity : AppCompatActivity() {
         // Initialize viewmodels
         employeesViewModel = ViewModelProvider(this)[EmployeesViewModel::class.java]
 
-        
+
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
@@ -113,7 +117,6 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
     // Toolbar Visibility (used @DistributionFragment)
     fun hideToolbar() {
         binding.toolbar.visibility = View.GONE
@@ -124,7 +127,24 @@ class MainActivity : AppCompatActivity() {
         visibleToolBar = true
     }
 
-    // Initialize Employees in ViewModel
+    // Internal Storage
+    fun initializeMyEmployees() {
+        employeesViewModel = ViewModelProvider(this)[EmployeesViewModel::class.java]
+
+        if (loadInternalStorage) {
+            val myEmployees = MyEmployees()
+            val data = myEmployees.loadEmployeeNamesFromInternalStorage(this)
+            employeesViewModel.initializeEmployees(data)
+            loadInternalStorage = false
+        }
+    }
+
+    fun setLoadInternalStorage(boolean: Boolean) {
+        loadInternalStorage = boolean
+    }
+    fun getLoadInternalStorage(): Boolean {
+        return loadInternalStorage
+    }
 
     // Misc
     fun makeToastMessage(message: String, isDurationShort: Boolean = true) {
