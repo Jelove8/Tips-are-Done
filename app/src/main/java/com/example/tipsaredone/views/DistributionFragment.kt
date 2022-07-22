@@ -15,7 +15,7 @@ import com.example.tipsaredone.model.MyEmployees
 import com.example.tipsaredone.model.TipCalculations
 import com.example.tipsaredone.viewmodels.DistributionViewModel
 import com.example.tipsaredone.viewmodels.EmployeesViewModel
-import com.example.tipsaredone.viewmodels.TipsViewModel
+import com.example.tipsaredone.viewmodels.BillsViewModel
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.util.*
@@ -40,7 +40,7 @@ class DistributionFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val employeesViewModel: EmployeesViewModel by activityViewModels()
-        val tipsViewModel: TipsViewModel by activityViewModels()
+        val billsViewModel: BillsViewModel by activityViewModels()
         val distributionViewModel: DistributionViewModel by activityViewModels()
 
         val tipCalculations = TipCalculations()
@@ -56,7 +56,7 @@ class DistributionFragment : Fragment() {
         }
 
         // Displaying tipRate
-        val tipRate = tipCalculations.getTipRate(employeesViewModel.sumHours.value!!, tipsViewModel.getTotalTips())
+        val tipRate = tipCalculations.getTipRate(employeesViewModel.getSumHours(), billsViewModel.getSumOfBills())
         val roundedTipRate = BigDecimal(tipRate).setScale(2, RoundingMode.HALF_EVEN).toString()
         binding.tvTipRate.text = roundedTipRate
 
@@ -74,7 +74,7 @@ class DistributionFragment : Fragment() {
         binding.btnSaveEmployees.setOnClickListener {
             // Clearing inputted data, except for employee names
             employeesViewModel.clearEmployeeHoursAndDistributedTips()
-            tipsViewModel.clearBillsList()
+            billsViewModel.clearBillsList()
             (context as MainActivity).showTitleScreen(true)
             MyEmployees().saveEmployeeNamesToInternalStorage(employeesViewModel.employees.value!!,context as MainActivity)
             findNavController().navigate(R.id.action_outputTipsFragment_to_EmployeeFragment)
@@ -84,7 +84,7 @@ class DistributionFragment : Fragment() {
     }
 
 
-    private fun checkForRoundingErrors(employeesViewModel: EmployeesViewModel, tipsViewModel: TipsViewModel) {
+    private fun checkForRoundingErrors(employeesViewModel: EmployeesViewModel, billsViewModel: BillsViewModel) {
 
         var roundedTotal = 0.0
         for (emp in employeesViewModel.employees.value!!) {
@@ -97,7 +97,7 @@ class DistributionFragment : Fragment() {
         // Pick employees at random to take away tip money
 
 
-        var error = tipsViewModel.getTotalTips()
+        var error = billsViewModel.getSumOfBills()
 
     }
 

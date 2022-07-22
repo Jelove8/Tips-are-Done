@@ -25,38 +25,16 @@ class EmployeesViewModel: ViewModel() {
         const val EMPLOYEE_VM = "empVM"
     }
 
+    private var initializeEmployeesBool = true
+    private var confirmButtonEnabled = false
+
     private val _employees = MutableLiveData<MutableList<Employee>>(mutableListOf())
     val employees: LiveData<MutableList<Employee>> = _employees
 
-    private val _sumHours = MutableLiveData(0.00)
-    val sumHours: LiveData<Double> = _sumHours
-
     private var selectedEmployeePosition: Int = 0
 
-    private var editingEmployee: Boolean = false    // false = adding an employee, true = editing an employee
+    private var editingEmployee: Boolean = false    // false = adding a new employee, true = editing an employee
 
-    init {
-        // Loading names from internal storage
-        // Get json file -> mutableListOf<String>
-        // for (name in mutableList) {
-        //      addNewEmployee(name) }
-    }
-
-    // Adding a new employee.
-    fun addNewEmployee(newName: String) {
-
-        if (newName[0].isLowerCase()) {
-            newName[0].uppercase()
-        }
-
-        _employees.value!!.add(
-            Employee(newName)
-        )
-
-        _employees.value!!.sortBy { it.name }
-
-        Log.d(EMPLOYEE_VM,"New Employee Added: $newName")
-    }
 
     // Editing or Deleting an existing employee.
     fun getSelectedPosition(): Int {
@@ -65,52 +43,19 @@ class EmployeesViewModel: ViewModel() {
     fun selectEmployee(index: Int) {
         selectedEmployeePosition = index
     }
-    fun deleteSelectedEmployee() {
-        _employees.value!!.removeAt(selectedEmployeePosition)
-        Log.d("debug","viewmodel function")
 
-        Log.d("EmployeeList", "Deleted Employee in VM @position: $selectedEmployeePosition")
-        Log.d("EmployeeList", "New Employee Order in VM")
-        for ((i,emp) in employees.value!!.withIndex()) {
-            Log.d("EmployeesList","$i ${emp.name}, ${emp.distributedTips} hrs")
-        }
-    }
-    fun confirmSelectedEmployee(editedName: String) {
-        _employees.value!![selectedEmployeePosition].name = editedName
-        _employees.value!!.sortBy { it.name }
-
-        Log.d("EmployeeList", "Edited Employee in VM: $selectedEmployeePosition")
-        Log.d("EmployeeList", "New Employee Order in VM")
-        for ((i,emp) in employees.value!!.withIndex()) {
-            Log.d("EmployeesList","$i ${emp.name}, ${emp.distributedTips} hrs")
-        }
-    }
-
-    // Sum of Hours
-    fun setSumHours(double: Double) {
-        _sumHours.value = double
-        Log.d("EmployeesList","New Hours set in VM: $double")
-    }
 
     // Clearing inputted hours & tips
     fun clearEmployeeHoursAndDistributedTips() {
         for (emp in _employees.value!!) {
             emp.distributedTips = 0.0
             emp.tippableHours = 0.0
-            setSumHours(0.00)
         }
     }
 
     // Discerning between editing vs adding an employee (both occur on the same dialog view).
     fun setEditingEmployeeBool(boolean: Boolean) {
         editingEmployee = boolean
-        if (boolean) {
-            Log.d("EmployeesList","Editing an Employee")
-        }
-        else {
-            Log.d("EmployeesList","Adding an Employee")
-        }
-
     }
     fun getEditingEmployeeBool(): Boolean {
         return editingEmployee
@@ -119,17 +64,53 @@ class EmployeesViewModel: ViewModel() {
     fun getSumHours(): Double {
         var output = 0.00
         for (emp in _employees.value!!) {
-
-            output += emp.tippableHours.toString().toDouble() * 100
-
+            if (emp.tippableHours != null) {
+                output += emp.tippableHours.toString().toDouble() * 100
+            }
         }
         return output / 100
     }
 
     // Internal Storage
     fun initializeEmployees(data: MutableList<Employee>) {
-        _employees.value = data
-        Log.d("Initial", "Employees loaded into ViewModel: $data")
+        if (initializeEmployeesBool) {
+            _employees.value = data
+            Log.d("Initial", "Employees loaded into ViewModel: $data")
+            initializeEmployeesBool = false
+        }
+    }
+
+    fun getConfirmButtonBool(): Boolean {
+        return confirmButtonEnabled
+    }
+    fun setConfirmButtonBool(bool: Boolean) {
+        confirmButtonEnabled = bool
+    }
+
+    fun checkForValidInputs(): String {
+
+        confirmButtonEnabled = !(_employees.value!!.size < 2 || !checkForNullHours())
+
+        return if (_employees.value!!.size < 2) {
+            "At least two employees must be entered."
+        }
+        else if (!checkForNullHours()) {
+            "All hours must be filled."
+        }
+        else {
+            "Error"
+        }
+    }
+
+    private fun checkForNullHours(): Boolean {
+        var bool = true
+        for (emp in employees.value!!) {
+            if (emp.tippableHours == null) {
+                bool = false
+                break
+            }
+        }
+        return bool
     }
 
 

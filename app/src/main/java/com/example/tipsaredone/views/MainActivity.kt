@@ -139,12 +139,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun setLoadInternalStorage(boolean: Boolean) {
-        loadInternalStorage = boolean
-    }
-    fun getLoadInternalStorage(): Boolean {
-        return loadInternalStorage
-    }
 
     // Misc
     fun makeToastMessage(message: String, isDurationShort: Boolean = true) {

@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/EmployeeFragment"
         android:name="com.example.tipsaredone.views.EmployeeListFragment"
-        android:label="Tips Are Done"
+        android:label="Doin' Tips"
         tools:layout="@layout/fragment_employees_list">
 
 
@@ -20,8 +20,8 @@
     </fragment>
     <fragment
         android:id="@+id/InputTipsFragment"
-        android:name="com.example.tipsaredone.views.InputTipsFragment"
-        android:label=""
+        android:name="com.example.tipsaredone.views.BillsFragment"
+        android:label="Tips Are Almost Done"
         tools:layout="@layout/fragment_input_tips" >
         <action
             android:id="@+id/action_InputTipsFragment_toOutputTipsFragment"
@@ -32,7 +32,7 @@
     <fragment
         android:id="@+id/outputTipsFragment"
         android:name="com.example.tipsaredone.views.DistributionFragment"
-        android:label="Thank you for doing tips today   "
+        android:label="Tips Are Done"
         tools:layout="@layout/fragment_distribution" >
         <action
             android:id="@+id/action_outputTipsFragment_to_EmployeeFragment"

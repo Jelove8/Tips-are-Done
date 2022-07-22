@@ -52,6 +52,7 @@ class EmployeeListFragment : Fragment() {
         employeesViewModel = employeesVM
 
         (context as MainActivity).initializeMyEmployees()
+        updateSumOfHours()
 
         // Adapter Logic
         employeeListAdapter = EmployeesAdapter(
@@ -63,13 +64,12 @@ class EmployeeListFragment : Fragment() {
                 employeesViewModel.selectEmployee(position)
                 showDialogView(position)
                 checkForValidInputs()                               // Checks if user should be able to click the Confirm button.
-                Log.d("meow","item click")
+
             },
 
             // When user inputs employee hours...
-            textChangedCallback = fun(position: Int, newHours: Double?) {
-                employeeListAdapter.editEmployeeHours(position,newHours)
-                                               // Displaying previously stored value from view model.
+            textChangedCallback = fun(_: Int, _: Double?) {
+                updateSumOfHours()
                 checkForValidInputs()                               // Checks if user should be able to click the Confirm button.\
             }
         )
@@ -81,7 +81,6 @@ class EmployeeListFragment : Fragment() {
         // Populating recycler view
         binding.rcyEmployees.layoutManager = LinearLayoutManager(context as MainActivity)
         binding.rcyEmployees.adapter = employeeListAdapter
-        Log.d("Initial","Adapter set in fragment.")
 
 
 
@@ -108,29 +107,24 @@ class EmployeeListFragment : Fragment() {
 
         binding.btnDeleteEmployeeDialog.setOnClickListener {
             employeeListAdapter.deleteEmployee(employeesViewModel.getSelectedPosition())
+            updateSumOfHours()
             hideEmployeeDialog()
             checkForValidInputs()
         }
 
         binding.btnCancelEmployeeDialog.setOnClickListener {
             hideEmployeeDialog()
-            checkForValidInputs()
         }
 
         // Validating user inputs
         binding.btnConfirmEmployees.setOnClickListener {
-            if (!employeeListAdapter.checkEmployees()) {
-                (context as MainActivity).makeToastMessage("At least two employees must be entered.")
-            }
-            else if (!employeeListAdapter.checkForNullHours()) {
-                (context as MainActivity).makeToastMessage("All hours must be filled.")
-            }
-            else if (visibleConfirmButton) {  // Proceed to next fragment.
+            if (employeesViewModel.getConfirmButtonBool()) {
+                saveEmployeesToStorage()
                 findNavController().navigate(R.id.action_EmployeeFragment_to_InputTipsFragment)
-                MyEmployees().saveEmployeeNamesToInternalStorage(employeesViewModel.employees.value!!,context as MainActivity)
             }
             else {
-                Log.d(MainActivity.MISC,"EmployeesListFrag-btnConfirmEmployees.onClickListen-elseBranch")
+                val output = employeesViewModel.checkForValidInputs()
+                (context as MainActivity).makeToastMessage(output)
             }
         }
     }
@@ -139,8 +133,6 @@ class EmployeeListFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
-
 
     // Menu Logic
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater)  {
@@ -193,36 +185,31 @@ class EmployeeListFragment : Fragment() {
         binding.tvEmployeeDialogBackground.visibility = View.GONE
     }
 
-    // MyEmployees
-
-    // Displays sum of hours from view model.
-
-
+    private fun checkForValidInputs() {     // Checks if user should be able to click the Confirm button.
+        employeesViewModel.checkForValidInputs()
+        displayConfirmButton()
+    }
     private fun displayConfirmButton(){
         // https://stackoverflow.com/questions/23517879/set-background-color-programmatically
         val button: View = binding.btnConfirmEmployees
 
-        if (visibleConfirmButton) {     // Button is clickable and visible.
+        if (employeesViewModel.getConfirmButtonBool()) {     // Button is clickable and visible.
             val sbGreen = ResourcesCompat.getColor(resources, R.color.starbucks_green, (context as MainActivity).theme)
             button.setBackgroundColor(sbGreen)
-            button.isClickable = true
-            Log.d("meow","Button Green")
         }
         else {  // Button is not clickable and is hidden.
             val wrmNeutral = ResourcesCompat.getColor(resources, R.color.warm_neutral, (context as MainActivity).theme)
             button.setBackgroundColor(wrmNeutral)
-            button.isClickable = false
-            Log.d("meow","Button Warm")
         }
     }
 
-    private fun checkForValidInputs() {     // Checks if user should be able to click the Confirm button.
-        visibleConfirmButton = if (employeeListAdapter.checkEmployees()) {
-            employeeListAdapter.checkForNullHours()
-        } else {
-            false
-        }
-        displayConfirmButton()
+
+    private fun updateSumOfHours() {
+        binding.tvTotalHours.text = employeesViewModel.getSumHours().toString()
+    }
+
+    private fun saveEmployeesToStorage() {
+        MyEmployees().saveEmployeeNamesToInternalStorage(employeesViewModel.employees.value!!,context as MainActivity)
     }
 
 
