@@ -16,7 +16,7 @@ import com.example.tipsaredone.model.Employee
 class EmployeesAdapter(
     private var employees: MutableList<Employee> = mutableListOf(),
     private val itemClickCallback: ((Int) -> Unit)?,
-    private val textChangedCallback: ((Int,Double?) -> Unit)?
+    private val textChangedCallback: ((Int) -> Unit)?
 ) : RecyclerView.Adapter<EmployeesAdapter.EmployeesViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EmployeesViewHolder {
@@ -36,7 +36,7 @@ class EmployeesAdapter(
     class EmployeesViewHolder(
         ItemView: View,
         itemClickCallback: ((Int) -> Unit)?,
-        textChangedCallback: ((Int, Double?) -> Unit)?,
+        textChangedCallback: ((Int) -> Unit)?,
         adapter: EmployeesAdapter
     ) : RecyclerView.ViewHolder(ItemView) {
 
@@ -50,11 +50,11 @@ class EmployeesAdapter(
                 override fun afterTextChanged(s: Editable?) {
                     if (employeeHours.text.isNullOrEmpty()) {
                         adapter.editEmployeeHours(adapterPosition,null)
-                        textChangedCallback?.invoke(adapterPosition,null)
+                        textChangedCallback?.invoke(adapterPosition)
                     }
                     else {
                         adapter.editEmployeeHours(adapterPosition,s.toString().toDouble())
-                        textChangedCallback?.invoke(adapterPosition,s.toString().toDouble())
+                        textChangedCallback?.invoke(adapterPosition)
                     }
                 }
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -85,6 +85,10 @@ class EmployeesAdapter(
         }
     }
 
+    fun initializeEmployees(employeesFromStorage: MutableList<Employee>) {
+        employees = employeesFromStorage
+        notifyDataSetChanged()
+    }
 
     fun addNewEmployee(newEmployee: Employee) {
         employees.add(newEmployee)

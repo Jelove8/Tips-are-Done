@@ -1,12 +1,12 @@
 package com.example.tipsaredone.views
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tipsaredone.R
@@ -15,47 +15,37 @@ import com.example.tipsaredone.databinding.FragmentEmployeesListBinding
 import com.example.tipsaredone.model.Employee
 import com.example.tipsaredone.model.MyEmployees
 import com.example.tipsaredone.viewmodels.EmployeesViewModel
+import java.util.*
+import kotlin.concurrent.schedule
 
 class EmployeeListFragment : Fragment() {
 
-    companion object {
-        const val THIS: String = "EmployeeListFragment"
-    }
-
-    init {
-        Log.d("Initial","Fragment initialized.")
-    }
-
     private lateinit var employeesViewModel: EmployeesViewModel
     private lateinit var employeeListAdapter: EmployeesAdapter
-    private lateinit var myEmployees: MyEmployees
 
     private var _binding: FragmentEmployeesListBinding? = null
     private val binding get() = _binding!!
 
-    private var visibleConfirmButton: Boolean = false
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         setHasOptionsMenu(true)
         _binding = FragmentEmployeesListBinding.inflate(inflater, container, false)
         return binding.root
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Initializing employees view model
+        // Initialize EmployeesViewModel
         val employeesVM: EmployeesViewModel by activityViewModels()
         employeesViewModel = employeesVM
+        loadEmployeesFromStorage()
 
-        (context as MainActivity).initializeMyEmployees()
+        // Initialize views
+        checkForValidInputs()
         updateSumOfHours()
 
-        // Adapter Logic
+        // Employee RecyclerView
         employeeListAdapter = EmployeesAdapter(
+
             employeesViewModel.employees.value!!,
 
             // Click employee item to edit their name...
@@ -63,26 +53,16 @@ class EmployeeListFragment : Fragment() {
                 employeesViewModel.setEditingEmployeeBool(true)
                 employeesViewModel.selectEmployee(position)
                 showDialogView(position)
-                checkForValidInputs()                               // Checks if user should be able to click the Confirm button.
-
             },
 
             // When user inputs employee hours...
-            textChangedCallback = fun(_: Int, _: Double?) {
+            textChangedCallback = fun(_: Int) {
                 updateSumOfHours()
-                checkForValidInputs()                               // Checks if user should be able to click the Confirm button.\
+                checkForValidInputs()
             }
         )
-
-
-        // If user inputs are valid, confirm button is clickable.
-        checkForValidInputs()
-
-        // Populating recycler view
         binding.rcyEmployees.layoutManager = LinearLayoutManager(context as MainActivity)
         binding.rcyEmployees.adapter = employeeListAdapter
-
-
 
         // Dialog View Logic
         binding.btnConfirmEmployeeDialog.setOnClickListener {
@@ -91,32 +71,29 @@ class EmployeeListFragment : Fragment() {
                 (context as MainActivity).makeToastMessage("A name is required.")
             }
             else {
+                // Confirming edits to employee name.
                 if (employeesViewModel.getEditingEmployeeBool()) {
-                    // Updates the edited employee name & the adapter
                     employeeListAdapter.editEmployeeName(employeesViewModel.getSelectedPosition(), newName.toString())
                 }
+                // Confirming new employee name.
                 else {
-                    // Adds a new employee to viewmodel & updates the adapter.
                     employeeListAdapter.addNewEmployee(Employee(newName.toString()))
                 }
+                checkForValidInputs()
                 hideEmployeeDialog()
             }
-            checkForValidInputs()
         }
-
-
         binding.btnDeleteEmployeeDialog.setOnClickListener {
             employeeListAdapter.deleteEmployee(employeesViewModel.getSelectedPosition())
             updateSumOfHours()
-            hideEmployeeDialog()
             checkForValidInputs()
+            hideEmployeeDialog()
         }
-
         binding.btnCancelEmployeeDialog.setOnClickListener {
             hideEmployeeDialog()
         }
 
-        // Validating user inputs
+        // Navigation Button
         binding.btnConfirmEmployees.setOnClickListener {
             if (employeesViewModel.getConfirmButtonBool()) {
                 saveEmployeesToStorage()
@@ -128,22 +105,18 @@ class EmployeeListFragment : Fragment() {
             }
         }
     }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
-    // Menu Logic
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater)  {
         // Inflate the menu; this adds items to the action bar if it is present.
         inflater.inflate(R.menu.menu_frag_employees, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle action bar item clicks here.
-        // The action bar will automatically handle clicks on the Home/Up button, so long as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
             // Add New Employee Button
             R.id.action_add_employee -> {
@@ -159,6 +132,18 @@ class EmployeeListFragment : Fragment() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+
+    // Internal Storage
+    private fun loadEmployeesFromStorage() {
+        val myEmployees = MyEmployees()
+        val data = myEmployees.loadEmployeeNamesFromInternalStorage(context as MainActivity)
+        employeesViewModel.initializeEmployees(data)
+        Log.d("InternalStorage","Employees Loaded")
+    }
+    private fun saveEmployeesToStorage() {
+        MyEmployees().saveEmployeeNamesToInternalStorage(employeesViewModel.employees.value!!,context as MainActivity)
     }
 
     // Dialog Box
@@ -185,6 +170,10 @@ class EmployeeListFragment : Fragment() {
         binding.tvEmployeeDialogBackground.visibility = View.GONE
     }
 
+    // Updates Views
+    private fun updateSumOfHours() {
+        binding.tvTotalHours.text = employeesViewModel.getSumHours().toString()
+    }
     private fun checkForValidInputs() {     // Checks if user should be able to click the Confirm button.
         employeesViewModel.checkForValidInputs()
         displayConfirmButton()
@@ -202,16 +191,4 @@ class EmployeeListFragment : Fragment() {
             button.setBackgroundColor(wrmNeutral)
         }
     }
-
-
-    private fun updateSumOfHours() {
-        binding.tvTotalHours.text = employeesViewModel.getSumHours().toString()
-    }
-
-    private fun saveEmployeesToStorage() {
-        MyEmployees().saveEmployeeNamesToInternalStorage(employeesViewModel.employees.value!!,context as MainActivity)
-    }
-
-
-
 }

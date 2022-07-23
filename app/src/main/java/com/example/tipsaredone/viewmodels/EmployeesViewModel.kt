@@ -1,19 +1,10 @@
 package com.example.tipsaredone.viewmodels
 
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.tipsaredone.model.Employee
-import com.example.tipsaredone.model.MockData
-import com.example.tipsaredone.model.MyEmployees
-import com.example.tipsaredone.views.MainActivity
-import com.google.gson.GsonBuilder
-import com.google.gson.reflect.TypeToken
-import java.io.BufferedReader
-import java.io.FileInputStream
-import java.io.InputStreamReader
 
 class EmployeesViewModel: ViewModel() {
 
@@ -25,7 +16,7 @@ class EmployeesViewModel: ViewModel() {
         const val EMPLOYEE_VM = "empVM"
     }
 
-    private var initializeEmployeesBool = true
+    private var initializeEmployeesFromStorage = true
     private var confirmButtonEnabled = false
 
     private val _employees = MutableLiveData<MutableList<Employee>>(mutableListOf())
@@ -34,6 +25,13 @@ class EmployeesViewModel: ViewModel() {
     private var selectedEmployeePosition: Int = 0
 
     private var editingEmployee: Boolean = false    // false = adding a new employee, true = editing an employee
+
+    fun getInitializeEmployeesBool(): Boolean {
+        if (initializeEmployeesFromStorage) {
+            initializeEmployeesFromStorage = false
+        }
+        return initializeEmployeesFromStorage
+    }
 
 
     // Editing or Deleting an existing employee.
@@ -48,7 +46,7 @@ class EmployeesViewModel: ViewModel() {
     // Clearing inputted hours & tips
     fun clearEmployeeHoursAndDistributedTips() {
         for (emp in _employees.value!!) {
-            emp.distributedTips = 0.0
+            emp.tips = 0.0
             emp.tippableHours = 0.0
         }
     }
@@ -73,10 +71,10 @@ class EmployeesViewModel: ViewModel() {
 
     // Internal Storage
     fun initializeEmployees(data: MutableList<Employee>) {
-        if (initializeEmployeesBool) {
+        if (initializeEmployeesFromStorage) {
             _employees.value = data
             Log.d("Initial", "Employees loaded into ViewModel: $data")
-            initializeEmployeesBool = false
+            initializeEmployeesFromStorage = false
         }
     }
 

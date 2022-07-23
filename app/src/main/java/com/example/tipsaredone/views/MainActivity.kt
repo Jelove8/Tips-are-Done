@@ -128,16 +128,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     // Internal Storage
-    fun initializeMyEmployees() {
-        employeesViewModel = ViewModelProvider(this)[EmployeesViewModel::class.java]
 
-        if (loadInternalStorage) {
-            val myEmployees = MyEmployees()
-            val data = myEmployees.loadEmployeeNamesFromInternalStorage(this)
-            employeesViewModel.initializeEmployees(data)
-            loadInternalStorage = false
-        }
-    }
 
 
     // Misc

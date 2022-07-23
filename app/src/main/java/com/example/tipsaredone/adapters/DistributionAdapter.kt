@@ -1,12 +1,12 @@
 package com.example.tipsaredone.adapters
 
 import android.text.InputType
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tipsaredone.R
 import com.example.tipsaredone.model.Employee
@@ -14,6 +14,10 @@ import java.math.BigDecimal
 import java.math.RoundingMode
 
 class DistributionAdapter(private val employees: MutableList<Employee>) : RecyclerView.Adapter<DistributionAdapter.EmployeesViewHolder>() {
+
+    init {
+        Log.d("InternalStorage", "Adapter initialized")
+    }
 
     class EmployeesViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
         val employeeIndex: TextView = itemView.findViewById(R.id.tv_employee_index)
@@ -33,10 +37,11 @@ class DistributionAdapter(private val employees: MutableList<Employee>) : Recycl
         holder.employeeIndex.text = (position + 1).toString()
         holder.employeeName.text = employees[position].name
 
-        val rawTips = employees[position].distributedTips
-        val roundedTips = BigDecimal(rawTips).setScale(0, RoundingMode.HALF_EVEN).toString()
-
-        holder.employeeTips.setText("$  $roundedTips")
+        val tipsString = employees[position].tips.toString()
+        if (tipsString.contains(".0")) {
+            tipsString.removeSuffix(".0")
+        }
+        holder.employeeTips.setText("$  $tipsString")
         holder.employeeTips.inputType = InputType.TYPE_NULL
 
     }

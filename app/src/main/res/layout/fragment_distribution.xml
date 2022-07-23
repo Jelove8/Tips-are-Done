@@ -40,7 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="40dp"
+            android:layout_marginEnd="50dp"
             android:fontFamily="@font/sodo"
             android:text="T I P S"
             android:textAlignment="center"
@@ -82,7 +82,7 @@
             android:backgroundTint="@color/accent_green"
             android:elevation="64dp"
             android:fontFamily="@font/sodo"
-            android:text="Save"
+            android:text="DONE"
             app:icon="@drawable/icon_checkmark"
             app:iconGravity="textEnd"
             app:iconSize="24dp"
@@ -130,21 +130,19 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <include
-        android:id="@+id/loading_screen"
-        layout="@layout/calculating_screen"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone" />
-
-    <include
         android:id="@+id/include_rounding_errors_dialog"
         layout="@layout/dialog_rounding_errors"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <include
+        android:id="@+id/loading_screen"
+        layout="@layout/calculating_screen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

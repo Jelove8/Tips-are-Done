@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,6 +21,7 @@ import java.math.BigDecimal
 import java.math.RoundingMode
 import java.util.*
 import kotlin.concurrent.schedule
+import kotlin.math.absoluteValue
 
 class DistributionFragment : Fragment() {
 
@@ -27,6 +29,7 @@ class DistributionFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var distributionAdapter: DistributionAdapter
+    private lateinit var tipCalculations: TipCalculations
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,63 +46,64 @@ class DistributionFragment : Fragment() {
         val billsViewModel: BillsViewModel by activityViewModels()
         val distributionViewModel: DistributionViewModel by activityViewModels()
 
-        val tipCalculations = TipCalculations()
 
+        // Loading Screen
         (context as MainActivity).hideToolbar()
-        binding.loadingScreen.root.visibility = View.VISIBLE
-        // Displaying loading screen
-        Timer().schedule(1600){
+        Timer().schedule(1000){
             (context as MainActivity).runOnUiThread {
                 (context as MainActivity).showToolbar()
                 hideLoadingScreen()
             }
         }
 
-        // Displaying tipRate
-        val tipRate = tipCalculations.getTipRate(employeesViewModel.getSumHours(), billsViewModel.getSumOfBills())
-        val roundedTipRate = BigDecimal(tipRate).setScale(2, RoundingMode.HALF_EVEN).toString()
-        binding.tvTipRate.text = roundedTipRate
+        // Calculating Tips
+        tipCalculations = TipCalculations()
+        val totalHours = employeesViewModel.getSumHours()
+        val totalBills = billsViewModel.getSumOfBills()
+        val roundingError = tipCalculations.distributeTips(employeesViewModel.employees.value!!,totalHours,totalBills)
+        checkRoundingError(roundingError)
+        displayTipRate()
 
-        // Calculating & Distributing tips
-        tipCalculations.distributeTips(employeesViewModel.employees.value!!)
-
-
-        //  SET TIP VALUES FOR EACH EMPLOYEE OBJECT
+        //  Tip Distribution RecyclerView
         distributionAdapter = DistributionAdapter(employeesViewModel.employees.value!!)
-
-        // Populating recycler view
         binding.rcyTipDistribution.layoutManager = LinearLayoutManager(context as MainActivity)
         binding.rcyTipDistribution.adapter = distributionAdapter
+
+        // Button Logic
+        binding.includeRoundingErrorsDialog.btnConfirmRoundingErrors.rootView.setOnClickListener {
+            binding.includeRoundingErrorsDialog.root.visibility = View.GONE
+        }
 
         binding.btnSaveEmployees.setOnClickListener {
             // Clearing inputted data, except for employee names
             employeesViewModel.clearEmployeeHoursAndDistributedTips()
             billsViewModel.clearBillsList()
             (context as MainActivity).showTitleScreen(true)
-            MyEmployees().saveEmployeeNamesToInternalStorage(employeesViewModel.employees.value!!,context as MainActivity)
             findNavController().navigate(R.id.action_outputTipsFragment_to_EmployeeFragment)
         }
-
-
     }
 
+    private fun displayTipRate() {
+        val tipRate = tipCalculations.getTipRate()
+        val roundedTipRate = BigDecimal(tipRate).setScale(2, RoundingMode.HALF_EVEN).toString()
+        binding.tvTipRate.text = roundedTipRate
+    }
 
-    private fun checkForRoundingErrors(employeesViewModel: EmployeesViewModel, billsViewModel: BillsViewModel) {
+    private fun checkRoundingError(roundingError: Double?) {
+        val dialogBox = binding.includeRoundingErrorsDialog.root
+        val dialogTextView: TextView = dialogBox.findViewById(R.id.tv_rounding_error_message)
 
-        var roundedTotal = 0.0
-        for (emp in employeesViewModel.employees.value!!) {
-            roundedTotal += emp.distributedTips
+        if (roundingError == null) {
+            dialogBox.visibility = View.GONE
         }
-
-        // If error > 0, User will have some money leftover
-        // If error = 0, User has no need to worry
-        // If error < 0, A recalculation must occur
-        // Pick employees at random to take away tip money
-
-
-        var error = billsViewModel.getSumOfBills()
-
+        else if (roundingError > 0) {
+            dialogTextView.text = "You will be short ${roundingError.absoluteValue.toInt()} dollars"
+        }
+        else if (roundingError < 0) {
+            dialogTextView.text = "You will have ${roundingError.absoluteValue.toInt()} dollars remaining."
+        }
     }
+
 
     private fun hideLoadingScreen() {
         binding.loadingScreen.root.visibility = View.GONE
