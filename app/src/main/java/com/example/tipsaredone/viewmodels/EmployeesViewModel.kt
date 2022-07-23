@@ -47,7 +47,7 @@ class EmployeesViewModel: ViewModel() {
     fun clearEmployeeHoursAndDistributedTips() {
         for (emp in _employees.value!!) {
             emp.tips = 0.0
-            emp.tippableHours = 0.0
+            emp.tippableHours = null
         }
     }
 
