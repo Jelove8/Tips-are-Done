@@ -8,14 +8,6 @@ import com.example.tipsaredone.model.Employee
 
 class EmployeesViewModel: ViewModel() {
 
-    init {
-        Log.d("Initial","ViewModel initialized.")
-    }
-
-    companion object {
-        const val EMPLOYEE_VM = "empVM"
-    }
-
     private var initializeEmployeesFromStorage = true
     private var confirmButtonEnabled = false
 
@@ -26,13 +18,6 @@ class EmployeesViewModel: ViewModel() {
 
     private var editingEmployee: Boolean = false    // false = adding a new employee, true = editing an employee
 
-    fun getInitializeEmployeesBool(): Boolean {
-        if (initializeEmployeesFromStorage) {
-            initializeEmployeesFromStorage = false
-        }
-        return initializeEmployeesFromStorage
-    }
-
 
     // Editing or Deleting an existing employee.
     fun getSelectedPosition(): Int {
@@ -41,7 +26,6 @@ class EmployeesViewModel: ViewModel() {
     fun selectEmployee(index: Int) {
         selectedEmployeePosition = index
     }
-
 
     // Clearing inputted hours & tips
     fun clearEmployeeHoursAndDistributedTips() {

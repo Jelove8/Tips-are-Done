@@ -1,6 +1,7 @@
 package com.example.tipsaredone.views
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,9 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tipsaredone.R
 import com.example.tipsaredone.adapters.DistributionAdapter
 import com.example.tipsaredone.databinding.FragmentDistributionBinding
-import com.example.tipsaredone.model.MyEmployees
-import com.example.tipsaredone.model.TipCalculations
-import com.example.tipsaredone.viewmodels.DistributionViewModel
+import com.example.tipsaredone.model.TipReport
 import com.example.tipsaredone.viewmodels.EmployeesViewModel
 import com.example.tipsaredone.viewmodels.BillsViewModel
 import java.math.BigDecimal
@@ -29,7 +28,7 @@ class DistributionFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var distributionAdapter: DistributionAdapter
-    private lateinit var tipCalculations: TipCalculations
+    private lateinit var tipReport: TipReport
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,8 +43,6 @@ class DistributionFragment : Fragment() {
 
         val employeesViewModel: EmployeesViewModel by activityViewModels()
         val billsViewModel: BillsViewModel by activityViewModels()
-        val distributionViewModel: DistributionViewModel by activityViewModels()
-
 
         // Loading Screen
         (context as MainActivity).hideToolbar()
@@ -57,10 +54,10 @@ class DistributionFragment : Fragment() {
         }
 
         // Calculating Tips
-        tipCalculations = TipCalculations()
+        tipReport = TipReport(employeesViewModel.employees.value!!,billsViewModel.billsList.value!!)
         val totalHours = employeesViewModel.getSumHours()
         val totalBills = billsViewModel.getSumOfBills()
-        val roundingError = tipCalculations.distributeTips(employeesViewModel.employees.value!!,totalHours,totalBills)
+        val roundingError = tipReport.distributeTips(totalHours,totalBills)
         checkRoundingError(roundingError)
         displayTipRate()
 
@@ -70,7 +67,7 @@ class DistributionFragment : Fragment() {
         binding.rcyTipDistribution.adapter = distributionAdapter
 
         // Button Logic
-        binding.includeRoundingErrorsDialog.btnConfirmRoundingErrors.rootView.setOnClickListener {
+        binding.includeRoundingErrorsDialog.btnConfirmRoundingErrors.setOnClickListener {
             binding.includeRoundingErrorsDialog.root.visibility = View.GONE
         }
 
@@ -84,7 +81,7 @@ class DistributionFragment : Fragment() {
     }
 
     private fun displayTipRate() {
-        val tipRate = tipCalculations.getTipRate()
+        val tipRate = tipReport.getTipRate()
         val roundedTipRate = BigDecimal(tipRate).setScale(2, RoundingMode.HALF_EVEN).toString()
         binding.tvTipRate.text = roundedTipRate
     }

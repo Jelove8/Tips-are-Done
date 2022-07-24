@@ -6,9 +6,6 @@ import androidx.lifecycle.ViewModel
 
 class BillsViewModel : ViewModel() {
 
-    companion object {
-        const val INPUT_TIPS = "input_tips"
-    }
 
     private val _billsList = MutableLiveData(mutableListOf(0.0,0.0,0.0,0.0,0.0))
     val billsList: LiveData<MutableList<Double>> = _billsList
@@ -16,9 +13,6 @@ class BillsViewModel : ViewModel() {
 
     private var confirmButtonBoolean = false
 
-    fun getBillsList(): MutableList<Double> {
-        return _billsList.value!!
-    }
     fun clearBillsList() {
         _billsList.value = mutableListOf(0.0,0.0,0.0,0.0,0.0)
     }

@@ -19,27 +19,7 @@ class EmployeesAdapter(
     private val textChangedCallback: ((Int) -> Unit)?
 ) : RecyclerView.Adapter<EmployeesAdapter.EmployeesViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EmployeesViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.viewholder_employee, parent, false)
-        return EmployeesViewHolder(view, itemClickCallback, textChangedCallback, this)
-    }
-
-    override fun onBindViewHolder(holder: EmployeesViewHolder, position: Int) {
-        holder.displayEmployeeInfo(employees[position],position)
-    }
-
-    override fun getItemCount(): Int {
-        return employees.size
-    }
-
-    class EmployeesViewHolder(
-        ItemView: View,
-        itemClickCallback: ((Int) -> Unit)?,
-        textChangedCallback: ((Int) -> Unit)?,
-        adapter: EmployeesAdapter
-    ) : RecyclerView.ViewHolder(ItemView) {
-
+    class EmployeesViewHolder(ItemView: View, itemClickCallback: ((Int) -> Unit)?, textChangedCallback: ((Int) -> Unit)?, adapter: EmployeesAdapter) : RecyclerView.ViewHolder(ItemView) {
         private val employeeIndex: TextView = itemView.findViewById(R.id.tv_employee_index)
         private val employeeName: TextView = itemView.findViewById(R.id.tv_employee_name)
         private val employeeItem: ConstraintLayout = itemView.findViewById(R.id.cnst_tip_distribution_header)
@@ -64,7 +44,6 @@ class EmployeesAdapter(
 
                 }
             })
-
             employeeItem.setOnClickListener {
                 itemClickCallback?.invoke(adapterPosition)
             }
@@ -85,10 +64,20 @@ class EmployeesAdapter(
         }
     }
 
-    fun initializeEmployees(employeesFromStorage: MutableList<Employee>) {
-        employees = employeesFromStorage
-        notifyDataSetChanged()
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EmployeesViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.viewholder_employee, parent, false)
+        return EmployeesViewHolder(view, itemClickCallback, textChangedCallback, this)
     }
+
+    override fun onBindViewHolder(holder: EmployeesViewHolder, position: Int) {
+        holder.displayEmployeeInfo(employees[position],position)
+    }
+
+    override fun getItemCount(): Int {
+        return employees.size
+    }
+
 
     fun addNewEmployee(newEmployee: Employee) {
         employees.add(newEmployee)
@@ -106,17 +95,10 @@ class EmployeesAdapter(
         employees[position].name = newName
         employees.sortBy { it.name }
         notifyDataSetChanged()
-        Log.d("EmployeeList","Employee name changed @ [$position]: ${employees[position].name}")
     }
 
     fun editEmployeeHours(position: Int, newHours: Double?) {
         employees[position].tippableHours = newHours
-
-        Log.d("EmployeeList","Employee hours changed @ [$position]: ${employees[position].tippableHours}")
-    }
-
-    fun getList(): MutableList<Employee> {
-        return employees
     }
 
 }

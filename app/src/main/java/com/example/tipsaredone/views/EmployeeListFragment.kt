@@ -13,6 +13,7 @@ import com.example.tipsaredone.R
 import com.example.tipsaredone.adapters.EmployeesAdapter
 import com.example.tipsaredone.databinding.FragmentEmployeesListBinding
 import com.example.tipsaredone.model.Employee
+import com.example.tipsaredone.model.EmulatorCheck
 import com.example.tipsaredone.model.MyEmployees
 import com.example.tipsaredone.viewmodels.EmployeesViewModel
 import java.util.*
@@ -37,16 +38,14 @@ class EmployeeListFragment : Fragment() {
         // Initialize EmployeesViewModel
         val employeesVM: EmployeesViewModel by activityViewModels()
         employeesViewModel = employeesVM
-        loadEmployeesFromStorage()
 
         // Initialize views
+        loadEmployeesFromStorage()
         checkForValidInputs()
         updateSumOfHours()
 
         // Employee RecyclerView
-        employeeListAdapter = EmployeesAdapter(
-
-            employeesViewModel.employees.value!!,
+        employeeListAdapter = EmployeesAdapter( employeesViewModel.employees.value!!,
 
             // Click employee item to edit their name...
             itemClickCallback = fun(position: Int) {
@@ -134,13 +133,11 @@ class EmployeeListFragment : Fragment() {
         }
     }
 
-
     // Internal Storage
     private fun loadEmployeesFromStorage() {
         val myEmployees = MyEmployees()
         val data = myEmployees.loadEmployeeNamesFromInternalStorage(context as MainActivity)
         employeesViewModel.initializeEmployees(data)
-        Log.d("InternalStorage","Employees Loaded")
     }
     private fun saveEmployeesToStorage() {
         MyEmployees().saveEmployeeNamesToInternalStorage(employeesViewModel.employees.value!!,context as MainActivity)
