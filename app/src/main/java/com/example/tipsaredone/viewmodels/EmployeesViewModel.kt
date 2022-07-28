@@ -47,10 +47,10 @@ class EmployeesViewModel: ViewModel() {
         var output = 0.00
         for (emp in _employees.value!!) {
             if (emp.tippableHours != null) {
-                output += emp.tippableHours.toString().toDouble() * 100
+                output += emp.tippableHours.toString().toDouble() * 1000
             }
         }
-        return output / 100
+        return output / 1000
     }
 
     // Internal Storage
@@ -64,9 +64,6 @@ class EmployeesViewModel: ViewModel() {
 
     fun getConfirmButtonBool(): Boolean {
         return confirmButtonEnabled
-    }
-    fun setConfirmButtonBool(bool: Boolean) {
-        confirmButtonEnabled = bool
     }
 
     fun checkForValidInputs(): String {
