@@ -1,23 +1,21 @@
 package com.example.tipsaredone.views
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tipsaredone.R
 import com.example.tipsaredone.adapters.EmployeesAdapter
 import com.example.tipsaredone.databinding.FragmentEmployeesListBinding
 import com.example.tipsaredone.model.Employee
-import com.example.tipsaredone.model.EmulatorCheck
 import com.example.tipsaredone.model.MyEmployees
+import com.example.tipsaredone.viewmodels.EmployeePageViewModel
 import com.example.tipsaredone.viewmodels.EmployeesViewModel
-import java.util.*
-import kotlin.concurrent.schedule
 
 class EmployeeListFragment : Fragment() {
 
@@ -49,9 +47,10 @@ class EmployeeListFragment : Fragment() {
 
             // Click employee item to edit their name...
             itemClickCallback = fun(position: Int) {
-                employeesViewModel.setEditingEmployeeBool(true)
-                employeesViewModel.selectEmployee(position)
-                showDialogView(position)
+                val employeeProfileViewModel: EmployeePageViewModel by activityViewModels()
+                val selectedEmployee = employeesViewModel.employees.value!![position]
+                employeeProfileViewModel.setEmployee(selectedEmployee)
+                findNavController().navigate((R.id.action_EmployeeFragment_to_employeePageFragment))
             },
 
             // When user inputs employee hours...
@@ -114,26 +113,23 @@ class EmployeeListFragment : Fragment() {
         inflater.inflate(R.menu.menu_frag_employees, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle action bar item clicks here.
         return when (item.itemId) {
             // Add New Employee Button
             R.id.action_add_employee -> {
-                if (binding.cnstEmployeeDialog.visibility == View.GONE) {
-                    employeesViewModel.setEditingEmployeeBool(false)
-                    showDialogView(null)
-                    true
-                }
-                else {
-                    hideEmployeeDialog()
-                    false
-                }
+                val employeePageViewModel: EmployeePageViewModel by activityViewModels()
+                employeePageViewModel.setEmployee(null)
+                findNavController().navigate(R.id.action_EmployeeFragment_to_employeePageFragment)
+                true
             }
             else -> super.onOptionsItemSelected(item)
         }
     }
 
-    // Internal Storage
+
+            // Internal Storage
     private fun loadEmployeesFromStorage() {
         val myEmployees = MyEmployees()
         val data = myEmployees.loadEmployeeNamesFromInternalStorage(context as MainActivity)

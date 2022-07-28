@@ -22,6 +22,7 @@
         <item name="android:fontFamily">@font/sodo</item>
     </style>
 
+
     <style name="TextAppearance.AppCompat.Widget.ActionBar.Title." parent="@android:style/TextAppearance">
         <item name="android:fontFamily">lander</item>
     </style>

@@ -17,6 +17,9 @@
             app:destination="@id/InputTipsFragment"
             app:enterAnim="@anim/slide_to_the_left"
             app:popEnterAnim="@anim/slide_to_the_right" />
+        <action
+            android:id="@+id/action_EmployeeFragment_to_employeePageFragment"
+            app:destination="@id/employeePageFragment" />
     </fragment>
     <fragment
         android:id="@+id/InputTipsFragment"
@@ -36,6 +39,15 @@
         tools:layout="@layout/fragment_distribution" >
         <action
             android:id="@+id/action_outputTipsFragment_to_EmployeeFragment"
+            app:destination="@id/EmployeeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/employeePageFragment"
+        android:name="com.example.tipsaredone.views.EmployeePageFragment"
+        android:label=""
+        tools:layout="@layout/fragment_employee_page" >
+        <action
+            android:id="@+id/action_employeePageFragment_to_EmployeeFragment"
             app:destination="@id/EmployeeFragment" />
     </fragment>
 </navigation>

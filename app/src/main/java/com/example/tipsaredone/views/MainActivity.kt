@@ -1,9 +1,11 @@
 package com.example.tipsaredone.views
 
-import android.content.Context
+import android.R
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -12,9 +14,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
-import com.example.tipsaredone.R
 import com.example.tipsaredone.databinding.ActivityMainBinding
-import com.example.tipsaredone.model.MyEmployees
 import com.example.tipsaredone.viewmodels.EmployeesViewModel
 import java.util.*
 import kotlin.concurrent.schedule
@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
 
         // Configuring Navigation and ActionBar components.
         setSupportActionBar(binding.toolbar)
-        val navController = findNavController(R.id.nav_host_fragment)
+        val navController = findNavController(com.example.tipsaredone.R.id.nav_host_fragment)
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
@@ -78,6 +78,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
+
     override fun onDestroy() {
         super.onDestroy()
         // If MainActivity is destroyed, resets title screen configurations.
@@ -85,8 +87,10 @@ class MainActivity : AppCompatActivity() {
         visibleToolBar = false
     }
 
+
+
     override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.nav_host_fragment)
+        val navController = findNavController(com.example.tipsaredone.R.id.nav_host_fragment)
         return navController.navigateUp(appBarConfiguration)
                 || super.onSupportNavigateUp()
     }

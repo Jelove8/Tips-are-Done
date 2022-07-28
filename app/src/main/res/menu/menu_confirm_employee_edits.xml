@@ -6,5 +6,4 @@
         android:id="@+id/action_delete_selected_employee"
         android:icon="@drawable/icon_trash"
         android:title="@string/done"
-        app:showAsAction="always" />
-</menu>
+        app:showAsAction="always" /></menu>
