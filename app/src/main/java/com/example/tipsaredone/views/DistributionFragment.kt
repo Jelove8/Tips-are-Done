@@ -1,7 +1,6 @@
 package com.example.tipsaredone.views
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -67,7 +66,7 @@ class DistributionFragment : Fragment() {
         binding.rcyTipDistribution.adapter = distributionAdapter
 
         // Button Logic
-        binding.includeRoundingErrorsDialog.btnConfirmRoundingErrors.setOnClickListener {
+        binding.includeRoundingErrorsDialog.btnDialogConfirm.setOnClickListener {
             binding.includeRoundingErrorsDialog.root.visibility = View.GONE
         }
 
@@ -88,7 +87,7 @@ class DistributionFragment : Fragment() {
 
     private fun checkRoundingError(roundingError: Double?) {
         val dialogBox = binding.includeRoundingErrorsDialog.root
-        val dialogTextView: TextView = dialogBox.findViewById(R.id.tv_rounding_error_message)
+        val dialogTextView: TextView = dialogBox.findViewById(R.id.et_dialog_box)
 
         if (roundingError == null) {
             dialogBox.visibility = View.GONE
