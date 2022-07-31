@@ -15,14 +15,22 @@ import java.math.RoundingMode
 
 class DistributionAdapter(private val employees: MutableList<Employee>) : RecyclerView.Adapter<DistributionAdapter.EmployeesViewHolder>() {
 
-    init {
-        Log.d("InternalStorage", "Adapter initialized")
-    }
-
     class EmployeesViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
-        val employeeIndex: TextView = itemView.findViewById(R.id.tv_employee_index)
-        val employeeName: TextView = itemView.findViewById(R.id.tv_employee_name)
-        val employeeTips: EditText = itemView.findViewById(R.id.et_employee_hours)
+        private val employeeIndex: TextView = itemView.findViewById(R.id.tv_employee_index)
+        private val employeeName: TextView = itemView.findViewById(R.id.tv_employee_name)
+        private val employeeTips: EditText = itemView.findViewById(R.id.et_employee_hours)
+
+        fun displayEmployeeData(employee: Employee, position: Int) {
+            employeeIndex.text = (position + 1).toString()
+            employeeName.text = employee.name
+
+            val tipsString = employee.tips.toString()
+            if (tipsString.contains(".0")) {
+                tipsString.removeSuffix(".0")
+            }
+            employeeTips.setText("$ $tipsString")
+            employeeTips.inputType = InputType.TYPE_NULL
+        }
     }
 
 
@@ -34,16 +42,7 @@ class DistributionAdapter(private val employees: MutableList<Employee>) : Recycl
     }
 
     override fun onBindViewHolder(holder: EmployeesViewHolder, position: Int) {
-        holder.employeeIndex.text = (position + 1).toString()
-        holder.employeeName.text = employees[position].name
-
-        val tipsString = employees[position].tips.toString()
-        if (tipsString.contains(".0")) {
-            tipsString.removeSuffix(".0")
-        }
-        holder.employeeTips.setText("$  $tipsString")
-        holder.employeeTips.inputType = InputType.TYPE_NULL
-
+        holder.displayEmployeeData(employees[position],position)
     }
 
     override fun getItemCount(): Int {

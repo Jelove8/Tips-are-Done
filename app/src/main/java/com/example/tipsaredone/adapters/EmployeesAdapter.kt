@@ -23,7 +23,7 @@ class EmployeesAdapter(
         private val employeeIndex: TextView = itemView.findViewById(R.id.tv_employee_index)
         private val employeeName: TextView = itemView.findViewById(R.id.tv_employee_name)
         private val employeeItem: ConstraintLayout = itemView.findViewById(R.id.cnst_tip_distribution_header)
-        val employeeHours: EditText = itemView.findViewById(R.id.et_employee_hours)
+        private val employeeHours: EditText = itemView.findViewById(R.id.et_employee_hours)
 
         init {
             employeeHours.addTextChangedListener(object : TextWatcher {

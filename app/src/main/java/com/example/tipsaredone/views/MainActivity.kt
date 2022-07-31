@@ -22,14 +22,6 @@ import kotlin.concurrent.schedule
 
 class MainActivity : AppCompatActivity() {
 
-    companion object {
-        const val MISC: String = "misc"
-    }
-
-    init {
-        Log.d("Initial","MainActivity initialized.")
-    }
-
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
 

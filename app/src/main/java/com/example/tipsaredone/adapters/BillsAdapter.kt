@@ -17,7 +17,7 @@ class BillsAdapter(private val bills: MutableList<Double>,
     class BillsViewHolder(ItemView: View, adapter: BillsAdapter, textChangedCallback: ((Int, Double?) -> Unit)?) : RecyclerView.ViewHolder(ItemView) {
         private val tvIndex: TextView = itemView.findViewById(R.id.tv_employee_index)
         private val tvBillType: TextView = itemView.findViewById(R.id.tv_employee_name)
-        val etBillAmount: EditText = itemView.findViewById(R.id.et_employee_hours)
+        private val etBillAmount: EditText = itemView.findViewById(R.id.et_employee_hours)
 
         init {
             tvIndex.visibility = View.INVISIBLE
