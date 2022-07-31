@@ -11,7 +11,7 @@ class TipReport(
     private var _tipRate: Double = 0.00,
     private var _error: Boolean? = null                  // null = No Redistribution, false = minor error (<$3) (Redistributed), true = major error (No Redistribution)
     ) {
-    fun getTipRate(): Double {
+     fun getTipRate(): Double {
         return _tipRate
     }
 
