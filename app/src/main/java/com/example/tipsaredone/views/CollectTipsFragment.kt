@@ -12,14 +12,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tipsaredone.R
 import com.example.tipsaredone.adapters.BillsAdapter
 import com.example.tipsaredone.databinding.FragmentInputTipsBinding
-import com.example.tipsaredone.viewmodels.BillsViewModel
+import com.example.tipsaredone.viewmodels.CollectionViewModel
 
-class BillsFragment : Fragment() {
+class CollectTipsFragment : Fragment() {
 
     private var _binding: FragmentInputTipsBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var billsViewModel: BillsViewModel
+    private lateinit var billsViewModel: CollectionViewModel
     private lateinit var billsAdapter: BillsAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -28,8 +28,9 @@ class BillsFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (context as MainActivity).updateCurrentDisplay("CollectTips")
 
-        val billsVM: BillsViewModel by activityViewModels()
+        val billsVM: CollectionViewModel by activityViewModels()
         billsViewModel = billsVM
         updateSumOfBillsTV()
 
@@ -52,7 +53,7 @@ class BillsFragment : Fragment() {
                 findNavController().navigate(R.id.action_InputTipsFragment_toOutputTipsFragment)
             }
             else {
-                val toast = billsViewModel.checkForValidAmounts()
+                val toast = billsViewModel.getValidityString()
                 (context as MainActivity).makeToastMessage(toast)
             }
 
@@ -66,7 +67,7 @@ class BillsFragment : Fragment() {
 
     // Checks if user is able to navigate to next fragment.
     private fun checkForValidInputs() {
-        billsViewModel.checkForValidAmounts()
+        billsViewModel.getValidityString()
         displayConfirmButton()
     }
     private fun displayConfirmButton() {

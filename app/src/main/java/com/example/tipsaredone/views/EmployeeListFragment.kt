@@ -1,6 +1,7 @@
 package com.example.tipsaredone.views
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
@@ -11,7 +12,6 @@ import com.example.tipsaredone.R
 import com.example.tipsaredone.adapters.EmployeesAdapter
 import com.example.tipsaredone.databinding.FragmentEmployeesListBinding
 import com.example.tipsaredone.model.Employee
-import com.example.tipsaredone.model.MyEmployees
 import com.example.tipsaredone.viewmodels.EmployeesViewModel
 
 class EmployeeListFragment : Fragment() {
@@ -29,15 +29,21 @@ class EmployeeListFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (context as MainActivity).updateCurrentDisplay("EmployeeList")
 
         // Initialize EmployeesViewModel
         val employeesVM: EmployeesViewModel by activityViewModels()
         employeesViewModel = employeesVM
 
+        (context as MainActivity).checkForValidInputs(employeesViewModel)
+
+        employeesViewModel = employeesVM
+
         // Initialize views
         loadEmployeesFromStorage()
-        checkForValidInputs()
+
         updateSumOfHours()
+
 
         // Employee RecyclerView
         employeeListAdapter = EmployeesAdapter( employeesViewModel.employees.value!!,
@@ -52,11 +58,12 @@ class EmployeeListFragment : Fragment() {
             // When user inputs employee hours...
             textChangedCallback = fun(_: Int) {
                 updateSumOfHours()
-                checkForValidInputs()
+                (context as MainActivity).checkForValidInputs(employeesViewModel)
             }
         )
         binding.rcyEmployees.layoutManager = LinearLayoutManager(context as MainActivity)
         binding.rcyEmployees.adapter = employeeListAdapter
+
 
         // Dialog View Logic
         binding.btnConfirmEmployeeDialog.setOnClickListener {
@@ -73,14 +80,14 @@ class EmployeeListFragment : Fragment() {
                 else {
                     employeeListAdapter.addNewEmployee(Employee(newName.toString()))
                 }
-                checkForValidInputs()
+                (context as MainActivity).checkForValidInputs(employeesViewModel)
                 hideEmployeeDialog()
             }
         }
         binding.btnDeleteEmployeeDialog.setOnClickListener {
             employeeListAdapter.deleteEmployee(employeesViewModel.getSelectedPosition())
             updateSumOfHours()
-            checkForValidInputs()
+            (context as MainActivity).checkForValidInputs(employeesViewModel)
             hideEmployeeDialog()
         }
         binding.btnCancelEmployeeDialog.setOnClickListener {
@@ -88,16 +95,6 @@ class EmployeeListFragment : Fragment() {
         }
 
         // Navigation Button
-        binding.btnConfirmEmployees.setOnClickListener {
-            if (employeesViewModel.getConfirmButtonBool()) {
-                saveEmployeesToStorage()
-                findNavController().navigate(R.id.action_EmployeeFragment_to_InputTipsFragment)
-            }
-            else {
-                val output = employeesViewModel.checkForValidInputs()
-                (context as MainActivity).makeToastMessage(output)
-            }
-        }
     }
     override fun onDestroyView() {
         super.onDestroyView()
@@ -130,12 +127,8 @@ class EmployeeListFragment : Fragment() {
 
     // Internal Storage
     private fun loadEmployeesFromStorage() {
-        val myEmployees = MyEmployees()
-        val data = myEmployees.loadEmployeeNamesFromInternalStorage(context as MainActivity)
+        val data = (context as MainActivity).getEmployeesFromStorage()
         employeesViewModel.initializeEmployees(data)
-    }
-    private fun saveEmployeesToStorage() {
-        MyEmployees().saveEmployeeNamesToInternalStorage(employeesViewModel.employees.value!!,context as MainActivity)
     }
 
     // Dialog Box
@@ -166,21 +159,5 @@ class EmployeeListFragment : Fragment() {
     private fun updateSumOfHours() {
         binding.tvTotalHours.text = employeesViewModel.getSumHours().toString()
     }
-    private fun checkForValidInputs() {     // Checks if user should be able to click the Confirm button.
-        employeesViewModel.checkForValidInputs()
-        displayConfirmButton()
-    }
-    private fun displayConfirmButton(){
-        // https://stackoverflow.com/questions/23517879/set-background-color-programmatically
-        val button: View = binding.btnConfirmEmployees
 
-        if (employeesViewModel.getConfirmButtonBool()) {     // Button is clickable and visible.
-            val sbGreen = ResourcesCompat.getColor(resources, R.color.starbucks_green, (context as MainActivity).theme)
-            button.setBackgroundColor(sbGreen)
-        }
-        else {  // Button is not clickable and is hidden.
-            val wrmNeutral = ResourcesCompat.getColor(resources, R.color.warm_neutral, (context as MainActivity).theme)
-            button.setBackgroundColor(wrmNeutral)
-        }
-    }
 }

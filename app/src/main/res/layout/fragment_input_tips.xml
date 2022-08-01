@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/warm_neutral"
-    tools:context=".views.BillsFragment">
+    tools:context=".views.CollectTipsFragment">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class BillsViewModel : ViewModel() {
+class CollectionViewModel : ViewModel() {
 
 
     private val _billsList = MutableLiveData(mutableListOf(0.0,0.0,0.0,0.0,0.0))
@@ -29,7 +29,7 @@ class BillsViewModel : ViewModel() {
         return confirmButtonBoolean
     }
 
-    fun checkForValidAmounts(): String {
+    fun getValidityString(): String {
         val sumOfModulos = (_billsList.value!![0] % 1.00) + (_billsList.value!![1] % 2.00) + (_billsList.value!![2] % 5.00) + (_billsList.value!![3] % 10.00) + (_billsList.value!![4] % 20.00)
         confirmButtonBoolean = sumOfModulos == 0.0
 
@@ -43,10 +43,15 @@ class BillsViewModel : ViewModel() {
                 "Incorrect amount detected."
             }
             else -> {
-                "Error"
+                "An error has occurred."
             }
         }
 
+    }
+
+    fun checkForValidInputs(): Boolean {
+        val sumOfModulos = (_billsList.value!![0] % 1.00) + (_billsList.value!![1] % 2.00) + (_billsList.value!![2] % 5.00) + (_billsList.value!![3] % 10.00) + (_billsList.value!![4] % 20.00)
+        return sumOfModulos == 0.0
     }
 
 }

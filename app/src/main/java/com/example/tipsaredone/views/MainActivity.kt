@@ -1,12 +1,12 @@
 package com.example.tipsaredone.views
 
-import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -14,7 +14,9 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.tipsaredone.R
 import com.example.tipsaredone.databinding.ActivityMainBinding
+import com.example.tipsaredone.model.Employee
 import com.example.tipsaredone.model.MyEmployees
+import com.example.tipsaredone.viewmodels.CollectionViewModel
 import com.example.tipsaredone.viewmodels.EmployeesViewModel
 import java.util.*
 import kotlin.concurrent.schedule
@@ -27,13 +29,16 @@ class MainActivity : AppCompatActivity() {
 
     // Other Components
     private lateinit var employeesViewModel: EmployeesViewModel
+    private lateinit var collectionViewModel: CollectionViewModel
+    private val myEmployees = MyEmployees()
 
     // Title Screen Configurations
     private var visibleTitleScreen: Boolean = true
     private var visibleToolBar: Boolean = false
 
     // Internal Storage Boolean
-    private var loadInternalStorage: Boolean = true
+
+    private var currentDisplay: String = "Title Screen"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,11 +51,15 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
-        // Displays title screen if configurations are set to default.
-        showTitleScreen()
 
-        // Initialize viewmodels
+        // Initialize ViewModels
         employeesViewModel = ViewModelProvider(this)[EmployeesViewModel::class.java]
+        collectionViewModel = ViewModelProvider(this)[CollectionViewModel::class.java]
+
+
+        // Displays title screen if configurations are set to default.
+        showTitleScreen(null)
+
 
 
     }
@@ -81,6 +90,40 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment)
         return navController.navigateUp(appBarConfiguration)
                 || super.onSupportNavigateUp()
+    }
+
+
+    fun checkEmployeeHours(): Boolean {
+        return if (employeesViewModel.checkForValidInputs()) {
+            true
+        }
+        else {
+            val toast = employeesViewModel.getValidityString()
+            makeToastMessage(toast)
+            false
+        }
+    }
+
+    fun checkForValidInputs(viewModel: Any?) {
+
+    }
+
+    fun updateFABVisibility(buttonVisible: Boolean) {
+
+        if (buttonVisible) {
+            binding.includeContentMain.btnFab.setBackgroundColor(sbGreen)
+        }
+        else {
+            binding.includeContentMain.btnFab.setBackgroundColor(wrmNeutral)
+        }
+    }
+
+    fun getEmployeesFromStorage(): MutableList<Employee> {
+        myEmployees.loadEmployeeNamesFromInternalStorage(this)
+        return myEmployees.getStoredEmployees()
+    }
+    fun saveEmployeesToStorage() {
+        MyEmployees().saveEmployeeNamesToInternalStorage(employeesViewModel.employees.value!!,this)
     }
 
     fun showTitleScreen(reset: Boolean? = null) {
@@ -119,8 +162,10 @@ class MainActivity : AppCompatActivity() {
         visibleToolBar = true
     }
 
-    // Internal Storage
-
+    // Display Change
+    fun updateCurrentDisplay(displayTitle: String) {
+        currentDisplay = displayTitle
+    }
 
 
     // Misc

@@ -14,7 +14,7 @@ import com.example.tipsaredone.adapters.DistributionAdapter
 import com.example.tipsaredone.databinding.FragmentDistributionBinding
 import com.example.tipsaredone.model.TipReport
 import com.example.tipsaredone.viewmodels.EmployeesViewModel
-import com.example.tipsaredone.viewmodels.BillsViewModel
+import com.example.tipsaredone.viewmodels.CollectionViewModel
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.util.*
@@ -41,7 +41,7 @@ class DistributionFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val employeesViewModel: EmployeesViewModel by activityViewModels()
-        val billsViewModel: BillsViewModel by activityViewModels()
+        val billsViewModel: CollectionViewModel by activityViewModels()
 
         // Loading Screen
         (context as MainActivity).hideToolbar()

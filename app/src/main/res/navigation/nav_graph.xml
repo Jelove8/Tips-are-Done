@@ -20,7 +20,7 @@
     </fragment>
     <fragment
         android:id="@+id/InputTipsFragment"
-        android:name="com.example.tipsaredone.views.BillsFragment"
+        android:name="com.example.tipsaredone.views.CollectTipsFragment"
         android:label="Tips Are Almost Done"
         tools:layout="@layout/fragment_input_tips" >
         <action

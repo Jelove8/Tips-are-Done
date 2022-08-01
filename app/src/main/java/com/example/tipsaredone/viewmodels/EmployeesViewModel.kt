@@ -9,7 +9,7 @@ import com.example.tipsaredone.model.Employee
 class EmployeesViewModel: ViewModel() {
 
     private var initializeEmployeesFromStorage = true
-    private var confirmButtonEnabled = false
+    private var inputsValid = false
 
     private val _employees = MutableLiveData<MutableList<Employee>>(mutableListOf())
     val employees: LiveData<MutableList<Employee>> = _employees
@@ -63,13 +63,17 @@ class EmployeesViewModel: ViewModel() {
     }
 
     fun getConfirmButtonBool(): Boolean {
-        return confirmButtonEnabled
+        return inputsValid
     }
 
-    fun checkForValidInputs(): String {
+    fun checkForValidInputs(): Boolean {
+        return if (_employees.value!!.size < 2) {
+            false
+        }
+        else checkForNullHours()
 
-        confirmButtonEnabled = !(_employees.value!!.size < 2 || !checkForNullHours())
-
+    }
+    fun getValidityString(): String {
         return if (_employees.value!!.size < 2) {
             "At least two employees must be entered."
         }
@@ -77,7 +81,7 @@ class EmployeesViewModel: ViewModel() {
             "All hours must be filled."
         }
         else {
-            "Error"
+            "An error has occurred"
         }
     }
 

@@ -12,6 +12,8 @@ import java.io.InputStreamReader
 
 class MyEmployees() {
 
+    private lateinit var storedEmployees: MutableList<Employee>
+
     companion object {
         const val INTERNAL_STORAGE = "internal_storage"
     }
@@ -24,7 +26,6 @@ class MyEmployees() {
         Log.d(INTERNAL_STORAGE, "Employee names converted to Json:\n${json}")
         return json
     }
-
     fun saveEmployeeNamesToInternalStorage(employees: MutableList<Employee>,context: Context) {        // Called whenever the "CONTINUE" button is pressed @EmployeeListFragment.
         // Converting list of employee objects into list of employee names (string).
         val listOfNames = mutableListOf<String>()
@@ -43,8 +44,10 @@ class MyEmployees() {
             Log.d(INTERNAL_STORAGE, "Employee names saved as Json:\n${jsonString}")
         }
 
+        storedEmployees = employees
+
     }
-    fun loadEmployeeNamesFromInternalStorage(context: Context): MutableList<Employee> {
+    fun loadEmployeeNamesFromInternalStorage(context: Context) {
         // loading data as Json text
         val fileInputStream: FileInputStream? = context.openFileInput("myEmployees")
         val inputStreamReader = InputStreamReader(fileInputStream)
@@ -77,12 +80,16 @@ class MyEmployees() {
                 listOfEmployees.add(Employee(name))
                 Log.d(INTERNAL_STORAGE,"Employee Loaded: $name")
             }
-            return listOfEmployees
+            storedEmployees = listOfEmployees
         }
         else {
             Log.d(INTERNAL_STORAGE,"Internal storage contained no names.")
-            return mutableListOf()
+            storedEmployees = mutableListOf()
         }
+    }
+
+    fun getStoredEmployees(): MutableList<Employee> {
+        return storedEmployees
     }
 }
 
