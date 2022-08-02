@@ -50,7 +50,6 @@ class EmployeesAdapter(
         }
 
         fun displayEmployeeInfo(employee: Employee, position: Int) {
-            // Displaying index and name.
             val index = position + 1
             employeeIndex.text = index.toString()
             employeeName.text = employee.name
@@ -69,36 +68,28 @@ class EmployeesAdapter(
             .inflate(R.layout.viewholder_employee, parent, false)
         return EmployeesViewHolder(view, itemClickCallback, textChangedCallback, this)
     }
-
     override fun onBindViewHolder(holder: EmployeesViewHolder, position: Int) {
         holder.displayEmployeeInfo(employees[position],position)
     }
-
     override fun getItemCount(): Int {
         return employees.size
     }
-
 
     fun addNewEmployee(newEmployee: Employee) {
         employees.add(newEmployee)
         employees.sortBy { it.name }
         notifyDataSetChanged()
-        Log.d("EmployeeList","New employee added: ${newEmployee.name}")
     }
-
     fun deleteEmployee(position: Int) {
         employees.removeAt(position)
         notifyDataSetChanged()
     }
-
     fun editEmployeeName(position: Int, newName: String) {
         employees[position].name = newName
         employees.sortBy { it.name }
         notifyDataSetChanged()
     }
-
     fun editEmployeeHours(position: Int, newHours: Double?) {
         employees[position].tippableHours = newHours
     }
-
 }

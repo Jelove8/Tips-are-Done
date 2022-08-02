@@ -3,10 +3,8 @@ package com.example.tipsaredone.views
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -16,6 +14,7 @@ import com.example.tipsaredone.R
 import com.example.tipsaredone.databinding.ActivityMainBinding
 import com.example.tipsaredone.model.Employee
 import com.example.tipsaredone.model.MyEmployees
+import com.example.tipsaredone.model.RoughTipReport
 import com.example.tipsaredone.viewmodels.CollectionViewModel
 import com.example.tipsaredone.viewmodels.EmployeesViewModel
 import java.util.*
@@ -30,6 +29,7 @@ class MainActivity : AppCompatActivity() {
     // Other Components
     private lateinit var employeesViewModel: EmployeesViewModel
     private lateinit var collectionViewModel: CollectionViewModel
+    private val roughTipReport = RoughTipReport()
     private val myEmployees = MyEmployees()
 
     // Title Screen Configurations
@@ -38,7 +38,6 @@ class MainActivity : AppCompatActivity() {
 
     // Internal Storage Boolean
 
-    private var currentDisplay: String = "Title Screen"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,7 +57,7 @@ class MainActivity : AppCompatActivity() {
 
 
         // Displays title screen if configurations are set to default.
-        showTitleScreen(null)
+        showTitleScreen()
 
 
 
@@ -92,32 +91,6 @@ class MainActivity : AppCompatActivity() {
                 || super.onSupportNavigateUp()
     }
 
-
-    fun checkEmployeeHours(): Boolean {
-        return if (employeesViewModel.checkForValidInputs()) {
-            true
-        }
-        else {
-            val toast = employeesViewModel.getValidityString()
-            makeToastMessage(toast)
-            false
-        }
-    }
-
-    fun checkForValidInputs(viewModel: Any?) {
-
-    }
-
-    fun updateFABVisibility(buttonVisible: Boolean) {
-
-        if (buttonVisible) {
-            binding.includeContentMain.btnFab.setBackgroundColor(sbGreen)
-        }
-        else {
-            binding.includeContentMain.btnFab.setBackgroundColor(wrmNeutral)
-        }
-    }
-
     fun getEmployeesFromStorage(): MutableList<Employee> {
         myEmployees.loadEmployeeNamesFromInternalStorage(this)
         return myEmployees.getStoredEmployees()
@@ -126,47 +99,41 @@ class MainActivity : AppCompatActivity() {
         MyEmployees().saveEmployeeNamesToInternalStorage(employeesViewModel.employees.value!!,this)
     }
 
-    fun showTitleScreen(reset: Boolean? = null) {
-
-        if (reset == true) {    // Resets title screen configurations to default (Only called when user presses "SAVE" button @DistributionFragment)
-            visibleTitleScreen = true
-            binding.includeTitleScreen.root.visibility = View.VISIBLE
-            visibleToolBar = false
-            binding.toolbar.visibility = View.GONE
+    fun showTitleScreen() {
+        binding.includeTitleScreen.root.visibility = View.VISIBLE
+        binding.toolbar.visibility = View.GONE
+        Timer().schedule(2000){
+            this@MainActivity.runOnUiThread {
+                binding.includeTitleScreen.root.visibility = View.GONE
+                binding.toolbar.visibility = View.VISIBLE
+            }
         }
-
-        if (visibleTitleScreen && !visibleToolBar) {    // if (default title screen configurations)
-            // Makes title screen view visible.
-            binding.includeTitleScreen.root.visibility = View.VISIBLE
-
-            // Hiding title screen & showing toolbar after a delay.
-            Timer().schedule(2000){
-                this@MainActivity.runOnUiThread {
-                    visibleTitleScreen = false
-                    binding.includeTitleScreen.root.visibility = View.GONE
-                    visibleToolBar = true
-                    binding.toolbar.visibility = View.VISIBLE
-                }
+    }
+    fun showCalculatingScreen() {
+        binding.includeCalculatingScreen.root.visibility = View.VISIBLE
+        binding.toolbar.visibility = View.GONE
+        Timer().schedule(1200){
+            this@MainActivity.runOnUiThread {
+                binding.includeCalculatingScreen.root.visibility = View.GONE
+                binding.toolbar.visibility = View.VISIBLE
             }
         }
     }
 
-
     // Toolbar Visibility (used @DistributionFragment)
-    fun hideToolbar() {
+    private fun hideToolbar() {
         binding.toolbar.visibility = View.GONE
         visibleToolBar = false
     }
-    fun showToolbar() {
+    private fun showToolbar() {
         binding.toolbar.visibility = View.VISIBLE
         visibleToolBar = true
     }
 
-    // Display Change
-    fun updateCurrentDisplay(displayTitle: String) {
-        currentDisplay = displayTitle
+    // Tip Report
+    fun getRoughTipReport(): RoughTipReport {
+        return roughTipReport
     }
-
 
     // Misc
     fun makeToastMessage(message: String, isDurationShort: Boolean = true) {

@@ -1,11 +1,13 @@
 package com.example.tipsaredone.views
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tipsaredone.R
@@ -23,141 +25,160 @@ class EmployeeListFragment : Fragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        setHasOptionsMenu(true)
         _binding = FragmentEmployeesListBinding.inflate(inflater, container, false)
         return binding.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (context as MainActivity).updateCurrentDisplay("EmployeeList")
 
         // Initialize EmployeesViewModel
         val employeesVM: EmployeesViewModel by activityViewModels()
         employeesViewModel = employeesVM
 
-        (context as MainActivity).checkForValidInputs(employeesViewModel)
+        // Load saved data.
+        if (checkInternetConnection()) {
+            loadEmployeesFromFirebase()
+        }
+        else {
+            loadEmployeesFromInternalStorage()
+        }
 
-        employeesViewModel = employeesVM
-
-        // Initialize views
-        loadEmployeesFromStorage()
-
+        // Initializing Views
+        updateConfirmButtonVisibility()
         updateSumOfHours()
-
-
-        // Employee RecyclerView
         employeeListAdapter = EmployeesAdapter( employeesViewModel.employees.value!!,
 
-            // Click employee item to edit their name...
+            // Button: Edit existing employee.
             itemClickCallback = fun(position: Int) {
-                employeesViewModel.setEditingEmployeeBool(true)
-                employeesViewModel.selectEmployee(position)
                 showDialogView(position)
             },
 
-            // When user inputs employee hours...
+            // TextChanged: When employee hours are edited.
             textChangedCallback = fun(_: Int) {
                 updateSumOfHours()
-                (context as MainActivity).checkForValidInputs(employeesViewModel)
+                updateConfirmButtonVisibility()
             }
         )
         binding.rcyEmployees.layoutManager = LinearLayoutManager(context as MainActivity)
         binding.rcyEmployees.adapter = employeeListAdapter
 
+        // Button: Add new employee.
+        val menuHost: MenuHost = requireActivity()
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.menu_frag_employees, menu)
+            }
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    R.id.action_add_employee -> {
+                        if (binding.includeEmployeeDialog.root.visibility == View.GONE) {
+                            showDialogView(null)
+                            true
+                        }
+                        else {
+                            hideEmployeeDialog()
+                            false
+                        }
+                    }
+                    else ->  false
+                }
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
-        // Dialog View Logic
-        binding.btnConfirmEmployeeDialog.setOnClickListener {
-            val newName = binding.etEmployeeDialog.text
-            if (newName.isNullOrEmpty()) {
-                (context as MainActivity).makeToastMessage("A name is required.")
+        // Button: Confirm employees and navigate to next fragment.
+        binding.btnConfirmEmployees.setOnClickListener {
+            if (employeesViewModel.checkForValidInputs()) {
+                (context as MainActivity).getRoughTipReport().employees = employeesViewModel.employees.value!!
+                (context as MainActivity).saveEmployeesToStorage()
+                findNavController().navigate(R.id.action_EmployeeFragment_to_InputTipsFragment)
             }
             else {
-                // Confirming edits to employee name.
-                if (employeesViewModel.getEditingEmployeeBool()) {
-                    employeeListAdapter.editEmployeeName(employeesViewModel.getSelectedPosition(), newName.toString())
-                }
-                // Confirming new employee name.
-                else {
-                    employeeListAdapter.addNewEmployee(Employee(newName.toString()))
-                }
-                (context as MainActivity).checkForValidInputs(employeesViewModel)
-                hideEmployeeDialog()
+                val toast = employeesViewModel.getValidityString()
+                (context as MainActivity).makeToastMessage(toast)
             }
         }
-        binding.btnDeleteEmployeeDialog.setOnClickListener {
-            employeeListAdapter.deleteEmployee(employeesViewModel.getSelectedPosition())
-            updateSumOfHours()
-            (context as MainActivity).checkForValidInputs(employeesViewModel)
-            hideEmployeeDialog()
-        }
-        binding.btnCancelEmployeeDialog.setOnClickListener {
-            hideEmployeeDialog()
-        }
-
-        // Navigation Button
     }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater)  {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        inflater.inflate(R.menu.menu_frag_employees, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here.
-        return when (item.itemId) {
-            // Add New Employee Button
-            R.id.action_add_employee -> {
-                if (binding.cnstEmployeeDialog.visibility == View.GONE) {
-                    employeesViewModel.setEditingEmployeeBool(false)
-                    showDialogView(null)
-                    true
-                }
-                else {
-                    hideEmployeeDialog()
-                    false
-                }
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
+    // Internal Storage
+    private fun loadEmployeesFromInternalStorage() {
+        val data = (context as MainActivity).getEmployeesFromStorage()
+        employeesViewModel.loadDataFromInternalStorage(data)
     }
 
-    // Internal Storage
-    private fun loadEmployeesFromStorage() {
-        val data = (context as MainActivity).getEmployeesFromStorage()
-        employeesViewModel.initializeEmployees(data)
+    // Firebase Storage
+    private fun checkInternetConnection(): Boolean {
+        return false
+    }
+    private fun loadEmployeesFromFirebase() {
+        TODO()
     }
 
     // Dialog Box
     private fun showDialogView(position: Int?) {
         if (position != null) {
             // Prepares for the editing of an employee.
-            binding.btnDeleteEmployeeDialog.visibility = View.VISIBLE
-            binding.tvEmployeeDialog.setText(R.string.edit_employee)
-            binding.etEmployeeDialog.setText(employeesViewModel.employees.value!![position].name)
-            binding.tvEmployeeDialogBackground.visibility = View.VISIBLE
-            binding.cnstEmployeeDialog.visibility = View.VISIBLE
+            binding.includeEmployeeDialog.btnDialogDelete.visibility = View.VISIBLE
+            binding.includeEmployeeDialog.tvDialogBox.setText(R.string.edit_employee)
+            binding.includeEmployeeDialog.etDialogBox.setText(employeesViewModel.employees.value!![position].name)
         }
         else {
             // Prepares for the adding of a new employee.
-            binding.btnDeleteEmployeeDialog.visibility = View.GONE
-            binding.tvEmployeeDialog.setText(R.string.new_employee)
-            binding.etEmployeeDialog.text.clear()
-            binding.tvEmployeeDialogBackground.visibility = View.VISIBLE
-            binding.cnstEmployeeDialog.visibility = View.VISIBLE
+            binding.includeEmployeeDialog.btnDialogDelete.visibility = View.GONE
+            binding.includeEmployeeDialog.tvDialogBox.setText(R.string.new_employee)
+            binding.includeEmployeeDialog.etDialogBox.text.clear()
         }
+        binding.includeEmployeeDialog.root.visibility = View.VISIBLE
+        binding.btnConfirmEmployees.visibility = View.GONE
+        setDialogOnClickListeners(position)
     }
     private fun hideEmployeeDialog() {
-        binding.cnstEmployeeDialog.visibility = View.GONE
-        binding.tvEmployeeDialogBackground.visibility = View.GONE
+        binding.includeEmployeeDialog.root.visibility = View.GONE
+        binding.btnConfirmEmployees.visibility = View.VISIBLE
+    }
+    private fun setDialogOnClickListeners(position: Int?) {
+        binding.includeEmployeeDialog.btnDialogConfirm.setOnClickListener {
+            val newName = binding.includeEmployeeDialog.etDialogBox.text
+            if (newName.isNullOrEmpty()) {
+                (context as MainActivity).makeToastMessage("A name is required.")
+            }
+            else {
+                if (position != null) {
+                    employeeListAdapter.editEmployeeName(position,newName.toString())
+                }
+                else {
+                    employeeListAdapter.addNewEmployee(Employee(newName.toString()))
+                }
+                updateConfirmButtonVisibility()
+                hideEmployeeDialog()
+            }
+        }
+        binding.includeEmployeeDialog.btnDialogDelete.setOnClickListener {
+            employeeListAdapter.deleteEmployee(position!!)
+            updateSumOfHours()
+            updateConfirmButtonVisibility()
+            hideEmployeeDialog()
+        }
+        binding.includeEmployeeDialog.btnDialogCancel.setOnClickListener {
+            hideEmployeeDialog()
+        }
     }
 
     // Updates Views
+    private fun updateConfirmButtonVisibility() {
+        if (employeesViewModel.checkForValidInputs()) {
+            val sbGreen = ResourcesCompat.getColor(resources, R.color.starbucks_green, (context as MainActivity).theme)
+            binding.btnConfirmEmployees.setBackgroundColor(sbGreen)
+        }
+        else {
+            val wrmNeutral = ResourcesCompat.getColor(resources, R.color.warm_neutral, (context as MainActivity).theme)
+            binding.btnConfirmEmployees.setBackgroundColor(wrmNeutral)
+        }
+    }
     private fun updateSumOfHours() {
         binding.tvTotalHours.text = employeesViewModel.getSumHours().toString()
     }
-
 }

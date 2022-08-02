@@ -50,6 +50,8 @@ class BillsAdapter(private val bills: MutableList<Double>,
                 2 -> {"F I V E S"}
                 3 -> {"T E N S"}
                 4 -> {"T W E N T I E S"}
+                5 -> {"F I F T I E S"}
+                6 -> {"H U N D R E D S"}
                 else -> {
                     "Error"
                 }

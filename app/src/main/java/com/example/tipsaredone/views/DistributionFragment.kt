@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tipsaredone.R
 import com.example.tipsaredone.adapters.DistributionAdapter
 import com.example.tipsaredone.databinding.FragmentDistributionBinding
+import com.example.tipsaredone.model.RoughTipReport
 import com.example.tipsaredone.model.TipReport
 import com.example.tipsaredone.viewmodels.EmployeesViewModel
 import com.example.tipsaredone.viewmodels.CollectionViewModel
@@ -27,7 +28,7 @@ class DistributionFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var distributionAdapter: DistributionAdapter
-    private lateinit var tipReport: TipReport
+    private lateinit var tipReport: RoughTipReport
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,7 +37,6 @@ class DistributionFragment : Fragment() {
         _binding = FragmentDistributionBinding.inflate(inflater,container,false)
         return binding.root
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -44,71 +44,62 @@ class DistributionFragment : Fragment() {
         val billsViewModel: CollectionViewModel by activityViewModels()
 
         // Loading Screen
-        (context as MainActivity).hideToolbar()
-        Timer().schedule(1000){
-            (context as MainActivity).runOnUiThread {
-                (context as MainActivity).showToolbar()
-                hideLoadingScreen()
-            }
-        }
+        (context as MainActivity).showCalculatingScreen()
 
-        // Calculating Tips
-        tipReport = TipReport(employeesViewModel.employees.value!!,billsViewModel.billsList.value!!)
-        val totalHours = employeesViewModel.getSumHours()
-        val totalBills = billsViewModel.getSumOfBills()
-        val roundingError = tipReport.distributeTips(totalHours,totalBills)
-        checkRoundingError(roundingError)
+        // Distributing Tips
+        tipReport = (context as MainActivity).getRoughTipReport()
+        tipReport.distributeTips()
+        if (tipReport.majorRoundingError != null) {
+            showRoundingErrorDialog()
+        }
         displayTipRate()
 
         //  Tip Distribution RecyclerView
-        distributionAdapter = DistributionAdapter(employeesViewModel.employees.value!!)
+        val employees = (context as MainActivity).getRoughTipReport().employees
+        distributionAdapter = DistributionAdapter(employees)
         binding.rcyTipDistribution.layoutManager = LinearLayoutManager(context as MainActivity)
         binding.rcyTipDistribution.adapter = distributionAdapter
 
         // Button Logic
-        binding.includeRoundingErrorsDialog.btnDialogConfirm.setOnClickListener {
-            binding.includeRoundingErrorsDialog.root.visibility = View.GONE
-        }
-
         binding.btnSaveEmployees.setOnClickListener {
             // Clearing inputted data, except for employee names
             employeesViewModel.clearEmployeeHoursAndDistributedTips()
             billsViewModel.clearBillsList()
-            (context as MainActivity).showTitleScreen(true)
+            (context as MainActivity).showTitleScreen()
             findNavController().navigate(R.id.action_outputTipsFragment_to_EmployeeFragment)
         }
     }
-
-    private fun displayTipRate() {
-        val tipRate = tipReport.getTipRate()
-        val roundedTipRate = BigDecimal(tipRate).setScale(2, RoundingMode.HALF_EVEN).toString()
-        binding.tvTipRate.text = roundedTipRate
-    }
-
-    private fun checkRoundingError(roundingError: Double?) {
-        val dialogBox = binding.includeRoundingErrorsDialog.root
-        val dialogTextView: TextView = dialogBox.findViewById(R.id.et_dialog_box)
-
-        if (roundingError == null) {
-            dialogBox.visibility = View.GONE
-        }
-        else if (roundingError > 0) {
-            dialogTextView.text = "You will be short ${roundingError.absoluteValue.toInt()} dollars"
-        }
-        else if (roundingError < 0) {
-            dialogTextView.text = "You will have ${roundingError.absoluteValue.toInt()} dollars remaining."
-        }
-    }
-
-
-    private fun hideLoadingScreen() {
-        binding.loadingScreen.root.visibility = View.GONE
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
+    private fun showRoundingErrorDialog() {
+        binding.includeRoundingErrorsDialog.root.visibility = View.VISIBLE
+
+        val roundingError = tipReport.majorRoundingError!!
+        val errorMessage = if (roundingError < 0.0) {
+            "You will have $${roundingError.absoluteValue} leftover."
+        }
+        else {
+            "You will need to redistribute $${roundingError.absoluteValue}."
+        }
+        binding.includeRoundingErrorsDialog.tvDialogRoundingErrorMessage.text = errorMessage
+
+        binding.includeRoundingErrorsDialog.btnDialogRoundingErrorConfirm.setOnClickListener {
+            binding.includeRoundingErrorsDialog.root.visibility = View.GONE
+        }
+    }
+
+    private fun displayTipRate() {
+        val tipRate = tipReport.tipRate
+        val roundedTipRate = BigDecimal(tipRate).setScale(2, RoundingMode.HALF_EVEN).toString()
+        binding.tvTipRate.text = "$ $roundedTipRate"
+    }
+
+
+
+
 
 
 

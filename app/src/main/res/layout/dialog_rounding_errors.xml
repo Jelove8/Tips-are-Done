@@ -2,97 +2,76 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/cnst_dialog_box"
+    android:id="@+id/cnst_dialog_rounding_error"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#CC000000">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/subcnst_dialog_box1"
+        android:id="@+id/subcnst_dialog_rounding_error"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="64dp"
-        android:layout_marginEnd="48dp"
+        android:layout_marginEnd="32dp"
         android:layout_marginBottom="128dp"
         android:background="@drawable/rounded_square"
         android:backgroundTint="@color/white"
         android:clickable="true"
         android:elevation="16dp"
-        android:padding="10dp"
+        android:padding="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/btn_dialog_delete"
-            android:layout_width="26dp"
-            android:layout_height="28dp"
-            android:layout_margin="4dp"
-            android:background="@drawable/icon_trash"
-            android:backgroundTint="@color/house_green"
-            android:elevation="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tv_dialog_box"
+        <LinearLayout
+            android:id="@+id/ll_dialog_rounding_error"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/sodo"
-            android:textAlignment="center"
-            android:textSize="16sp"
+            android:layout_height="match_parent"
+            android:background="@drawable/rounded_square"
+            android:backgroundTint="@color/warm_neutral"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/btn_dialog_delete"
-            tools:text="Edit/New Employee" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <Button
-            android:id="@+id/btn_dialog_cancel"
-            android:layout_width="130dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="24dp"
-            android:backgroundTint="#940B0B"
-            android:fontFamily="@font/sodo"
-            android:text="Cancel"
-            android:textSize="12sp"
-            app:iconSize="16dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/et_dialog_box"
-            tools:iconGravity="textEnd" />
+            <TextView
+                android:id="@+id/tv_dialog_rounding_error_heading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/sodo"
+                android:text="Rounding Errors"
+                android:textAlignment="center"
+                android:textSize="16sp" />
 
-        <Button
-            android:id="@+id/btn_dialog_confirm"
-            android:layout_width="130dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="8dp"
-            android:fontFamily="@font/sodo"
-            android:text="Confirm"
-            android:textSize="12sp"
-            app:icon="@drawable/icon_checkmark"
-            app:iconSize="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/et_dialog_box"
-            tools:iconGravity="textEnd" />
+            <TextView
+                android:id="@+id/tv_dialog_rounding_error_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:fontFamily="@font/sodo"
+                android:hint="You will have $6.00 left over"
+                android:inputType="text"
+                android:textAlignment="center"
+                android:textSize="16sp"
+                tools:ignore="TouchTargetSizeCheck" />
 
-        <EditText
-            android:id="@+id/et_dialog_box"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
-            android:fontFamily="@font/sodo"
-            android:hint="Name"
-            android:inputType="text"
-            android:textAlignment="center"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_dialog_box"
-            tools:ignore="TouchTargetSizeCheck"
-            tools:text="Scooby Doo" />
+            <Button
+                android:id="@+id/btn_dialog_rounding_error_confirm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/sodo"
+                android:text="Got It"
+                android:textSize="12sp"
+                app:icon="@drawable/icon_checkmark"
+                app:iconSize="16dp"
+                tools:iconGravity="textEnd" />
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

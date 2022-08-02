@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/warm_neutral"
     tools:context=".views.EmployeeListFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -97,8 +96,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:fontFamily="@font/sodo"
-            android:text="Tip Rate"
-            android:textSize="20sp"
+            android:text="We made"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -107,14 +106,13 @@
             android:id="@+id/tv_tip_rate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:fontFamily="@font/sodo"
-            android:text="0.00"
+            android:text="$ 0.00"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@+id/tv_tip_rate_label"
             app:layout_constraintStart_toEndOf="@+id/tv_tip_rate_label"
-            app:layout_constraintTop_toTopOf="@+id/tv_tip_rate_label"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toTopOf="@+id/tv_tip_rate_label" />
 
         <TextView
             android:id="@+id/tv_tip_rate_units"
@@ -122,10 +120,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:fontFamily="@font/sodo"
-            android:text="$ / hour"
-            android:textSize="10sp"
-            app:layout_constraintStart_toEndOf="@+id/tv_tip_rate"
-            app:layout_constraintTop_toTopOf="@+id/tv_tip_rate" />
+            android:text="an hour !"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_tip_rate_label"
+            app:layout_constraintStart_toEndOf="@+id/tv_tip_rate" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -134,15 +132,10 @@
         layout="@layout/dialog_rounding_errors"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <include
-        android:id="@+id/loading_screen"
-        layout="@layout/calculating_screen"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
