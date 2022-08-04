@@ -2,13 +2,14 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cnst_tip_collection"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".views.CollectionFragment">
+    tools:context=".views.TipCollectionFragment">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cnst_tip_distribution_header"
+        android:id="@+id/cnst_tip_collection_header"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/white"
@@ -49,17 +50,17 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcy_bills"
+        android:id="@+id/rcy_tip_collection"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/cnst_tip_distribution_footer"
+        app:layout_constraintBottom_toTopOf="@+id/cnst_tip_collection_footer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cnst_tip_distribution_header" />
+        app:layout_constraintTop_toBottomOf="@+id/cnst_tip_collection_header" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cnst_tip_distribution_footer"
+        android:id="@+id/cnst_tip_collection_footer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp"
@@ -106,7 +107,7 @@
             app:layout_constraintVertical_bias="0.0" />
 
         <Button
-            android:id="@+id/btn_confirm_bills"
+            android:id="@+id/btn_tip_collection_confirm"
             android:layout_width="wrap_content"
             android:layout_height="56dp"
             android:backgroundTint="@color/warm_neutral"

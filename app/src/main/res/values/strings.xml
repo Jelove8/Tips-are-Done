@@ -6,7 +6,7 @@
     <string name="edit_employee_label">Edit Employee</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
-\
+    \
     <string name="done">DONE</string>
     <!-- TODO: Remove or change this placeholder text -->
 
@@ -17,5 +17,12 @@
     <string name="employee_name_required">A name must be entered.</string>
     <string name="dates_required">Both dates must be filled out.</string>
     <string name="employee_hours_required">Every field must be filled..</string>
+
+    <string name="invalid_dates1">Both dates must be filled out.</string>
+    <string name="invalid_dates2">The dates entered are invalid.</string>
+    <string name="error_has_occurred">An error has occurred.</string>
+
+    <string name="invalid_bills1">Collected tips cannot be zero.</string>
+    <string name="invalid_bills2">An incorrect amount has been detected.</string>
 
 </resources>

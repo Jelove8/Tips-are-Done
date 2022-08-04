@@ -3,58 +3,68 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/ListFragment">
+    app:startDestination="@id/EmployeeListFragment">
 
     <fragment
-        android:id="@+id/ListFragment"
+        android:id="@+id/EmployeeListFragment"
         android:name="com.example.tipsaredone.views.EmployeeListFragment"
-        android:label="Doin' Tips"
+        android:label="My Employees"
         tools:layout="@layout/fragment_employees_list">
-
-
         <action
-            android:id="@+id/action_ListFrag_to_HoursFrag"
-            app:destination="@id/HoursFragment" />
-        <action
-            android:id="@+id/action_ListFragment_to_employeeDialogFragment"
-            app:destination="@id/employeeDialogFragment"
+            android:id="@+id/action_EmployeeListFrag_to_EmployeeProfileFrag"
+            app:destination="@id/EmployeeDialogFragment"
             app:launchSingleTop="false" />
+        <action
+            android:id="@+id/action_EmployeeListFrag_to_DatePickerFrag"
+            app:destination="@id/DatePickerFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/CollectionFragment"
-        android:name="com.example.tipsaredone.views.CollectionFragment"
+        android:name="com.example.tipsaredone.views.TipCollectionFragment"
         android:label="Tips Are Almost Done"
-        tools:layout="@layout/fragment_collection" >
+        tools:layout="@layout/fragment_tip_collection" >
         <action
             android:id="@+id/action_CollectionFrag_to_DistributionFrag"
             app:destination="@id/DistributionFragment"
             app:enterAnim="@anim/slide_to_the_left"
             app:popEnterAnim="@anim/slide_to_the_right" />
     </fragment>
+
     <fragment
         android:id="@+id/DistributionFragment"
-        android:name="com.example.tipsaredone.views.DistributionFragment"
+        android:name="com.example.tipsaredone.views.TipDistributionFragment"
         android:label="Tips Are Done"
-        tools:layout="@layout/fragment_distribution" >
+        tools:layout="@layout/fragment_tip_distribution" >
         <action
             android:id="@+id/action_outputTipsFragment_to_EmployeeFragment"
-            app:destination="@id/ListFragment" />
+            app:destination="@id/EmployeeListFragment" />
     </fragment>
     <fragment
-        android:id="@+id/HoursFragment"
+        android:id="@+id/EmployeeHoursFragment"
         android:name="com.example.tipsaredone.views.EmployeeHoursFragment"
-        android:label="EmployeeHoursFragment" >
+        android:label="How many hours did everyone work?"
+        tools:layout="@layout/fragment_employee_hours">
         <action
             android:id="@+id/action_HoursFrag_to_CollectionFrag"
             app:destination="@id/CollectionFragment" />
     </fragment>
     <fragment
-        android:id="@+id/employeeDialogFragment"
-        android:name="com.example.tipsaredone.views.EmployeeDialogFragment"
-        android:label="fragment_employee_dialog"
-        tools:layout="@layout/fragment_employee_dialog" >
+        android:id="@+id/EmployeeDialogFragment"
+        android:name="com.example.tipsaredone.views.EmployeeProfileFragment"
+        android:label="Employee Profile"
+        tools:layout="@layout/fragment_employee_profile" >
         <action
-            android:id="@+id/action_employeeDialogFragment_to_ListFragment"
-            app:destination="@id/ListFragment" />
+            android:id="@+id/action_EmployeeDialogFrag_to_EmployeeListFrag"
+            app:destination="@id/EmployeeListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/DatePickerFragment"
+        android:name="com.example.tipsaredone.views.DatePickerFragment"
+        android:label="Which week are you doing tips?"
+        tools:layout="@layout/fragment_date_picker" >
+        <action
+            android:id="@+id/action_DatePickerFrag_to_EmployeeHoursFrag"
+            app:destination="@id/EmployeeHoursFragment" />
     </fragment>
 </navigation>

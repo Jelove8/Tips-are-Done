@@ -1,22 +1,17 @@
 package com.example.tipsaredone.views
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.view.MenuHost
-import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tipsaredone.R
-import com.example.tipsaredone.adapters.EmployeesAdapter
 import com.example.tipsaredone.adapters.HoursAdapter
 import com.example.tipsaredone.databinding.FragmentEmployeeHoursBinding
-import com.example.tipsaredone.databinding.FragmentEmployeesListBinding
-import com.example.tipsaredone.model.Employee
-import com.example.tipsaredone.viewmodels.EmployeesViewModel
 import com.example.tipsaredone.viewmodels.HoursViewModel
 
 class EmployeeHoursFragment : Fragment() {
@@ -54,7 +49,7 @@ class EmployeeHoursFragment : Fragment() {
 
         // Button: Confirm employees and navigate to next fragment.
         binding.btnEmployeeHoursConfirm.setOnClickListener {
-            if (hoursViewModel.checkForValidHours()) {
+            if (checkForValidHours()) {
                 findNavController().navigate(R.id.action_HoursFrag_to_CollectionFrag)
             }
             else {
@@ -70,7 +65,7 @@ class EmployeeHoursFragment : Fragment() {
     
     // Updates Views
     private fun updateConfirmButtonVisibility() {
-        if (hoursViewModel.checkForValidHours()) {
+        if (checkForValidHours()) {
             val sbGreen = ResourcesCompat.getColor(resources, R.color.starbucks_green, (context as MainActivity).theme)
             binding.btnEmployeeHoursConfirm.setBackgroundColor(sbGreen)
         }
@@ -81,5 +76,15 @@ class EmployeeHoursFragment : Fragment() {
     }
     private fun updateSumOfHours() {
         binding.tvTotalHours.text = hoursViewModel.getSumOfHours().toString()
+    }
+
+    private fun checkForValidHours(): Boolean {
+        var output = true
+        hoursViewModel.tipReports.value!!.forEach {
+            if (it.employeeHours == null) {
+                output = false
+            }
+        }
+        return output
     }
 }

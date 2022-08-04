@@ -1,7 +1,5 @@
 package com.example.tipsaredone
 
-import android.util.Log
-import com.example.tipsaredone.model.Employee
 import org.junit.Test
 
 import org.junit.Assert.*

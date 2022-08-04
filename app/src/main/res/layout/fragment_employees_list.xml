@@ -2,13 +2,14 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cnst_employee_list"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
     tools:context=".views.EmployeeListFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcy_employees"
+        android:id="@+id/rcy_employee_list"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -17,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/btn_confirm_employees"
+        android:id="@+id/btn_employee_list_confirm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -32,19 +33,8 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <include
-        android:id="@+id/include_employee_dialog"
-        layout="@layout/dialog_employees"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <include
-        android:id="@+id/include_date_selector"
-        layout="@layout/dialog_date_selector"
+        android:id="@+id/include_new_employee"
+        layout="@layout/dialog_new_employee"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:visibility="gone"

@@ -2,6 +2,7 @@ package com.example.tipsaredone.views
 
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -13,12 +14,12 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.tipsaredone.R
 import com.example.tipsaredone.databinding.ActivityMainBinding
 import com.example.tipsaredone.model.*
-import com.example.tipsaredone.viewmodels.CollectionViewModel
+import com.example.tipsaredone.viewmodels.TipCollectionViewModel
+import com.example.tipsaredone.viewmodels.DatePickerViewModel
 import com.example.tipsaredone.viewmodels.EmployeesViewModel
-import java.time.LocalDate
+import com.example.tipsaredone.viewmodels.HoursViewModel
 import java.util.*
 import kotlin.concurrent.schedule
-
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,16 +28,13 @@ class MainActivity : AppCompatActivity() {
 
     // Other Components
     private lateinit var employeesViewModel: EmployeesViewModel
-    private lateinit var collectionViewModel: CollectionViewModel
-    private lateinit var roughTipReport: WeeklyTipReport
-    private val myEmployees = MyEmployees()
-    private val mockData = MockData()
+    private lateinit var datePickerViewModel: DatePickerViewModel
+    private lateinit var hoursViewModel: HoursViewModel
+    private lateinit var collectionViewModel: TipCollectionViewModel
 
-    // Title Screen Configurations
-    private var visibleTitleScreen: Boolean = true
-    private var visibleToolBar: Boolean = false
+    private lateinit var weeklyTipReport: WeeklyTipReport
 
-    // Internal Storage Boolean
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,57 +48,21 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
-
         // Initialize ViewModels
         employeesViewModel = ViewModelProvider(this)[EmployeesViewModel::class.java]
-        collectionViewModel = ViewModelProvider(this)[CollectionViewModel::class.java]
-
-
-        // Displays title screen if configurations are set to default.
-        showTitleScreen()
-
+        datePickerViewModel = ViewModelProvider(this)[DatePickerViewModel::class.java]
+        collectionViewModel = ViewModelProvider(this)[TipCollectionViewModel::class.java]
+        hoursViewModel = ViewModelProvider(this)[HoursViewModel::class.java]
 
 
     }
 
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
-
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE && !visibleTitleScreen) {
-            // Title Screen Configurations set to HIDDEN
-            visibleTitleScreen = false
-            visibleToolBar = true
-        }
-        else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT && !visibleTitleScreen) {
-            // Title Screen Configurations set to HIDDEN
-            visibleTitleScreen = false
-            visibleToolBar = true
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        // If MainActivity is destroyed, resets title screen configurations.
-        visibleTitleScreen = true
-        visibleToolBar = false
-    }
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)
         return navController.navigateUp(appBarConfiguration)
                 || super.onSupportNavigateUp()
     }
-
-    fun getEmployeesFromStorage(): MutableList<Employee> {
-        myEmployees.loadEmployeeNamesFromInternalStorage(this)
-        return myEmployees.getStoredEmployees()
-    }
-    /*
-    fun saveEmployeesToStorage() {
-        MyEmployees().saveEmployeeNamesToInternalStorage(employeesViewModel.employees.value!!,this)
-    }
-
-     */
 
     fun showTitleScreen() {
         binding.includeTitleScreen.root.visibility = View.VISIBLE
@@ -123,30 +85,61 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // Toolbar Visibility (used @DistributionFragment)
-    private fun hideToolbar() {
-        binding.toolbar.visibility = View.GONE
-        visibleToolBar = false
-    }
-    private fun showToolbar() {
-        binding.toolbar.visibility = View.VISIBLE
-        visibleToolBar = true
-    }
 
 
+    fun getWeeklyTipReport(): WeeklyTipReport {
+        return weeklyTipReport
+    }
+    fun initializeWeeklyTipReport() {
+        weeklyTipReport = WeeklyTipReport()
+        weeklyTipReport.startDate = datePickerViewModel.startDate.value!!
+        weeklyTipReport.endDate = datePickerViewModel.endDate.value!!
+        weeklyTipReport.initializeIndividualReports(employeesViewModel.employees.value!!)
+        hoursViewModel.initializeTipReports(weeklyTipReport.individualReports)
+    }
+    fun initializeWeeklyTipCollection() {
+        weeklyTipReport.initializeTipsCollected(collectionViewModel.billsList.value!!)
+    }
+    fun logWeeklyTipReport() {
+        Log.d("tip_report","Week Start: ${weeklyTipReport.startDate}")
+        Log.d("tip_report","Week End: ${weeklyTipReport.endDate}\n")
 
-    // Tip Report
-    fun generateTipReport(employees: MutableList<NewEmployee>,startDate: LocalDate,endDate: LocalDate) {
-        roughTipReport = WeeklyTipReport()
-        roughTipReport.initializeIndividualReports(employees,startDate,endDate)
-    }
-    fun getRoughTipReport(): WeeklyTipReport {
-        return roughTipReport
+        Log.d("tip_report","Tips Collected: ${weeklyTipReport.sumOfBills}")
+        for ((i,type) in weeklyTipReport.bills.withIndex()) {
+            when (i) {
+                0 -> {
+                    Log.d("tip_report","Ones: $type")
+                }
+                1 -> {
+                    Log.d("tip_report","Twos: $type")
+                }
+                2 -> {
+                    Log.d("tip_report","Fives: $type")
+                }
+                3 -> {
+                    Log.d("tip_report","Tens: $type")
+                }
+                4 -> {
+                    Log.d("tip_report","Twenties: $type")
+                }
+                5 -> {
+                    Log.d("tip_report","Fifties: $type")
+                }
+                6 -> {
+                    Log.d("tip_report","Hundreds: $type\n")
+                }
+            }
+        }
+
+        Log.d("tip_report","Tip Rate: ${weeklyTipReport.tipRate}")
+        Log.d("tip_report","Error: ${weeklyTipReport.majorRoundingError}\n")
+
+        Log.d("tip_report","Individual Tip Reports")
+        weeklyTipReport.individualReports.forEach {
+            Log.d("tip_report","Employee: ${it.employeeName}, Hours: ${it.employeeHours}, Distributed Tips: ${it.distributedTips}, Week Start: ${it.startDate}, Week End: ${it.endDate}, Collected: ${it.collected}")
+        }
     }
 
-    fun getMockData(): MockData {
-        return mockData
-    }
 
     // Misc
     fun makeToastMessage(message: String, isDurationShort: Boolean = true) {

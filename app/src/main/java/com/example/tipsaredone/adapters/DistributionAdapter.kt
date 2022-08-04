@@ -8,20 +8,20 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tipsaredone.R
-import com.example.tipsaredone.model.Employee
+import com.example.tipsaredone.model.IndividualTipReport
 
-class DistributionAdapter(private val employees: MutableList<Employee>) : RecyclerView.Adapter<DistributionAdapter.EmployeesViewHolder>() {
+class DistributionAdapter(private val tipReports: MutableList<IndividualTipReport>) : RecyclerView.Adapter<DistributionAdapter.DistributedTipsViewHolder>() {
 
-    class EmployeesViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
+    class DistributedTipsViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
         private val employeeIndex: TextView = itemView.findViewById(R.id.tv_employee_index)
         private val employeeName: TextView = itemView.findViewById(R.id.tv_indiv_report_endDate)
         private val employeeTips: EditText = itemView.findViewById(R.id.et_employee_hours)
 
-        fun displayEmployeeData(employee: Employee, position: Int) {
+        fun displayEmployeeData(tipReport: IndividualTipReport, position: Int) {
             employeeIndex.text = (position + 1).toString()
-            employeeName.text = employee.name
+            employeeName.text = tipReport.employeeName
 
-            val tipsString = employee.tips.toString()
+            val tipsString = tipReport.distributedTips.toString()
             if (tipsString.contains(".0")) {
                 tipsString.removeSuffix(".0")
             }
@@ -30,21 +30,15 @@ class DistributionAdapter(private val employees: MutableList<Employee>) : Recycl
         }
     }
 
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EmployeesViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DistributedTipsViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.viewholder_employee_hours, parent, false)
-
-        return EmployeesViewHolder(view)
+        return DistributedTipsViewHolder(view)
     }
-
-    override fun onBindViewHolder(holder: EmployeesViewHolder, position: Int) {
-        holder.displayEmployeeData(employees[position],position)
+    override fun onBindViewHolder(holder: DistributedTipsViewHolder, position: Int) {
+        holder.displayEmployeeData(tipReports[position],position)
     }
-
     override fun getItemCount(): Int {
-        return employees.size
+        return tipReports.size
     }
-
-
 }

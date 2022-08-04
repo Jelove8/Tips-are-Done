@@ -6,58 +6,52 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:padding="16dp"
-    tools:context=".views.EmployeeDialogFragment">
+    tools:context=".views.EmployeeProfileFragment">
 
     <TextView
-        android:id="@+id/tv_dialog_box"
+        android:id="@+id/tv_employee_profile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:fontFamily="@font/sodo"
         android:textAlignment="center"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Edit/New Employee" />
+        tools:text="Edit Employee" />
 
     <EditText
-        android:id="@+id/et_dialog_box"
+        android:id="@+id/et_employee_profile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
         android:fontFamily="@font/sodo"
-        android:hint="Name"
+        android:hint="Name goes here"
         android:inputType="text"
         android:textAlignment="center"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_dialog_box"
+        app:layout_constraintTop_toBottomOf="@+id/tv_employee_profile"
         tools:ignore="TouchTargetSizeCheck"
-        tools:text="Scooby Doo" />
+        tools:text="Anjelo Valera" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcy_indiv_tip_reports"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
         app:layout_constraintBottom_toTopOf="@+id/btn_dialog_confirm"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_dialog_box">
+        app:layout_constraintTop_toBottomOf="@+id/et_employee_profile">
 
     </androidx.recyclerview.widget.RecyclerView>
-
-    <TextView
-        android:id="@+id/btn_dialog_delete"
-        android:layout_width="26dp"
-        android:layout_height="28dp"
-        android:background="@drawable/icon_trash"
-        android:backgroundTint="@color/house_green"
-        android:elevation="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btn_dialog_confirm"
@@ -74,5 +68,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:iconGravity="textEnd" />
+
+    <include
+        android:id="@+id/include_delete_employee_dialog"
+        layout="@layout/dialog_delete_employee"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

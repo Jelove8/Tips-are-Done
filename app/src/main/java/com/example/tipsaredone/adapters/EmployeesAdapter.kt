@@ -8,10 +8,10 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tipsaredone.R
-import com.example.tipsaredone.model.NewEmployee
+import com.example.tipsaredone.model.Employee
 
 class EmployeesAdapter(
-    private var employees: MutableList<NewEmployee> = mutableListOf(),
+    private var employees: MutableList<Employee> = mutableListOf(),
     private val itemClickCallback: ((Int) -> Unit)?,
 ) : RecyclerView.Adapter<EmployeesAdapter.EmployeesViewHolder>() {
 
@@ -38,7 +38,7 @@ class EmployeesAdapter(
             }
         }
 
-        fun displayEmployeeInfo(employee: NewEmployee) {
+        fun displayEmployeeInfo(employee: Employee) {
 
             employeeName.text = employee.name
 
@@ -65,7 +65,7 @@ class EmployeesAdapter(
         return employees.size
     }
 
-    fun addNewEmployee(newEmployee: NewEmployee) {
+    fun addNewEmployee(newEmployee: Employee) {
         employees.add(newEmployee)
         employees.sortBy { it.name }
         notifyDataSetChanged()

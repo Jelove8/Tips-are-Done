@@ -1,12 +1,22 @@
 package com.example.tipsaredone.model
 
 data class Employee(
+    val id: String,
     var name: String,
-    var tippableHours: Double? = null,
-    var tips: Double = 0.0,
     val tipReports: MutableList<IndividualTipReport> = mutableListOf()
 ) {
-    override fun toString(): String {
-        return "Category [name: ${this.name}, tippableHours: ${this.tippableHours}, distributedTips: ${this.tips}]"
+
+    fun addTipReport(data: IndividualTipReport) {
+        tipReports.add(data)
     }
+    fun checkForUncollectedTips(): Double {
+        var output = 0.0
+        tipReports.forEach {
+            if (!it.collected && it.distributedTips != null) {
+                output += it.distributedTips!!
+            }
+        }
+        return output
+    }
+
 }

@@ -7,14 +7,24 @@ import kotlin.math.absoluteValue
 
 class WeeklyTipReport(
     var individualReports: MutableList<IndividualTipReport> = mutableListOf(),
-    var bills: MutableList<Map<String,Int>> = mutableListOf(),
-    var sumOfBills: Double = 0.0,
     var startDate: LocalDate? = null,
     var endDate: LocalDate? = null,
+    var bills: MutableList<Map<String,Int>> = mutableListOf(),
+    var sumOfBills: Double = 0.0,
+    var tipRate: Double = 0.0,
     var majorRoundingError: Int? = null,
-    var tipRate: Double = 0.0
+
 ) {
-    fun updateBills(data: MutableList<Double>) {
+    fun initializeIndividualReports(employees: MutableList<Employee>) {
+        employees.sortBy { it.name }
+        employees.forEach {
+            individualReports.add(
+                IndividualTipReport(it.name,it.id,null,null,startDate!!,endDate!!,null,false)
+            )
+        }
+    }
+
+    fun initializeTipsCollected(data: MutableList<Double>) {
         for ((i,item) in data.withIndex()) {
             when (i) {
                 0 -> {
@@ -42,6 +52,7 @@ class WeeklyTipReport(
         }
         sumOfBills = data.sum()
     }
+
     private fun getSumHours(): Double {
         var sum = 0.0
         individualReports.forEach {
@@ -76,8 +87,8 @@ class WeeklyTipReport(
         }
     }
     private fun redistributeTips(roundingError: Double) {
-        var firstEmployee = IndividualTipReport("Template1","Template1",0.0,0.0, LocalDate.parse("0000-00-00"),LocalDate.parse("0000-00-01"),null,false)
-        var secondEmployee = IndividualTipReport("Template2","Template2",0.0,0.0, LocalDate.parse("0000-00-00"),LocalDate.parse("0000-00-01"),null,false)
+        var firstEmployee = IndividualTipReport("Template1","Template1",0.0,0.0, LocalDate.parse("2000-01-01"),LocalDate.parse("2000-01-02"),null,false)
+        var secondEmployee = IndividualTipReport("Template2","Template2",0.0,0.0, LocalDate.parse("2000-01-01"),LocalDate.parse("2000-01-02"),null,false)
 
         val employeesCopy = individualReports.toMutableList()
         firstEmployee = employeesCopy.random()
@@ -104,12 +115,4 @@ class WeeklyTipReport(
 
     }
 
-    fun initializeIndividualReports(employees: MutableList<NewEmployee>, startDate: LocalDate, endDate: LocalDate) {
-        employees.sortBy { it.name }
-        employees.forEach {
-            individualReports.add(
-                IndividualTipReport(it.name,it.id,0.0,0.0,startDate,endDate,null,false)
-            )
-        }
-    }
 }

@@ -2,15 +2,15 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/cnst_dialog_box"
+    android:id="@+id/cnst_dialog_new_employee"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#CC000000">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/subcnst_dialog_box1"
+        android:id="@+id/subcnst_dialog_new_employee"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
         android:layout_marginTop="64dp"
         android:layout_marginEnd="48dp"
@@ -19,58 +19,31 @@
         android:backgroundTint="@color/white"
         android:clickable="true"
         android:elevation="16dp"
-        android:padding="10dp"
+        android:padding="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/btn_dialog_delete"
-            android:layout_width="26dp"
-            android:layout_height="28dp"
-            android:layout_margin="4dp"
-            android:background="@drawable/icon_trash"
-            android:backgroundTint="@color/house_green"
-            android:elevation="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tv_dialog_box"
+            android:id="@+id/tv_employee_profile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/sodo"
+            android:hint="New Employee"
             android:textAlignment="center"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/btn_dialog_delete"
-            tools:text="Edit/New Employee" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/btn_dialog_cancel"
+            android:id="@+id/btn_dialog_new_employee_confirm"
             android:layout_width="125dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginBottom="16dp"
-            android:backgroundTint="@color/starbucks_green"
+            android:backgroundTint="@color/warm_neutral"
             android:fontFamily="@font/sodo"
-            android:text="Cancel"
-            android:textSize="12sp"
-            app:iconSize="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:iconGravity="textEnd" />
-
-        <Button
-            android:id="@+id/btn_dialog_confirm"
-            android:layout_width="125dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="16dp"
-            android:fontFamily="@font/sodo"
-            android:text="Confirm"
+            android:text="Add"
             android:textSize="12sp"
             app:icon="@drawable/icon_checkmark"
             app:iconGravity="textEnd"
@@ -80,29 +53,21 @@
             tools:iconGravity="textEnd" />
 
         <EditText
-            android:id="@+id/et_dialog_box"
+            android:id="@+id/et_dialog_new_employee"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="32dp"
             android:fontFamily="@font/sodo"
-            android:hint="Name"
+            android:hint="Enter name here"
             android:inputType="text"
             android:textAlignment="center"
             android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@+id/btn_dialog_new_employee_confirm"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_dialog_box"
-            tools:ignore="TouchTargetSizeCheck"
-            tools:text="Scooby Doo" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rcy_indiv_tip_reports"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/btn_dialog_confirm"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/et_dialog_box" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_employee_profile"
+            tools:ignore="TouchTargetSizeCheck" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

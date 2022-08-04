@@ -18,7 +18,7 @@ class MyEmployees() {
         const val INTERNAL_STORAGE = "internal_storage"
     }
 
-
+/*
     private fun convertEmployeeNamesToJson(employee_names: MutableList<String>): String {
         // Converting list of string into Json.
         val gson = GsonBuilder().setPrettyPrinting().create()
@@ -91,6 +91,8 @@ class MyEmployees() {
     fun getStoredEmployees(): MutableList<Employee> {
         return storedEmployees
     }
+
+ */
 }
 
 

@@ -10,11 +10,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tipsaredone.R
 
-class BillsAdapter(private val bills: MutableList<Double>,
-                   private val textChangedCallback: ((Int,Double?) -> Unit)?
-) : RecyclerView.Adapter<BillsAdapter.BillsViewHolder>() {
+class TipCollectionAdapter(private val tipsCollected: MutableList<Double>,
+                           private val textChangedCallback: ((Int,Double?) -> Unit)?
+) : RecyclerView.Adapter<TipCollectionAdapter.BillsViewHolder>() {
 
-    class BillsViewHolder(ItemView: View, adapter: BillsAdapter, textChangedCallback: ((Int, Double?) -> Unit)?) : RecyclerView.ViewHolder(ItemView) {
+    class BillsViewHolder(ItemView: View, adapter: TipCollectionAdapter, textChangedCallback: ((Int, Double?) -> Unit)?) : RecyclerView.ViewHolder(ItemView) {
         private val tvIndex: TextView = itemView.findViewById(R.id.tv_employee_index)
         private val tvBillType: TextView = itemView.findViewById(R.id.tv_indiv_report_endDate)
         private val etBillAmount: EditText = itemView.findViewById(R.id.et_employee_hours)
@@ -43,7 +43,6 @@ class BillsAdapter(private val bills: MutableList<Double>,
         }
 
         fun displayBillTitleAndAmount(amount: Double) {
-
             tvBillType.text = when (adapterPosition) {
                 0 -> {"O N E S"}
                 1 -> {"T W O S"}
@@ -70,21 +69,19 @@ class BillsAdapter(private val bills: MutableList<Double>,
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BillsViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.viewholder_employee_hours, parent, false)
-
         return BillsViewHolder(view,this,textChangedCallback)
     }
-
     override fun onBindViewHolder(holder: BillsViewHolder, position: Int) {
-        holder.displayBillTitleAndAmount(bills[position])
+        holder.displayBillTitleAndAmount(tipsCollected[position])
     }
 
     override fun getItemCount(): Int {
-        // Should always return 5
-        return bills.size
+        // Should always return 7
+        return tipsCollected.size
     }
 
     private fun editBillAmount(position: Int,newAmount:Double?) {
-        bills[position] = newAmount ?: 0.0
+        tipsCollected[position] = newAmount ?: 0.0
     }
 
 }

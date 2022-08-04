@@ -16,15 +16,7 @@ class HoursViewModel: ViewModel() {
     }
 
     // Input Validity Checks
-    fun checkForValidHours(): Boolean {
-        var output = true
-        _tipReports.value!!.forEach {
-            if (it.employeeHours == null) {
-                output = false
-            }
-        }
-        return output
-    }
+
 
     // Other
     fun getSumOfHours(): Double {
