@@ -16,7 +16,7 @@ class BillsAdapter(private val bills: MutableList<Double>,
 
     class BillsViewHolder(ItemView: View, adapter: BillsAdapter, textChangedCallback: ((Int, Double?) -> Unit)?) : RecyclerView.ViewHolder(ItemView) {
         private val tvIndex: TextView = itemView.findViewById(R.id.tv_employee_index)
-        private val tvBillType: TextView = itemView.findViewById(R.id.tv_employee_name)
+        private val tvBillType: TextView = itemView.findViewById(R.id.tv_indiv_report_endDate)
         private val etBillAmount: EditText = itemView.findViewById(R.id.et_employee_hours)
 
         init {
@@ -69,7 +69,7 @@ class BillsAdapter(private val bills: MutableList<Double>,
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BillsViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.viewholder_employee, parent, false)
+            .inflate(R.layout.viewholder_employee_hours, parent, false)
 
         return BillsViewHolder(view,this,textChangedCallback)
     }

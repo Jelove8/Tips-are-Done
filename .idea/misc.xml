@@ -23,6 +23,8 @@
         <entry key="..\:/Users/jelov/AndroidStudioProjects/TipsareDone/app/src/main/res/layout/fragment_collection.xml" value="0.5208333333333334" />
         <entry key="..\:/Users/jelov/AndroidStudioProjects/TipsareDone/app/src/main/res/layout/fragment_distribution.xml" value="0.5" />
         <entry key="..\:/Users/jelov/AndroidStudioProjects/TipsareDone/app/src/main/res/layout/fragment_edit_employee.xml" value="0.5208333333333334" />
+        <entry key="..\:/Users/jelov/AndroidStudioProjects/TipsareDone/app/src/main/res/layout/fragment_employee.xml" value="0.5208333333333334" />
+        <entry key="..\:/Users/jelov/AndroidStudioProjects/TipsareDone/app/src/main/res/layout/fragment_employee_dialog.xml" value="0.5208333333333334" />
         <entry key="..\:/Users/jelov/AndroidStudioProjects/TipsareDone/app/src/main/res/layout/fragment_employee_hours.xml" value="0.5" />
         <entry key="..\:/Users/jelov/AndroidStudioProjects/TipsareDone/app/src/main/res/layout/fragment_employees.xml" value="0.5208333333333334" />
         <entry key="..\:/Users/jelov/AndroidStudioProjects/TipsareDone/app/src/main/res/layout/fragment_employees_list.xml" value="0.5" />
@@ -35,7 +37,9 @@
         <entry key="..\:/Users/jelov/AndroidStudioProjects/TipsareDone/app/src/main/res/layout/title_screen.xml" value="0.5208333333333334" />
         <entry key="..\:/Users/jelov/AndroidStudioProjects/TipsareDone/app/src/main/res/layout/viewholder_employee.xml" value="0.5208333333333334" />
         <entry key="..\:/Users/jelov/AndroidStudioProjects/TipsareDone/app/src/main/res/layout/viewholder_employee_hours.xml" value="0.44594594594594594" />
+        <entry key="..\:/Users/jelov/AndroidStudioProjects/TipsareDone/app/src/main/res/layout/viewholder_employee_list.xml" value="0.5208333333333334" />
         <entry key="..\:/Users/jelov/AndroidStudioProjects/TipsareDone/app/src/main/res/layout/viewholder_employees.xml" value="0.5208333333333334" />
+        <entry key="..\:/Users/jelov/AndroidStudioProjects/TipsareDone/app/src/main/res/layout/viewholder_individual_reports.xml" value="0.5208333333333334" />
         <entry key="..\:/Users/jelov/AndroidStudioProjects/TipsareDone/app/src/main/res/menu/menu_confirm_employee_edits.xml" value="0.5208333333333334" />
         <entry key="..\:/Users/jelov/AndroidStudioProjects/TipsareDone/app/src/main/res/menu/menu_frag_employees.xml" value="0.5208333333333334" />
         <entry key="..\:/Users/jelov/AndroidStudioProjects/TipsareDone/app/src/main/res/menu/menu_main.xml" value="0.5208333333333334" />
@@ -47,5 +51,12 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.5208333333333334" />
+      </ProjectState>
+    </option>
   </component>
 </project>

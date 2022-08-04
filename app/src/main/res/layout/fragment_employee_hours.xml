@@ -2,29 +2,31 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cnst_employee_hours"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".views.CollectionFragment">
-
+    android:background="@color/white"
+    tools:context=".views.EmployeeListFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cnst_tip_distribution_header"
+        android:id="@+id/cnst_employee_hours_header"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:paddingTop="16dp"
         android:paddingBottom="16dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/tv_bills_header"
+            android:id="@+id/tv_employees_header11"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="60dp"
+            android:layout_marginStart="39dp"
             android:fontFamily="@font/sodo"
-            android:text="B I L L S"
+            android:text="E M P L O Y E E S"
             android:textAlignment="textStart"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -33,12 +35,12 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tv_dollar_amount_header"
+            android:id="@+id/tv_hours_header1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="24dp"
+            android:layout_marginEnd="39dp"
             android:fontFamily="@font/sodo"
-            android:text="$  A M O U N T"
+            android:text="H O U R S"
             android:textAlignment="center"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -49,78 +51,73 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcy_bills"
+        android:id="@+id/rcy_employee_hours"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/cnst_tip_distribution_footer"
+        app:layout_constraintBottom_toTopOf="@+id/cnst_employee_hours_footer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cnst_tip_distribution_header" />
+        app:layout_constraintTop_toBottomOf="@+id/cnst_employee_hours_header" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cnst_tip_distribution_footer"
+        android:id="@+id/cnst_employee_hours_footer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
+        android:layout_height="80dp"
+        android:elevation="8dp"
+        android:padding="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent">
 
+        <Button
+            android:id="@+id/btn_employee_hours_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sodo"
+            android:text="Confirm"
+            android:textSize="16sp"
+            app:icon="@drawable/icon_checkmark"
+            app:iconGravity="textEnd"
+            app:iconSize="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
-            android:id="@+id/tv_total_tips_label"
+            android:id="@+id/tv_total_hours_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:fontFamily="@font/sodo"
-            android:text="$"
+            android:text="total hours"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_total_hours"
+            app:layout_constraintStart_toEndOf="@+id/tv_total_hours"
+            app:layout_constraintTop_toTopOf="@+id/tv_total_hours" />
+
+        <TextView
+            android:id="@+id/tv_total_hours"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sodo"
+            android:text="0.00"
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tv_total_tips_label2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:fontFamily="@font/sodo"
-            android:text="total tips"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_total_tips"
-            app:layout_constraintStart_toEndOf="@+id/tv_total_tips"
-            app:layout_constraintTop_toTopOf="@+id/tv_total_tips" />
-
-        <TextView
-            android:id="@+id/tv_total_tips"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:fontFamily="@font/sodo"
-            android:text="0.00"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_total_tips_label"
-            app:layout_constraintStart_toEndOf="@+id/tv_total_tips_label"
-            app:layout_constraintTop_toTopOf="@+id/tv_total_tips_label"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <Button
-            android:id="@+id/btn_confirm_bills"
-            android:layout_width="wrap_content"
-            android:layout_height="56dp"
-            android:backgroundTint="@color/warm_neutral"
-            android:elevation="64dp"
-            android:fontFamily="@font/sodo"
-            android:text="Confirm"
-            app:icon="@drawable/icon_checkmark"
-            app:iconGravity="textEnd"
-            app:iconSize="24dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="SpeakableTextPresentCheck" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <include
+        android:id="@+id/include_employee_dialog"
+        layout="@layout/dialog_employees"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

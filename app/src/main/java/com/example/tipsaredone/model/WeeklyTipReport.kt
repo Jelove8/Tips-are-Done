@@ -1,13 +1,12 @@
 package com.example.tipsaredone.model
 
-import android.util.Log
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.time.LocalDate
 import kotlin.math.absoluteValue
 
-class RoughTipReport(
-    var employees: MutableList<Employee> = mutableListOf(),
+class WeeklyTipReport(
+    var individualReports: MutableList<IndividualTipReport> = mutableListOf(),
     var bills: MutableList<Map<String,Int>> = mutableListOf(),
     var sumOfBills: Double = 0.0,
     var startDate: LocalDate? = null,
@@ -45,8 +44,8 @@ class RoughTipReport(
     }
     private fun getSumHours(): Double {
         var sum = 0.0
-        employees.forEach {
-           sum += it.tippableHours!!
+        individualReports.forEach {
+           sum += it.employeeHours!!
         }
         return sum
     }
@@ -54,16 +53,16 @@ class RoughTipReport(
     fun distributeTips() {
         tipRate = sumOfBills / getSumHours()
 
-        for (emp in employees) {
-            val rawTips = tipRate * emp.tippableHours!!
+        for (report in individualReports) {
+            val rawTips = tipRate * report.employeeHours!!
             val roundedTips = BigDecimal(rawTips).setScale(0, RoundingMode.HALF_EVEN)
-            emp.tips = roundedTips.toDouble()
+            report.distributedTips = roundedTips.toDouble()
         }
 
         val expectedTotal = sumOfBills
         var actualTotal = 0.0
-        employees.forEach {
-            actualTotal += it.tips
+        individualReports.forEach {
+            actualTotal += it.distributedTips!!
         }
 
         val roundingError = actualTotal - expectedTotal
@@ -77,31 +76,40 @@ class RoughTipReport(
         }
     }
     private fun redistributeTips(roundingError: Double) {
-        var firstEmployee = Employee("Template1")
-        var secondEmployee = Employee("Template2")
+        var firstEmployee = IndividualTipReport("Template1","Template1",0.0,0.0, LocalDate.parse("0000-00-00"),LocalDate.parse("0000-00-01"),null,false)
+        var secondEmployee = IndividualTipReport("Template2","Template2",0.0,0.0, LocalDate.parse("0000-00-00"),LocalDate.parse("0000-00-01"),null,false)
 
-        val employeesCopy = employees.toMutableList()
+        val employeesCopy = individualReports.toMutableList()
         firstEmployee = employeesCopy.random()
         employeesCopy.remove(firstEmployee)
         secondEmployee = employeesCopy.random()
 
         if (roundingError < 0.0) {
-            firstEmployee.tips += 1.0
-            secondEmployee.tips += 1.0
+            firstEmployee.distributedTips = firstEmployee.distributedTips!! + 1.0
+            secondEmployee.distributedTips = secondEmployee.distributedTips!! + 1.0
         }
         else if (roundingError > 0.0) {
-            firstEmployee.tips -= 1.0
-            secondEmployee.tips -= 1.0
+            firstEmployee.distributedTips = firstEmployee.distributedTips!! - 1.0
+            secondEmployee.distributedTips = secondEmployee.distributedTips!! - 1.0
         }
 
-        for (emp in employees) {
+        for (emp in individualReports) {
             if (emp == firstEmployee) {
-                emp.tips = firstEmployee.tips
+                emp.distributedTips = firstEmployee.distributedTips
             }
             else if (emp == secondEmployee && roundingError.absoluteValue == 2.0) {
-                emp.tips = secondEmployee.tips
+                emp.distributedTips = secondEmployee.distributedTips
             }
         }
 
+    }
+
+    fun initializeIndividualReports(employees: MutableList<NewEmployee>, startDate: LocalDate, endDate: LocalDate) {
+        employees.sortBy { it.name }
+        employees.forEach {
+            individualReports.add(
+                IndividualTipReport(it.name,it.id,0.0,0.0,startDate,endDate,null,false)
+            )
+        }
     }
 }

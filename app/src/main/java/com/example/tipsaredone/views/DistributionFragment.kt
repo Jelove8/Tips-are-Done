@@ -5,21 +5,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tipsaredone.R
 import com.example.tipsaredone.adapters.DistributionAdapter
 import com.example.tipsaredone.databinding.FragmentDistributionBinding
-import com.example.tipsaredone.model.RoughTipReport
-import com.example.tipsaredone.model.TipReport
+import com.example.tipsaredone.model.WeeklyTipReport
 import com.example.tipsaredone.viewmodels.EmployeesViewModel
 import com.example.tipsaredone.viewmodels.CollectionViewModel
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.util.*
-import kotlin.concurrent.schedule
 import kotlin.math.absoluteValue
 
 class DistributionFragment : Fragment() {
@@ -28,7 +25,7 @@ class DistributionFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var distributionAdapter: DistributionAdapter
-    private lateinit var tipReport: RoughTipReport
+    private lateinit var tipReport: WeeklyTipReport
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,15 +52,15 @@ class DistributionFragment : Fragment() {
         displayTipRate()
 
         //  Tip Distribution RecyclerView
+        /*
         val employees = (context as MainActivity).getRoughTipReport().employees
         distributionAdapter = DistributionAdapter(employees)
         binding.rcyTipDistribution.layoutManager = LinearLayoutManager(context as MainActivity)
         binding.rcyTipDistribution.adapter = distributionAdapter
-
+*/
         // Button Logic
         binding.btnSaveEmployees.setOnClickListener {
             // Clearing inputted data, except for employee names
-            employeesViewModel.clearEmployeeHoursAndDistributedTips()
             billsViewModel.clearBillsList()
             (context as MainActivity).showTitleScreen()
             findNavController().navigate(R.id.action_outputTipsFragment_to_EmployeeFragment)

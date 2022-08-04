@@ -1,81 +1,71 @@
 package com.example.tipsaredone.adapters
 
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
+import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tipsaredone.R
-import com.example.tipsaredone.model.Employee
+import com.example.tipsaredone.model.NewEmployee
 
 class EmployeesAdapter(
-    private var employees: MutableList<Employee> = mutableListOf(),
+    private var employees: MutableList<NewEmployee> = mutableListOf(),
     private val itemClickCallback: ((Int) -> Unit)?,
-    private val textChangedCallback: ((Int) -> Unit)?
 ) : RecyclerView.Adapter<EmployeesAdapter.EmployeesViewHolder>() {
 
-    class EmployeesViewHolder(ItemView: View, itemClickCallback: ((Int) -> Unit)?, textChangedCallback: ((Int) -> Unit)?, adapter: EmployeesAdapter) : RecyclerView.ViewHolder(ItemView) {
-        private val employeeIndex: TextView = itemView.findViewById(R.id.tv_employee_index)
-        private val employeeName: TextView = itemView.findViewById(R.id.tv_employee_name)
-        private val employeeItem: ConstraintLayout = itemView.findViewById(R.id.cnst_tip_distribution_header)
-        private val employeeHours: EditText = itemView.findViewById(R.id.et_employee_hours)
+    init {
+        employees.sortBy {
+            it.name
+
+        }
+    }
+
+    class EmployeesViewHolder(
+        ItemView: View,
+        itemClickCallback: ((Int) -> Unit)?
+    ) : RecyclerView.ViewHolder(ItemView) {
+        private val employeeName: TextView = itemView.findViewById(R.id.tv_employee_list_name)
+        private val employeeItem: ConstraintLayout = itemView.findViewById(R.id.cnst_employee_list)
+        private val frameUncollected: FrameLayout = itemView.findViewById(R.id.frame_tips_uncollected)
+        private val tvUncollected: TextView = itemView.findViewById(R.id.tv_uncollected_tips)
+        private val frameCollected: FrameLayout = itemView.findViewById(R.id.frame_tips_collected)
 
         init {
-            employeeHours.addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(s: Editable?) {
-                    if (employeeHours.text.isNullOrEmpty()) {
-                        adapter.editEmployeeHours(adapterPosition,null)
-                        textChangedCallback?.invoke(adapterPosition)
-                    }
-                    else {
-                        adapter.editEmployeeHours(adapterPosition,s.toString().toDouble())
-                        textChangedCallback?.invoke(adapterPosition)
-                    }
-                }
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-                }
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
-                }
-            })
             employeeItem.setOnClickListener {
                 itemClickCallback?.invoke(adapterPosition)
             }
         }
 
-        fun displayEmployeeInfo(employee: Employee, position: Int) {
-            val index = position + 1
-            employeeIndex.text = index.toString()
+        fun displayEmployeeInfo(employee: NewEmployee) {
+
             employeeName.text = employee.name
 
-            if (employee.tippableHours == null) {
-                employeeHours.text.clear()
+            val uncollectedTips = employee.checkForUncollectedTips()
+            if (uncollectedTips == 0.0) {
+                frameCollected.visibility = View.VISIBLE
             }
             else {
-                employeeHours.setText(employee.tippableHours.toString())
+                tvUncollected.text = "$ $uncollectedTips"
+                frameUncollected.visibility = View.VISIBLE
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EmployeesViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.viewholder_employee, parent, false)
-        return EmployeesViewHolder(view, itemClickCallback, textChangedCallback, this)
+            .inflate(R.layout.viewholder_employee_list, parent, false)
+        return EmployeesViewHolder(view, itemClickCallback)
     }
     override fun onBindViewHolder(holder: EmployeesViewHolder, position: Int) {
-        holder.displayEmployeeInfo(employees[position],position)
+        holder.displayEmployeeInfo(employees[position])
     }
     override fun getItemCount(): Int {
         return employees.size
     }
 
-    fun addNewEmployee(newEmployee: Employee) {
+    fun addNewEmployee(newEmployee: NewEmployee) {
         employees.add(newEmployee)
         employees.sortBy { it.name }
         notifyDataSetChanged()
@@ -89,7 +79,5 @@ class EmployeesAdapter(
         employees.sortBy { it.name }
         notifyDataSetChanged()
     }
-    fun editEmployeeHours(position: Int, newHours: Double?) {
-        employees[position].tippableHours = newHours
-    }
+
 }

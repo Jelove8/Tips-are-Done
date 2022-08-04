@@ -3,20 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/EmployeeFragment">
+    app:startDestination="@id/ListFragment">
 
     <fragment
-        android:id="@+id/EmployeeFragment"
+        android:id="@+id/ListFragment"
         android:name="com.example.tipsaredone.views.EmployeeListFragment"
         android:label="Doin' Tips"
         tools:layout="@layout/fragment_employees_list">
 
 
         <action
-            android:id="@+id/action_EmployeeFragment_to_InputTipsFragment"
-            app:destination="@id/CollectionFragment"
-            app:enterAnim="@anim/slide_to_the_left"
-            app:popEnterAnim="@anim/slide_to_the_right" />
+            android:id="@+id/action_ListFrag_to_HoursFrag"
+            app:destination="@id/HoursFragment" />
+        <action
+            android:id="@+id/action_ListFragment_to_employeeDialogFragment"
+            app:destination="@id/employeeDialogFragment"
+            app:launchSingleTop="false" />
     </fragment>
     <fragment
         android:id="@+id/CollectionFragment"
@@ -25,17 +27,34 @@
         tools:layout="@layout/fragment_collection" >
         <action
             android:id="@+id/action_CollectionFrag_to_DistributionFrag"
-            app:destination="@id/outputTipsFragment"
+            app:destination="@id/DistributionFragment"
             app:enterAnim="@anim/slide_to_the_left"
             app:popEnterAnim="@anim/slide_to_the_right" />
     </fragment>
     <fragment
-        android:id="@+id/outputTipsFragment"
+        android:id="@+id/DistributionFragment"
         android:name="com.example.tipsaredone.views.DistributionFragment"
         android:label="Tips Are Done"
         tools:layout="@layout/fragment_distribution" >
         <action
             android:id="@+id/action_outputTipsFragment_to_EmployeeFragment"
-            app:destination="@id/EmployeeFragment" />
+            app:destination="@id/ListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/HoursFragment"
+        android:name="com.example.tipsaredone.views.EmployeeHoursFragment"
+        android:label="EmployeeHoursFragment" >
+        <action
+            android:id="@+id/action_HoursFrag_to_CollectionFrag"
+            app:destination="@id/CollectionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/employeeDialogFragment"
+        android:name="com.example.tipsaredone.views.EmployeeDialogFragment"
+        android:label="fragment_employee_dialog"
+        tools:layout="@layout/fragment_employee_dialog" >
+        <action
+            android:id="@+id/action_employeeDialogFragment_to_ListFragment"
+            app:destination="@id/ListFragment" />
     </fragment>
 </navigation>

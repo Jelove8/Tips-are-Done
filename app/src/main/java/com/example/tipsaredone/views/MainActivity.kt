@@ -12,11 +12,10 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.tipsaredone.R
 import com.example.tipsaredone.databinding.ActivityMainBinding
-import com.example.tipsaredone.model.Employee
-import com.example.tipsaredone.model.MyEmployees
-import com.example.tipsaredone.model.RoughTipReport
+import com.example.tipsaredone.model.*
 import com.example.tipsaredone.viewmodels.CollectionViewModel
 import com.example.tipsaredone.viewmodels.EmployeesViewModel
+import java.time.LocalDate
 import java.util.*
 import kotlin.concurrent.schedule
 
@@ -29,8 +28,9 @@ class MainActivity : AppCompatActivity() {
     // Other Components
     private lateinit var employeesViewModel: EmployeesViewModel
     private lateinit var collectionViewModel: CollectionViewModel
-    private val roughTipReport = RoughTipReport()
+    private lateinit var roughTipReport: WeeklyTipReport
     private val myEmployees = MyEmployees()
+    private val mockData = MockData()
 
     // Title Screen Configurations
     private var visibleTitleScreen: Boolean = true
@@ -95,9 +95,12 @@ class MainActivity : AppCompatActivity() {
         myEmployees.loadEmployeeNamesFromInternalStorage(this)
         return myEmployees.getStoredEmployees()
     }
+    /*
     fun saveEmployeesToStorage() {
         MyEmployees().saveEmployeeNamesToInternalStorage(employeesViewModel.employees.value!!,this)
     }
+
+     */
 
     fun showTitleScreen() {
         binding.includeTitleScreen.root.visibility = View.VISIBLE
@@ -130,9 +133,19 @@ class MainActivity : AppCompatActivity() {
         visibleToolBar = true
     }
 
+
+
     // Tip Report
-    fun getRoughTipReport(): RoughTipReport {
+    fun generateTipReport(employees: MutableList<NewEmployee>,startDate: LocalDate,endDate: LocalDate) {
+        roughTipReport = WeeklyTipReport()
+        roughTipReport.initializeIndividualReports(employees,startDate,endDate)
+    }
+    fun getRoughTipReport(): WeeklyTipReport {
         return roughTipReport
+    }
+
+    fun getMockData(): MockData {
+        return mockData
     }
 
     // Misc
@@ -144,4 +157,5 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this,message,Toast.LENGTH_LONG).show()
         }
     }
+
 }

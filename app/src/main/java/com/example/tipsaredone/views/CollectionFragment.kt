@@ -48,7 +48,6 @@ class CollectionFragment : Fragment() {
             // Navigates up if checkBillAmounts() returns true
             if (collectionViewModel.checkForValidInputs()) {
                 (context as MainActivity).getRoughTipReport().updateBills(collectionViewModel.billsList.value!!)
-                showDateSelectorDialog()
             }
             else {
                 val toast = collectionViewModel.getValidityString()
@@ -62,37 +61,6 @@ class CollectionFragment : Fragment() {
     }
 
     // Dialog: Date Selector
-    private fun showDateSelectorDialog() {
-        binding.includeDialogDateSelector.root.visibility = View.VISIBLE
-        binding.btnConfirmBills.visibility = View.GONE
-        setDialogOnClickListeners()
-    }
-    private fun hideDateSelectorDialog() {
-        binding.includeDialogDateSelector.root.visibility = View.GONE
-        binding.btnConfirmBills.visibility = View.VISIBLE
-    }
-    private fun setDialogOnClickListeners() {
-        binding.includeDialogDateSelector.inputStartDate.setOnDateChangedListener { _, year, monthOfYear, dayOfMonth ->
-            collectionViewModel.setStartDate(year,monthOfYear,dayOfMonth)
-        }
-        binding.includeDialogDateSelector.inputEndDate.setOnDateChangedListener { _, year, monthOfYear, dayOfMonth ->
-            collectionViewModel.setEndDate(year,monthOfYear,dayOfMonth)
-        }
-        binding.includeDialogDateSelector.btnDialogDateSelectorCancel.setOnClickListener {
-            hideDateSelectorDialog()
-        }
-        binding.includeDialogDateSelector.btnDialogDateSelectorConfirm.setOnClickListener {
-            if (collectionViewModel.checkForValidDates()) {
-                (context as MainActivity).getRoughTipReport().startDate = collectionViewModel.startDate.value
-                (context as MainActivity).getRoughTipReport().endDate = collectionViewModel.endDate.value
-                findNavController().navigate(R.id.action_CollectionFrag_to_DistributionFrag)
-            }
-            else {
-                val toast = collectionViewModel.getValidityString()
-                (context as MainActivity).makeToastMessage(toast)
-            }
-        }
-    }
 
     // Updates views
     private fun updateConfirmButtonVisibility() {
