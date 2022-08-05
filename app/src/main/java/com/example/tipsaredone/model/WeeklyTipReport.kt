@@ -2,8 +2,6 @@ package com.example.tipsaredone.model
 
 import java.math.BigDecimal
 import java.math.RoundingMode
-import java.sql.Timestamp
-import java.time.LocalDate
 import java.time.LocalDateTime
 import kotlin.math.absoluteValue
 
@@ -21,7 +19,7 @@ class WeeklyTipReport(
         employees.sortBy { it.name }
         employees.forEach {
             individualReports.add(
-                IndividualTipReport(it.name,it.id,null,null,startDate!!,endDate!!,null,false)
+                IndividualTipReport(it.name,it.id,0.0,0.0,startDate!!,endDate!!,null,false)
             )
         }
 
@@ -59,7 +57,7 @@ class WeeklyTipReport(
     private fun getSumHours(): Double {
         var sum = 0.0
         individualReports.forEach {
-           sum += it.employeeHours!!
+           sum += it.employeeHours
         }
         return sum
     }
@@ -68,7 +66,7 @@ class WeeklyTipReport(
         tipRate = sumOfBills / getSumHours()
 
         for (report in individualReports) {
-            val rawTips = tipRate * report.employeeHours!!
+            val rawTips = tipRate * report.employeeHours
             val roundedTips = BigDecimal(rawTips).setScale(0, RoundingMode.HALF_EVEN)
             report.distributedTips = roundedTips.toDouble()
         }
@@ -76,7 +74,7 @@ class WeeklyTipReport(
         val expectedTotal = sumOfBills
         var actualTotal = 0.0
         individualReports.forEach {
-            actualTotal += it.distributedTips!!
+            actualTotal += it.distributedTips
         }
 
         val roundingError = actualTotal - expectedTotal
@@ -99,12 +97,12 @@ class WeeklyTipReport(
         secondEmployee = employeesCopy.random()
 
         if (roundingError < 0.0) {
-            firstEmployee.distributedTips = firstEmployee.distributedTips!! + 1.0
-            secondEmployee.distributedTips = secondEmployee.distributedTips!! + 1.0
+            firstEmployee.distributedTips = firstEmployee.distributedTips + 1.0
+            secondEmployee.distributedTips = secondEmployee.distributedTips + 1.0
         }
         else if (roundingError > 0.0) {
-            firstEmployee.distributedTips = firstEmployee.distributedTips!! - 1.0
-            secondEmployee.distributedTips = secondEmployee.distributedTips!! - 1.0
+            firstEmployee.distributedTips = firstEmployee.distributedTips - 1.0
+            secondEmployee.distributedTips = secondEmployee.distributedTips - 1.0
         }
 
         for (emp in individualReports) {
@@ -116,19 +114,6 @@ class WeeklyTipReport(
             }
         }
 
-    }
-
-    fun convertForStorage(): WeeklyTipReportConvertedForStorage {
-        val individualReportsForStorage = mutableListOf<IndividualTipReportConvertedForStorage>()
-        individualReports.forEach {
-            individualReportsForStorage.add(it.convertForStorage())
-        }
-        val startDateString= startDate!!.year.toString() + startDate!!.monthValue.toString() + startDate!!.dayOfMonth.toString()
-        val endDateString= endDate!!.year.toString() + endDate!!.monthValue.toString() + endDate!!.dayOfMonth.toString()
-
-        return WeeklyTipReportConvertedForStorage(
-            individualReportsForStorage,startDateString,endDateString,bills,sumOfBills,tipRate,majorRoundingError
-        )
     }
 
 }

@@ -1,6 +1,6 @@
 package com.example.tipsaredone.model
 
-data class Employee(
+class Employee(
     val id: String,
     var name: String,
     val tipReports: MutableList<IndividualTipReport> = mutableListOf()
@@ -18,5 +18,17 @@ data class Employee(
         }
         return output
     }
+    fun convertForStorage(): EmployeeConvertedForStorage {
+        val individualTipReportsConvertedForStorage = mutableListOf<IndividualTipReportConvertedForStorage>()
+        tipReports.forEach {
+            individualTipReportsConvertedForStorage.add(it.convertForStorage())
+        }
+        return EmployeeConvertedForStorage(id,name,individualTipReportsConvertedForStorage)
+    }
 
 }
+data class EmployeeConvertedForStorage(
+    val id: String,
+    val name: String,
+    val individualTipReports: MutableList<IndividualTipReportConvertedForStorage>
+)

@@ -5,8 +5,8 @@ import java.time.LocalDateTime
 class IndividualTipReport(
     val employeeName: String,
     var employeeID: String,
-    var employeeHours: Double?,
-    var distributedTips: Double?,
+    var employeeHours: Double,
+    var distributedTips: Double,
     var startDate: LocalDateTime,
     var endDate: LocalDateTime,
     var majorRoundingError: Int?,
@@ -17,7 +17,7 @@ class IndividualTipReport(
         val startDateString= startDate.year.toString() + startDate.monthValue.toString() + startDate.dayOfMonth.toString()
         val endDateString= endDate.year.toString() + endDate.monthValue.toString() + endDate.dayOfMonth.toString()
         return IndividualTipReportConvertedForStorage(
-            employeeName,employeeID,employeeHours!!,distributedTips!!,
+            employeeName,employeeID,employeeHours,distributedTips,
             startDateString,endDateString,
             majorRoundingError,collected
         )

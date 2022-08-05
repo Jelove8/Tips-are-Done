@@ -35,7 +35,7 @@ class TipCollectionFragment : Fragment() {
 
         // Bills RecyclerView
         tipCollectionAdapter = TipCollectionAdapter(
-            tipCollectionViewModel.billsList.value!!,
+            tipCollectionViewModel.tipsCollected.value!!,
             textChangedCallback = fun(_: Int, _: Double?) {
                 updateSumOfBillsTV()
                 updateConfirmButtonVisibility()
@@ -47,7 +47,7 @@ class TipCollectionFragment : Fragment() {
         binding.btnTipCollectionConfirm.setOnClickListener {
             // Navigates up if checkBillAmounts() returns true
             if (checkForValidInputs()) {
-                val tipsCollected = tipCollectionViewModel.billsList.value!!
+                val tipsCollected = tipCollectionViewModel.tipsCollected.value!!
                 (context as MainActivity).getWeeklyTipReport().setTipsCollected(tipsCollected)
                 (context as MainActivity).showCalculatingScreen()
                 findNavController().navigate(R.id.action_CollectionFrag_to_DistributionFrag)
@@ -76,31 +76,31 @@ class TipCollectionFragment : Fragment() {
         }
     }
     private fun updateSumOfBillsTV() {
-        binding.tvTotalTips.text = tipCollectionViewModel.getSumOfBills().toString()
+        binding.tvTotalTips.text = tipCollectionViewModel.getTotalCollected().toString()
     }
 
     private fun checkForValidInputs(): Boolean {
-        val sumOfModulos = (tipCollectionViewModel.billsList.value!![0] % 1.00) +
-                (tipCollectionViewModel.billsList.value!![1] % 2.00) +
-                (tipCollectionViewModel.billsList.value!![2] % 5.00) +
-                (tipCollectionViewModel.billsList.value!![3] % 10.00) +
-                (tipCollectionViewModel.billsList.value!![4] % 20.00) +
-                (tipCollectionViewModel.billsList.value!![5] % 50.00) +
-                (tipCollectionViewModel.billsList.value!![6] % 100.00)
+        val sumOfModulos = (tipCollectionViewModel.tipsCollected.value!![0] % 1.00) +
+                (tipCollectionViewModel.tipsCollected.value!![1] % 2.00) +
+                (tipCollectionViewModel.tipsCollected.value!![2] % 5.00) +
+                (tipCollectionViewModel.tipsCollected.value!![3] % 10.00) +
+                (tipCollectionViewModel.tipsCollected.value!![4] % 20.00) +
+                (tipCollectionViewModel.tipsCollected.value!![5] % 50.00) +
+                (tipCollectionViewModel.tipsCollected.value!![6] % 100.00)
         return sumOfModulos == 0.0
     }
     private fun getValidityString(): String {
-        val sumOfModulos = (tipCollectionViewModel.billsList.value!![0] % 1.00) +
-                (tipCollectionViewModel.billsList.value!![1] % 2.00) +
-                (tipCollectionViewModel.billsList.value!![2] % 5.00) +
-                (tipCollectionViewModel.billsList.value!![3] % 10.00) +
-                (tipCollectionViewModel.billsList.value!![4] % 20.00) +
-                (tipCollectionViewModel.billsList.value!![5] % 50.00) +
-                (tipCollectionViewModel.billsList.value!![6] % 100.00)
+        val sumOfModulos = (tipCollectionViewModel.tipsCollected.value!![0] % 1.00) +
+                (tipCollectionViewModel.tipsCollected.value!![1] % 2.00) +
+                (tipCollectionViewModel.tipsCollected.value!![2] % 5.00) +
+                (tipCollectionViewModel.tipsCollected.value!![3] % 10.00) +
+                (tipCollectionViewModel.tipsCollected.value!![4] % 20.00) +
+                (tipCollectionViewModel.tipsCollected.value!![5] % 50.00) +
+                (tipCollectionViewModel.tipsCollected.value!![6] % 100.00)
 
         return when {
             // At least one EditText input must be filled.
-            tipCollectionViewModel.billsList.value!!.sum() == 0.0 -> {
+            tipCollectionViewModel.tipsCollected.value!!.sum() == 0.0 -> {
                 resources.getString(R.string.invalid_bills1)
             }
             // An input(s) is not divisible by their corresponding bill type.

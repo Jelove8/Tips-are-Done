@@ -7,18 +7,18 @@ import java.time.LocalDate
 
 class TipCollectionViewModel : ViewModel() {
 
-    private val _billsList = MutableLiveData(mutableListOf(0.0,0.0,0.0,0.0,0.0,0.0,0.0))
-    val billsList: LiveData<MutableList<Double>> = _billsList
+    private val _tipsCollected = MutableLiveData(mutableListOf(0.0,0.0,0.0,0.0,0.0,0.0,0.0))
+    val tipsCollected: LiveData<MutableList<Double>> = _tipsCollected
     // Index: [0] Ones, [1] Twos, [2] Fives, [3] Tens, [4] Twenties, [5] Fifties, [6] Hundreds
 
 
-    fun clearBillsList() {
-        _billsList.value = mutableListOf(0.0,0.0,0.0,0.0,0.0,0.0,0.0)
+    fun clearTipsCollected() {
+        _tipsCollected.value = mutableListOf(0.0,0.0,0.0,0.0,0.0,0.0,0.0)
     }
 
-    fun getSumOfBills(): Double {
+    fun getTotalCollected(): Double {
         var output = 0.0
-        _billsList.value!!.forEach {
+        _tipsCollected.value!!.forEach {
             output += it
         }
         return output

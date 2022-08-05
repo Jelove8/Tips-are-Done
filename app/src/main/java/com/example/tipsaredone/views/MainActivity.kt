@@ -12,8 +12,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
+import com.example.tipsaredone.FirestoreInterface
 import com.example.tipsaredone.R
 import com.example.tipsaredone.databinding.ActivityMainBinding
+import com.example.tipsaredone.model.Employee
+import com.example.tipsaredone.model.EmployeeConvertedForStorage
 import com.example.tipsaredone.model.MyEmployees
 import com.example.tipsaredone.model.WeeklyTipReport
 import com.example.tipsaredone.viewmodels.DatePickerViewModel
@@ -28,7 +31,7 @@ import java.time.LocalDateTime
 import java.util.*
 import kotlin.concurrent.schedule
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), FirestoreInterface {
 
     companion object {
         const val WEEKLY_REPORT = "weekly_report"
@@ -221,6 +224,23 @@ class MainActivity : AppCompatActivity() {
             }.addOnFailureListener {
                 makeToastMessage(it.toString())
             }
+    }
+
+    // Firestore
+    fun saveEmployeesToDatabase() {
+        val currentUserID = firebaseAuth.currentUser!!.uid
+        val currentEmployees = employeesViewModel.employees.value!!
+
+
+        val employeesConvertedForStorage = mutableListOf<EmployeeConvertedForStorage>()
+        currentEmployees.forEach {
+            employeesConvertedForStorage.add(it.convertForStorage())
+        }
+
+        firebaseDB.collection("User Data").document("Users")
+            .update(currentUserID, employeesConvertedForStorage)
+
+
     }
 
     // Misc

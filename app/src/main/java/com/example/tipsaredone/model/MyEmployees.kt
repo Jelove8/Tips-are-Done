@@ -3,6 +3,7 @@ package com.example.tipsaredone.model
 import android.content.Context
 import android.util.Log
 import com.example.tipsaredone.views.MainActivity
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import java.io.BufferedReader
@@ -29,6 +30,11 @@ class MyEmployees() {
                 }
             }
         }
+    }
+
+
+    fun getEmployeesFromDatabase(database: FirebaseFirestore) {
+
     }
 
 

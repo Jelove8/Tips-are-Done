@@ -18,12 +18,12 @@ import com.example.tipsaredone.model.Employee
 import com.example.tipsaredone.viewmodels.EmployeesViewModel
 
 class EmployeeListFragment : Fragment() {
-    private lateinit var employeesViewModel: EmployeesViewModel
-    private lateinit var employeeListAdapter: EmployeesAdapter
-
 
     private var _binding: FragmentEmployeesListBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var employeesViewModel: EmployeesViewModel
+    private lateinit var employeeListAdapter: EmployeesAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentEmployeesListBinding.inflate(inflater, container, false)
@@ -31,12 +31,17 @@ class EmployeeListFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         (context as MainActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(false)
 
         // Initialize EmployeesViewModel
         val employeesVM: EmployeesViewModel by activityViewModels()
         employeesViewModel = employeesVM
+
+        /**
+         * TODO
+         * Initialize EmployeesViewModel with data from database, by invoking a function from MainActivity.
+         * Whenever edits to the employee are made, it will update the database.
+         */
 
         employeeListAdapter = EmployeesAdapter(employeesViewModel.employees.value!!,
             /**
@@ -59,13 +64,12 @@ class EmployeeListFragment : Fragment() {
             }
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
-                    // All this code, just for a single button click...
                     R.id.action_add_employee -> {
-                        if (!employeesViewModel.newEmployeeDialogShowing.value!! && !employeesViewModel.dateSelectionDialogShowing.value!!) {
+                        if (!employeesViewModel.newEmployeeDialogShowing.value!!) {
                             showNewEmployeeDialog()
                             true
                         }
-                        else if (employeesViewModel.newEmployeeDialogShowing.value!! && !employeesViewModel.dateSelectionDialogShowing.value!!) {
+                        else if (employeesViewModel.newEmployeeDialogShowing.value!!) {
                             hideNewEmployeeDialog()
                             false
                         }

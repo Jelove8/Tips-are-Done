@@ -14,10 +14,6 @@ class EmployeesViewModel: ViewModel() {
     private val _selectedEmployee = MutableLiveData<Employee?>(null)
     val selectedEmployee: LiveData<Employee?> = _selectedEmployee
 
-
-    private val _dateSelectionDialogShowing = MutableLiveData(false)
-    val dateSelectionDialogShowing: LiveData<Boolean> = _dateSelectionDialogShowing
-
     private val _newEmployeeDialogShowing = MutableLiveData(false)
     val newEmployeeDialogShowing: LiveData<Boolean> = _newEmployeeDialogShowing
 
@@ -42,13 +38,6 @@ class EmployeesViewModel: ViewModel() {
             _employees.value!![index]
             }
     }
-
-
-
-
-
-    // Input Validity Checks
-
 
     fun generateUniqueID(): String {
         var uniqueID = UUID.randomUUID().toString()

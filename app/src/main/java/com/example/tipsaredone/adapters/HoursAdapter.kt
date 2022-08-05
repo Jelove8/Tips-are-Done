@@ -26,7 +26,7 @@ class HoursAdapter(
             employeeHours.addTextChangedListener(object : TextWatcher {
                 override fun afterTextChanged(s: Editable?) {
                     if (employeeHours.text.isNullOrEmpty()) {
-                        adapter.editTippableHours(adapterPosition,null)
+                        adapter.editTippableHours(adapterPosition,0.0)
                         textChangedCallback?.invoke(adapterPosition)
                     }
                     else {
@@ -48,12 +48,7 @@ class HoursAdapter(
             employeeIndex.text = index.toString()
             employeeName.text = tipReport.employeeName
 
-            if (tipReport.employeeHours == null) {
-                employeeHours.text.clear()
-            }
-            else {
-                employeeHours.setText(tipReport.employeeHours.toString())
-            }
+            employeeHours.setText(tipReport.employeeHours.toString())
         }
     }
 
@@ -69,7 +64,7 @@ class HoursAdapter(
         return tipReports.size
     }
 
-    fun editTippableHours(position: Int, newHours: Double?) {
+    fun editTippableHours(position: Int, newHours: Double) {
         tipReports[position].employeeHours = newHours
     }
 }
