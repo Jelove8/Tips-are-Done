@@ -21,6 +21,7 @@ class EmployeeListFragment : Fragment() {
     private lateinit var employeesViewModel: EmployeesViewModel
     private lateinit var employeeListAdapter: EmployeesAdapter
 
+
     private var _binding: FragmentEmployeesListBinding? = null
     private val binding get() = _binding!!
 
@@ -30,6 +31,8 @@ class EmployeeListFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        (context as MainActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(false)
 
         // Initialize EmployeesViewModel
         val employeesVM: EmployeesViewModel by activityViewModels()
@@ -141,7 +144,6 @@ class EmployeeListFragment : Fragment() {
     private fun checkForValidEmployees(): Boolean {
         return employeesViewModel.employees.value!!.size > 1
     }
-
 
     // Updates Views
     private fun updateConfirmButtonVisibility() {

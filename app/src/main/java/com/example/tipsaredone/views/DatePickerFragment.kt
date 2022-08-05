@@ -34,6 +34,8 @@ class DatePickerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        (context as MainActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
         val datePickerVM: DatePickerViewModel by activityViewModels()
         datePickerViewModel = datePickerVM
 
