@@ -12,12 +12,18 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.tipsaredone.R
 import com.example.tipsaredone.databinding.ActivityMainBinding
+import com.example.tipsaredone.model.Employee
 import com.example.tipsaredone.model.MyEmployees
 import com.example.tipsaredone.model.WeeklyTipReport
+import com.example.tipsaredone.model.WeeklyTipReportConvertedForStorage
 import com.example.tipsaredone.viewmodels.DatePickerViewModel
 import com.example.tipsaredone.viewmodels.EmployeesViewModel
 import com.example.tipsaredone.viewmodels.HoursViewModel
 import com.example.tipsaredone.viewmodels.TipCollectionViewModel
+import com.google.firebase.FirebaseApp
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import java.time.LocalDateTime
 import java.util.*
 import kotlin.concurrent.schedule
@@ -26,10 +32,13 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         const val WEEKLY_REPORT = "weekly_report"
+        const val FIREBASE = "firebase"
     }
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+
+    private lateinit var database: FirebaseFirestore
 
     private lateinit var weeklyTipReport: WeeklyTipReport
 
@@ -51,6 +60,10 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment)
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
+
+        // Firebase
+
+        database = Firebase.firestore
 
         // Initialize ViewModels
         employeesViewModel = ViewModelProvider(this)[EmployeesViewModel::class.java]
@@ -108,8 +121,22 @@ class MainActivity : AppCompatActivity() {
         Log.d(WEEKLY_REPORT,employeeNames)
     }
 
-    fun initializeMyEmployees() {
+    fun saveWeeklyTipReport() {
+        val weeklyTipReportForStorage = mapOf(
+            "${weeklyTipReport.startDate.toString().removeSuffix("T00:00")} to ${weeklyTipReport.endDate.toString().removeSuffix("T00:00")}" to
+            weeklyTipReport)
 
+        database.collection("WeeklyTipReports").document("AllReports").update(weeklyTipReportForStorage)
+            .addOnSuccessListener {
+                Log.d(WEEKLY_REPORT,"New weekly tip report added to database.")
+            }
+            .addOnFailureListener {
+                Log.d(WEEKLY_REPORT,"Failed to add weekly tip report to database.", it)
+            }
+    }
+
+    fun saveStore() {
+        database.collection("All Stores").document("Store Name").update("Store Data")
     }
 
     fun logWeeklyTipReport() {

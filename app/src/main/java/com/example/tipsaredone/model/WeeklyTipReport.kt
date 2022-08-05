@@ -2,6 +2,7 @@ package com.example.tipsaredone.model
 
 import java.math.BigDecimal
 import java.math.RoundingMode
+import java.sql.Timestamp
 import java.time.LocalDate
 import java.time.LocalDateTime
 import kotlin.math.absoluteValue
@@ -23,6 +24,7 @@ class WeeklyTipReport(
                 IndividualTipReport(it.name,it.id,null,null,startDate!!,endDate!!,null,false)
             )
         }
+
     }
 
     fun setTipsCollected(data: MutableList<Double>) {
@@ -116,4 +118,28 @@ class WeeklyTipReport(
 
     }
 
+    fun convertForStorage(): WeeklyTipReportConvertedForStorage {
+        val individualReportsForStorage = mutableListOf<IndividualTipReportConvertedForStorage>()
+        individualReports.forEach {
+            individualReportsForStorage.add(it.convertForStorage())
+        }
+        val startDateString= startDate!!.year.toString() + startDate!!.monthValue.toString() + startDate!!.dayOfMonth.toString()
+        val endDateString= endDate!!.year.toString() + endDate!!.monthValue.toString() + endDate!!.dayOfMonth.toString()
+
+        return WeeklyTipReportConvertedForStorage(
+            individualReportsForStorage,startDateString,endDateString,bills,sumOfBills,tipRate,majorRoundingError
+        )
+    }
+
 }
+
+data class WeeklyTipReportConvertedForStorage(
+    var individualReports: MutableList<IndividualTipReportConvertedForStorage>,
+    var startDate: String,
+    var endDate: String,
+    var bills: MutableList<Map<String,Int>>,
+    val sumOfBills: Double,
+    var tipRate: Double,
+    var majorRoundingError: Int?
+)
+
