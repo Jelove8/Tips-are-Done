@@ -3,12 +3,13 @@ package com.example.tipsaredone.model
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.time.LocalDate
+import java.time.LocalDateTime
 import kotlin.math.absoluteValue
 
 class WeeklyTipReport(
     var individualReports: MutableList<IndividualTipReport> = mutableListOf(),
-    var startDate: LocalDate? = null,
-    var endDate: LocalDate? = null,
+    var startDate: LocalDateTime? = null,
+    var endDate: LocalDateTime? = null,
     var bills: MutableList<Map<String,Int>> = mutableListOf(),
     var sumOfBills: Double = 0.0,
     var tipRate: Double = 0.0,
@@ -24,7 +25,7 @@ class WeeklyTipReport(
         }
     }
 
-    fun initializeTipsCollected(data: MutableList<Double>) {
+    fun setTipsCollected(data: MutableList<Double>) {
         for ((i,item) in data.withIndex()) {
             when (i) {
                 0 -> {
@@ -87,8 +88,8 @@ class WeeklyTipReport(
         }
     }
     private fun redistributeTips(roundingError: Double) {
-        var firstEmployee = IndividualTipReport("Template1","Template1",0.0,0.0, LocalDate.parse("2000-01-01"),LocalDate.parse("2000-01-02"),null,false)
-        var secondEmployee = IndividualTipReport("Template2","Template2",0.0,0.0, LocalDate.parse("2000-01-01"),LocalDate.parse("2000-01-02"),null,false)
+        var firstEmployee = IndividualTipReport("Template1","Template1",0.0,0.0, LocalDateTime.now(),LocalDateTime.now(),null,false)
+        var secondEmployee = IndividualTipReport("Template2","Template2",0.0,0.0, LocalDateTime.now(),LocalDateTime.now(),null,false)
 
         val employeesCopy = individualReports.toMutableList()
         firstEmployee = employeesCopy.random()

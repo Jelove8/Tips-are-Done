@@ -1,6 +1,7 @@
 package com.example.tipsaredone.views
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,9 +12,7 @@ import com.example.tipsaredone.R
 import com.example.tipsaredone.databinding.FragmentDatePickerBinding
 import com.example.tipsaredone.viewmodels.DatePickerViewModel
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.ZoneOffset
-import java.time.temporal.ChronoField
 
 class DatePickerFragment : Fragment() {
 
@@ -39,20 +38,27 @@ class DatePickerFragment : Fragment() {
         datePickerViewModel = datePickerVM
 
         if (datePickerViewModel.startDate.value == null || datePickerViewModel.endDate.value == null) {
-            val currentDate: LocalDateTime = LocalDateTime.now()
-            val currentDateInMillis: Long = (currentDate.toEpochSecond(ZoneOffset.UTC) * 1000 + currentDate.get(ChronoField.MILLI_OF_SECOND))
-            binding.inputEndDate.date = currentDateInMillis
-            binding.inputStartDate.date = currentDateInMillis
+            binding.inputStartDate.updateDate(LocalDate.now().year,LocalDate.now().monthValue,LocalDate.now().dayOfMonth)
+            binding.inputEndDate.updateDate(LocalDate.now().year,LocalDate.now().monthValue,LocalDate.now().dayOfMonth)
+        }
+        else {
+            val startDate = datePickerViewModel.startDate.value!!
+            val endDate = datePickerViewModel.endDate.value!!
+            binding.inputStartDate.updateDate(startDate.year,startDate.monthValue,startDate.dayOfMonth)
+            binding.inputEndDate.updateDate(endDate.year,endDate.monthValue,endDate.dayOfMonth)
         }
 
-        binding.inputStartDate.setOnDateChangeListener { _, year, month, dayOfMonth ->
+        binding.inputStartDate.setOnDateChangedListener { _, year, month, dayOfMonth ->
+            Log.d("meow","hello")
             datePickerViewModel.setStartDate(year,month,dayOfMonth)
         }
-        binding.inputEndDate.setOnDateChangeListener { _, year, month, dayOfMonth ->
+        binding.inputEndDate.setOnDateChangedListener { _, year, month, dayOfMonth ->
+            Log.d("meow","hello")
             datePickerViewModel.setEndDate(year,month,dayOfMonth)
         }
         binding.btnDatePickerConfirm.setOnClickListener {
             if (checkDateValidity()) {
+                Log.d("meow","hello")
                 (context as MainActivity).initializeWeeklyTipReport()
                 findNavController().navigate(R.id.action_DatePickerFrag_to_EmployeeHoursFrag)
             }

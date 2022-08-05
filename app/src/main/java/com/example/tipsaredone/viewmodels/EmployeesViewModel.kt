@@ -3,13 +3,12 @@ package com.example.tipsaredone.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.tipsaredone.model.MockData
 import com.example.tipsaredone.model.Employee
 import java.util.*
 
 class EmployeesViewModel: ViewModel() {
 
-    private val _employees = MutableLiveData<MutableList<Employee>>(MockData().getMockEmployees())
+    private val _employees = MutableLiveData<MutableList<Employee>>(mutableListOf())
     val employees: LiveData<MutableList<Employee>> = _employees
 
     private val _selectedEmployee = MutableLiveData<Employee?>(null)
@@ -25,11 +24,6 @@ class EmployeesViewModel: ViewModel() {
     private val _deleteEmployeeDialogShowing = MutableLiveData(false)
     val deleteEmployeeDialogShowing: LiveData<Boolean> = _deleteEmployeeDialogShowing
 
-
-
-    fun setDateSelectionDialogShowing(boolean: Boolean) {
-        _dateSelectionDialogShowing.value = boolean
-    }
 
     fun setNewEmployeeDialogShowing(boolean: Boolean) {
         _newEmployeeDialogShowing.value = boolean

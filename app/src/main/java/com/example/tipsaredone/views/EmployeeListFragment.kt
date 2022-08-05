@@ -81,6 +81,7 @@ class EmployeeListFragment : Fragment() {
          */
         binding.btnEmployeeListConfirm.setOnClickListener {
             if (checkForValidEmployees()) {
+                (context as MainActivity).showTitleScreen()
                 findNavController().navigate(R.id.action_EmployeeListFrag_to_DatePickerFrag)
             }
             else {
@@ -125,6 +126,7 @@ class EmployeeListFragment : Fragment() {
             }
             else {
                 employeeListAdapter.addNewEmployee(Employee(employeesViewModel.generateUniqueID(),binding.includeNewEmployee.etDialogNewEmployee.text.toString()))
+                updateConfirmButtonVisibility()
                 hideNewEmployeeDialog()
             }
         }

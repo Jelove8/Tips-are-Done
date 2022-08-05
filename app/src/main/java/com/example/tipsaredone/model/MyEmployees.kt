@@ -12,11 +12,25 @@ import java.io.InputStreamReader
 
 class MyEmployees() {
 
-    private lateinit var storedEmployees: MutableList<Employee>
+    private var myEmployees: MutableList<Employee> = mutableListOf()
 
-    companion object {
-        const val INTERNAL_STORAGE = "internal_storage"
+    fun setMyEmployees(data: MutableList<Employee>) {
+        myEmployees = data
     }
+    fun getMyEmployees(): MutableList<Employee> {
+        return myEmployees
+    }
+
+    fun saveIndividualReports(reports: MutableList<IndividualTipReport>) {
+        for (report in reports) {
+            for (employee in myEmployees) {
+                if (employee.id == report.employeeID) {
+                    employee.addTipReport(report)
+                }
+            }
+        }
+    }
+
 
 /*
     private fun convertEmployeeNamesToJson(employee_names: MutableList<String>): String {

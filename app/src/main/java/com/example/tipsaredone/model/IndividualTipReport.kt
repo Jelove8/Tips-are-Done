@@ -4,6 +4,7 @@ import android.util.Log
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.time.LocalDate
+import java.time.LocalDateTime
 import kotlin.math.absoluteValue
 
 class IndividualTipReport(
@@ -11,8 +12,8 @@ class IndividualTipReport(
     var employeeID: String,
     var employeeHours: Double?,
     var distributedTips: Double?,
-    var startDate: LocalDate,
-    var endDate: LocalDate,
+    var startDate: LocalDateTime,
+    var endDate: LocalDateTime,
     var majorRoundingError: Int?,
     var collected: Boolean
 ) {

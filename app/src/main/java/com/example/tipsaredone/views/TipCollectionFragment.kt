@@ -47,7 +47,8 @@ class TipCollectionFragment : Fragment() {
         binding.btnTipCollectionConfirm.setOnClickListener {
             // Navigates up if checkBillAmounts() returns true
             if (checkForValidInputs()) {
-                (context as MainActivity).initializeWeeklyTipCollection()
+                val tipsCollected = tipCollectionViewModel.billsList.value!!
+                (context as MainActivity).getWeeklyTipReport().setTipsCollected(tipsCollected)
                 (context as MainActivity).showCalculatingScreen()
                 findNavController().navigate(R.id.action_CollectionFrag_to_DistributionFrag)
             }

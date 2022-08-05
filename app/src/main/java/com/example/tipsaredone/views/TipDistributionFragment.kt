@@ -5,11 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tipsaredone.R
 import com.example.tipsaredone.adapters.DistributionAdapter
 import com.example.tipsaredone.databinding.FragmentTipDistributionBinding
+import com.example.tipsaredone.viewmodels.TipCollectionViewModel
 import kotlin.math.absoluteValue
 
 class TipDistributionFragment : Fragment() {
@@ -43,6 +45,8 @@ class TipDistributionFragment : Fragment() {
         // Button Logic
         binding.btnSaveEmployees.setOnClickListener {
             // Clearing inputted data, except for employee names
+            val tipCollectionViewModel: TipCollectionViewModel by activityViewModels()
+            tipCollectionViewModel.clearBillsList()
             (context as MainActivity).logWeeklyTipReport()
             findNavController().navigate(R.id.action_outputTipsFragment_to_EmployeeFragment)
         }
