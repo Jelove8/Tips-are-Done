@@ -5,16 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/starbucks_green"
-    tools:context=".activity_user_login">
+    tools:context=".views.UserLoginActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/subcnst_title_screen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/tv_title_screen1"
@@ -75,8 +75,88 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="64dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="75dp"
+                android:gravity="center|center_vertical"
+                android:orientation="horizontal"
+                android:padding="8dp">
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="85dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/sodo"
+                    android:text="Email"
+                    android:textAlignment="center"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/input_login_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:ems="10"
+                    android:fontFamily="@font/sodo"
+                    android:hint="email@email.com"
+                    android:inputType="textEmailAddress"
+                    android:textAlignment="center"
+                    tools:ignore="TouchTargetSizeCheck" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="75dp"
+                android:layout_marginTop="16dp"
+                android:gravity="center|center_vertical"
+                android:orientation="horizontal"
+                android:padding="8dp">
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="85dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/sodo"
+                    android:text="Password"
+                    android:textAlignment="center"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/input_login_password"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:ems="10"
+                    android:fontFamily="@font/sodo"
+                    android:hint="********"
+                    android:inputType="textPassword"
+                    android:textAlignment="center"
+                    tools:ignore="TouchTargetSizeCheck" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <Button
-        android:id="@+id/btn_employee_hours_confirm2"
+        android:id="@+id/btn_user_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -90,78 +170,18 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
+    <Button
+        android:id="@+id/btn_sign_up"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="250dp"
-        android:orientation="vertical"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="@font/sodo"
+        android:text="Sign Up"
+        android:textSize="16sp"
+        app:iconGravity="textEnd"
+        app:iconSize="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="75dp"
-            android:background="@drawable/rounded_square_4dp"
-            android:backgroundTint="@color/white"
-            android:gravity="center|center_vertical"
-            android:orientation="horizontal"
-            android:padding="8dp">
-
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="85dp"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/sodo"
-                android:text="Email"
-                android:textAlignment="center"
-                android:textSize="16sp" />
-
-            <EditText
-                android:id="@+id/input_login_email"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:ems="10"
-                android:fontFamily="@font/sodo"
-                android:hint="email@email.com"
-                android:inputType="textEmailAddress"
-                android:textAlignment="center"
-                tools:ignore="TouchTargetSizeCheck" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="75dp"
-            android:layout_marginTop="32dp"
-            android:background="@drawable/rounded_square_4dp"
-            android:backgroundTint="@color/white"
-            android:gravity="center|center_vertical"
-            android:orientation="horizontal"
-            android:padding="8dp">
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="85dp"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/sodo"
-                android:text="Password"
-                android:textAlignment="center"
-                android:textSize="16sp" />
-
-            <EditText
-                android:id="@+id/input_login_password"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:ems="10"
-                android:fontFamily="@font/sodo"
-                android:hint="********"
-                android:inputType="textPassword"
-                android:textAlignment="center"
-                tools:ignore="TouchTargetSizeCheck" />
-        </LinearLayout>
-    </LinearLayout>
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

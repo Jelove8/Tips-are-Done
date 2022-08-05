@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "246589394688",
+    "project_id": "tipsaredone",
+    "storage_bucket": "tipsaredone.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:246589394688:android:c799c1e4594565dc006de5",
+        "android_client_info": {
+          "package_name": "com.example.tipsaredone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "246589394688-lqm9eqkifs3ci3tmg3km59vt563pbokc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDaR3U6nTp9KlKEQ-y__R3sZ8A-VjKScyQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "246589394688-lqm9eqkifs3ci3tmg3km59vt563pbokc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
