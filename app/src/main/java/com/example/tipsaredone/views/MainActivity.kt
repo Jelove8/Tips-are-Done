@@ -8,30 +8,23 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
-import com.example.tipsaredone.FirestoreInterface
 import com.example.tipsaredone.R
+import com.example.tipsaredone.adapters.EmployeesAdapter
 import com.example.tipsaredone.databinding.ActivityMainBinding
-import com.example.tipsaredone.model.Employee
-import com.example.tipsaredone.model.EmployeeConvertedForStorage
-import com.example.tipsaredone.model.MyEmployees
-import com.example.tipsaredone.model.WeeklyTipReport
+import com.example.tipsaredone.model.*
 import com.example.tipsaredone.viewmodels.DatePickerViewModel
 import com.example.tipsaredone.viewmodels.EmployeesViewModel
 import com.example.tipsaredone.viewmodels.HoursViewModel
 import com.example.tipsaredone.viewmodels.TipCollectionViewModel
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import java.time.LocalDateTime
 import java.util.*
 import kotlin.concurrent.schedule
 
-class MainActivity : AppCompatActivity(), FirestoreInterface {
+class MainActivity : AppCompatActivity() {
 
     companion object {
         const val WEEKLY_REPORT = "weekly_report"
@@ -41,14 +34,11 @@ class MainActivity : AppCompatActivity(), FirestoreInterface {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
 
-    private lateinit var firebaseDB: FirebaseFirestore
     private lateinit var firebaseAuth: FirebaseAuth
-
     private var signInRequired: Boolean = true
 
     private lateinit var weeklyTipReport: WeeklyTipReport
-
-    private var myEmployees = MyEmployees()
+    private lateinit var databaseModel: DatabaseModel
 
     // ViewModels
     private lateinit var employeesViewModel: EmployeesViewModel
@@ -68,7 +58,7 @@ class MainActivity : AppCompatActivity(), FirestoreInterface {
         setupActionBarWithNavController(navController, appBarConfiguration)
 
         // Firebase
-        firebaseDB = Firebase.firestore
+        databaseModel = DatabaseModel()
 
         // Initialize ViewModels
         employeesViewModel = ViewModelProvider(this)[EmployeesViewModel::class.java]
@@ -116,8 +106,8 @@ class MainActivity : AppCompatActivity(), FirestoreInterface {
     }
     fun initializeWeeklyTipReport() {
         weeklyTipReport = WeeklyTipReport()
-        weeklyTipReport.startDate = LocalDateTime.of(datePickerViewModel.startDate.value!!.year,datePickerViewModel.startDate.value!!.month,datePickerViewModel.startDate.value!!.dayOfMonth,0,0)
-        weeklyTipReport.endDate = LocalDateTime.of(datePickerViewModel.endDate.value!!.year,datePickerViewModel.endDate.value!!.month,datePickerViewModel.endDate.value!!.dayOfMonth,0,0)
+        weeklyTipReport.startDate = datePickerViewModel.getStartDateString()
+        weeklyTipReport.endDate = datePickerViewModel.getEndDateString()
         weeklyTipReport.initializeIndividualReports(employeesViewModel.employees.value!!)
         hoursViewModel.initializeTipReports(weeklyTipReport.individualReports)
 
@@ -134,6 +124,7 @@ class MainActivity : AppCompatActivity(), FirestoreInterface {
         Log.d(WEEKLY_REPORT,employeeNames)
     }
 
+    /*
     fun saveWeeklyTipReport() {
         val weeklyTipReportForStorage = mapOf(
             "${weeklyTipReport.startDate.toString().removeSuffix("T00:00")} to ${weeklyTipReport.endDate.toString().removeSuffix("T00:00")}" to
@@ -147,46 +138,8 @@ class MainActivity : AppCompatActivity(), FirestoreInterface {
                 Log.d(WEEKLY_REPORT,"Failed to add weekly tip report to database.", it)
             }
     }
+     */
 
-    fun logWeeklyTipReport() {
-        Log.d("tip_report","Week Start: ${weeklyTipReport.startDate}")
-        Log.d("tip_report","Week End: ${weeklyTipReport.endDate}")
-
-        Log.d("tip_report","Tips Collected: ${weeklyTipReport.sumOfBills}")
-        for ((i,type) in weeklyTipReport.bills.withIndex()) {
-            when (i) {
-                0 -> {
-                    Log.d("tip_report"," $type")
-                }
-                1 -> {
-                    Log.d("tip_report"," $type")
-                }
-                2 -> {
-                    Log.d("tip_report"," $type")
-                }
-                3 -> {
-                    Log.d("tip_report"," $type")
-                }
-                4 -> {
-                    Log.d("tip_report"," $type")
-                }
-                5 -> {
-                    Log.d("tip_report"," $type")
-                }
-                6 -> {
-                    Log.d("tip_report"," $type")
-                }
-            }
-        }
-
-        Log.d("tip_report","Tip Rate: ${weeklyTipReport.tipRate}")
-        Log.d("tip_report","Error: ${weeklyTipReport.majorRoundingError}")
-
-        Log.d("tip_report","Individual Tip Reports")
-        weeklyTipReport.individualReports.forEach {
-            Log.d("tip_report","Employee: ${it.employeeName}, Hours: ${it.employeeHours}, Distributed Tips: ${it.distributedTips}, Week Start: ${it.startDate}, Week End: ${it.endDate}, Collected: ${it.collected}")
-        }
-    }
 
     // Firebase Auth
     fun getSignInBool(): Boolean {
@@ -227,21 +180,19 @@ class MainActivity : AppCompatActivity(), FirestoreInterface {
     }
 
     // Firestore
-    fun saveEmployeesToDatabase() {
-        val currentUserID = firebaseAuth.currentUser!!.uid
-        val currentEmployees = employeesViewModel.employees.value!!
-
-
-        val employeesConvertedForStorage = mutableListOf<EmployeeConvertedForStorage>()
-        currentEmployees.forEach {
-            employeesConvertedForStorage.add(it.convertForStorage())
-        }
-
-        firebaseDB.collection("User Data").document("Users")
-            .update(currentUserID, employeesConvertedForStorage)
-
-
+    fun initializeDatabaseModel(adapter: EmployeesAdapter){
+        val employeesFromDatabase = databaseModel.initializeEmployees(firebaseAuth)
+        employeesViewModel.initializeEmployees(employeesFromDatabase)
     }
+    fun addNewEmployeeToDatabase(newEmployee: Employee) {
+        databaseModel.addNewEmployee(newEmployee)
+    }
+    fun saveEmployeesToDatabase() {
+    }
+    fun getDatabaseModel(): DatabaseModel {
+        return databaseModel
+    }
+
 
     // Misc
     fun makeToastMessage(message: String, isDurationShort: Boolean = true) {

@@ -89,7 +89,7 @@ class UserLoginFragment : Fragment() {
             val toast = "An email and password must be provided."
             (context as MainActivity).makeToastMessage(toast)
         }
-        return output
+        return true
     }
 
     private fun updateConfirmButtonVisibility() {

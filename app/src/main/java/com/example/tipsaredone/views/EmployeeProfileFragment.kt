@@ -9,6 +9,7 @@ import androidx.core.view.MenuProvider
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tipsaredone.R
@@ -25,10 +26,7 @@ class EmployeeProfileFragment : Fragment() {
     private var _binding: FragmentEmployeeProfileBinding? = null
     private val binding get() = _binding!!
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentEmployeeProfileBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -96,6 +94,7 @@ class EmployeeProfileFragment : Fragment() {
                         it.name = newName.toString()
                     }
                 }
+                (context as MainActivity).getDatabaseModel().updateEmployee(employeesViewModel.selectedEmployee.value!!)
                 // Navigating back to EmployeeListFragment.
                 findNavController().navigate(R.id.action_EmployeeDialogFrag_to_EmployeeListFrag)
             }
@@ -139,6 +138,7 @@ class EmployeeProfileFragment : Fragment() {
         }
         binding.includeDeleteEmployeeDialog.btnDialogDeleteEmployeeConfirm.setOnClickListener {
             employeesViewModel.employees.value!!.remove(selectedEmployee)
+            (context as MainActivity).getDatabaseModel().deleteEmployee(selectedEmployee)
             findNavController().navigate(R.id.action_EmployeeDialogFrag_to_EmployeeListFrag)
         }
     }

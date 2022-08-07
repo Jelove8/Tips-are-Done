@@ -38,14 +38,9 @@ class MyEmployees() {
     }
 
 
+
 /*
-    private fun convertEmployeeNamesToJson(employee_names: MutableList<String>): String {
-        // Converting list of string into Json.
-        val gson = GsonBuilder().setPrettyPrinting().create()
-        val json: String = gson.toJson(employee_names)
-        Log.d(INTERNAL_STORAGE, "Employee names converted to Json:\n${json}")
-        return json
-    }
+
     fun saveEmployeeNamesToInternalStorage(employees: MutableList<Employee>,context: Context) {        // Called whenever the "CONTINUE" button is pressed @EmployeeListFragment.
         // Converting list of employee objects into list of employee names (string).
         val listOfNames = mutableListOf<String>()

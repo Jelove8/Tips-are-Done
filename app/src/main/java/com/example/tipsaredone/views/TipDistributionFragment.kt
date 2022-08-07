@@ -47,9 +47,6 @@ class TipDistributionFragment : Fragment() {
             // Clearing inputted data, except for employee names
             val tipCollectionViewModel: TipCollectionViewModel by activityViewModels()
             tipCollectionViewModel.clearTipsCollected()
-            (context as MainActivity).saveEmployeesToDatabase()
-            (context as MainActivity).saveWeeklyTipReport()
-            (context as MainActivity).logWeeklyTipReport()
             findNavController().navigate(R.id.action_outputTipsFragment_to_EmployeeFragment)
         }
     }

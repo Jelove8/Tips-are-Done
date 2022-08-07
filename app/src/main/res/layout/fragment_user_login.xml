@@ -121,6 +121,7 @@
                     android:hint="email@email.com"
                     android:inputType="textEmailAddress"
                     android:minHeight="48dp"
+                    android:text="jelovalera@gmail.com"
                     android:textAlignment="center" />
             </LinearLayout>
 
@@ -151,6 +152,7 @@
                     android:hint="********"
                     android:inputType="textPassword"
                     android:minHeight="48dp"
+                    android:text="4.Santiago"
                     android:textAlignment="center" />
             </LinearLayout>
         </LinearLayout>

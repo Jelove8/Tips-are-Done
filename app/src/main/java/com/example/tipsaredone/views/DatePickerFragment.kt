@@ -86,4 +86,25 @@ class DatePickerFragment : Fragment() {
             false
         }
     }
+
+    private fun convertDatesToString() {
+        val startDate = datePickerViewModel.startDate.value!!
+        val startMonthString =
+            if (startDate.monthValue < 10) {
+                "0${startDate.monthValue}"
+            } else {
+                startDate.monthValue
+            }
+        val startDayString =
+            if (startDate.dayOfMonth < 10) {
+                "0${startDate.dayOfMonth}"
+            } else {
+                startDate.dayOfMonth
+            }
+        startDate.monthValue
+        val startDateString = "${startDate.year}$startMonthString$startDayString"
+
+
+
+    }
 }

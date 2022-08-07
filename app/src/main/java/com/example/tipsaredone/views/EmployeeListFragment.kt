@@ -43,6 +43,7 @@ class EmployeeListFragment : Fragment() {
          * Whenever edits to the employee are made, it will update the database.
          */
 
+
         employeeListAdapter = EmployeesAdapter(employeesViewModel.employees.value!!,
             /**
              * ITEMCLICK:  Navigate to EmployeeProfileFragment to edit an employee.
@@ -53,6 +54,11 @@ class EmployeeListFragment : Fragment() {
         )
         binding.rcyEmployeeList.layoutManager = LinearLayoutManager(context as MainActivity)
         binding.rcyEmployeeList.adapter = employeeListAdapter
+        (context as MainActivity).initializeDatabaseModel(employeeListAdapter)
+
+        binding.button.setOnClickListener {
+            (context as MainActivity).getDatabaseModel().updateJackie()
+        }
 
         /**
          * BUTTON:  Navigate to EmployeeProfileFragment to add a new employee.
@@ -89,6 +95,7 @@ class EmployeeListFragment : Fragment() {
         binding.btnEmployeeListConfirm.setOnClickListener {
             if (checkForValidEmployees()) {
                 (context as MainActivity).showTitleScreen()
+                (context as MainActivity).saveEmployeesToDatabase()
                 findNavController().navigate(R.id.action_EmployeeListFrag_to_DatePickerFrag)
             }
             else {
@@ -132,7 +139,9 @@ class EmployeeListFragment : Fragment() {
                 (context as MainActivity).makeToastMessage(toast)
             }
             else {
-                employeeListAdapter.addNewEmployee(Employee(employeesViewModel.generateUniqueID(),binding.includeNewEmployee.etDialogNewEmployee.text.toString()))
+                val newEmployee = Employee(binding.includeNewEmployee.etDialogNewEmployee.text.toString(),employeesViewModel.generateUniqueID())
+                employeeListAdapter.addNewEmployee(newEmployee)
+                (context as MainActivity).addNewEmployeeToDatabase(newEmployee)
                 updateConfirmButtonVisibility()
                 hideNewEmployeeDialog()
             }
@@ -143,6 +152,9 @@ class EmployeeListFragment : Fragment() {
         binding.includeNewEmployee.root.visibility = View.GONE
         binding.btnEmployeeListConfirm.visibility = View.VISIBLE
     }
+
+    // Firebase
+
 
     // Validity
     private fun checkForValidEmployees(): Boolean {

@@ -1,5 +1,6 @@
 package com.example.tipsaredone.model
 
+import android.icu.lang.UCharacter.GraphemeClusterBreak.L
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.time.LocalDateTime
@@ -7,8 +8,8 @@ import kotlin.math.absoluteValue
 
 class WeeklyTipReport(
     var individualReports: MutableList<IndividualTipReport> = mutableListOf(),
-    var startDate: LocalDateTime? = null,
-    var endDate: LocalDateTime? = null,
+    var startDate: String? = null,
+    var endDate: String? = null,
     var bills: MutableList<Map<String,Int>> = mutableListOf(),
     var sumOfBills: Double = 0.0,
     var tipRate: Double = 0.0,
@@ -88,8 +89,8 @@ class WeeklyTipReport(
         }
     }
     private fun redistributeTips(roundingError: Double) {
-        var firstEmployee = IndividualTipReport("Template1","Template1",0.0,0.0, LocalDateTime.now(),LocalDateTime.now(),null,false)
-        var secondEmployee = IndividualTipReport("Template2","Template2",0.0,0.0, LocalDateTime.now(),LocalDateTime.now(),null,false)
+        var firstEmployee = IndividualTipReport("Template1","Template1",0.0,0.0, "","",null,false)
+        var secondEmployee = IndividualTipReport("Template2","Template2",0.0,0.0, "","",null,false)
 
         val employeesCopy = individualReports.toMutableList()
         firstEmployee = employeesCopy.random()
@@ -118,13 +119,5 @@ class WeeklyTipReport(
 
 }
 
-data class WeeklyTipReportConvertedForStorage(
-    var individualReports: MutableList<IndividualTipReportConvertedForStorage>,
-    var startDate: String,
-    var endDate: String,
-    var bills: MutableList<Map<String,Int>>,
-    val sumOfBills: Double,
-    var tipRate: Double,
-    var majorRoundingError: Int?
-)
+
 
