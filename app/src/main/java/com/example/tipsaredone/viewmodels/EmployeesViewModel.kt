@@ -1,12 +1,16 @@
 package com.example.tipsaredone.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.tipsaredone.model.DatabaseModel
 import com.example.tipsaredone.model.Employee
 import java.util.*
 
 class EmployeesViewModel: ViewModel() {
+
+    private var initializeEmployeesRequired = true
 
     private val _employees = MutableLiveData<MutableList<Employee>>(mutableListOf())
     val employees: LiveData<MutableList<Employee>> = _employees
@@ -20,17 +24,26 @@ class EmployeesViewModel: ViewModel() {
     private val _deleteEmployeeDialogShowing = MutableLiveData(false)
     val deleteEmployeeDialogShowing: LiveData<Boolean> = _deleteEmployeeDialogShowing
 
+    private val _confirmEmployeesButtonShowing = MutableLiveData(false)
+    val confirmEmployeesButtonShowing: LiveData<Boolean> = _confirmEmployeesButtonShowing
 
-    fun initializeEmployees(data: MutableList<Employee>) {
-        _employees.value = data
+    fun getInitializeEmployeesBool(): Boolean {
+        return if (initializeEmployeesRequired) {
+            initializeEmployeesRequired = false
+            true
+        } else {
+            false
+        }
     }
 
     fun setNewEmployeeDialogShowing(boolean: Boolean) {
         _newEmployeeDialogShowing.value = boolean
     }
-
     fun setDeleteEmployeeDialogShowing(boolean: Boolean) {
         _deleteEmployeeDialogShowing.value = boolean
+    }
+    fun setConfirmEmployeesButtonShowing(boolean: Boolean) {
+        _confirmEmployeesButtonShowing.value = boolean
     }
 
     fun selectEmployee(index: Int?) {
@@ -41,6 +54,14 @@ class EmployeesViewModel: ViewModel() {
         else {
             _employees.value!![index]
             }
+    }
+    fun updateSelectedEmployee(updatedEmployee: Employee) {
+        _employees.value!!.forEach {
+            if (it.id == _selectedEmployee.value!!.id) {
+                it.name = updatedEmployee.name
+                it.tipReports = updatedEmployee.tipReports
+            }
+        }
     }
 
     fun generateUniqueID(): String {
@@ -53,7 +74,6 @@ class EmployeesViewModel: ViewModel() {
         }
 
         return uniqueID
-
     }
 
 }

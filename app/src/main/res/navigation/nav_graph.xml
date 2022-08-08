@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/userLoginFragment">
+    app:startDestination="@id/EmployeeListFragment">
 
     <fragment
         android:id="@+id/EmployeeListFragment"
         android:name="com.example.tipsaredone.views.EmployeeListFragment"
-        android:label="My Employees"
+        android:label=""
         tools:layout="@layout/fragment_employees_list">
         <action
             android:id="@+id/action_EmployeeListFrag_to_EmployeeProfileFrag"
@@ -61,7 +61,7 @@
     <fragment
         android:id="@+id/DatePickerFragment"
         android:name="com.example.tipsaredone.views.DatePickerFragment"
-        android:label="Which week are you doing tips?"
+        android:label=""
         tools:layout="@layout/fragment_date_picker" >
         <action
             android:id="@+id/action_DatePickerFrag_to_EmployeeHoursFrag"

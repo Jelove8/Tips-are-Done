@@ -23,7 +23,7 @@ class EmployeeListFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var employeesViewModel: EmployeesViewModel
-    private lateinit var employeeListAdapter: EmployeesAdapter
+    private lateinit var employeesAdapter: EmployeesAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentEmployeesListBinding.inflate(inflater, container, false)
@@ -31,33 +31,28 @@ class EmployeeListFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (context as MainActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(false)
+        (context as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         // Initialize EmployeesViewModel
         val employeesVM: EmployeesViewModel by activityViewModels()
         employeesViewModel = employeesVM
 
         /**
-         * TODO
-         * Initialize EmployeesViewModel with data from database, by invoking a function from MainActivity.
-         * Whenever edits to the employee are made, it will update the database.
+         * ITEMCLICK:  Navigate to EmployeeProfileFragment to edit an employee.
          */
-
-
-        employeeListAdapter = EmployeesAdapter(employeesViewModel.employees.value!!,
-            /**
-             * ITEMCLICK:  Navigate to EmployeeProfileFragment to edit an employee.
-             */
+        employeesAdapter = EmployeesAdapter(employeesViewModel.employees.value!!,
             itemClickCallback = fun(position: Int) {
                 navigateEditEmployee(position)
-            }
-        )
+            })
         binding.rcyEmployeeList.layoutManager = LinearLayoutManager(context as MainActivity)
-        binding.rcyEmployeeList.adapter = employeeListAdapter
-        (context as MainActivity).initializeDatabaseModel(employeeListAdapter)
+        binding.rcyEmployeeList.adapter = employeesAdapter
 
-        binding.button.setOnClickListener {
-            (context as MainActivity).getDatabaseModel().updateJackie()
+        /**
+         * INIT:  Firebase Database - reading employees from database, then populating the adapter.
+         */
+        if (employeesViewModel.getInitializeEmployeesBool()) {
+            (context as MainActivity).initializeEmployeesFromDatabase(employeesAdapter)
+            updateConfirmButtonVisibility()
         }
 
         /**
@@ -89,58 +84,74 @@ class EmployeeListFragment : Fragment() {
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
         /**
-         * BUTTON:      Navigate to DatePickerFragment.
-         * VISIBILITY:  Only visible/clickable if there are at least 2 existing employees.
+         * BUTTON:  Navigate to DatePickerFragment.
          */
         binding.btnEmployeeListConfirm.setOnClickListener {
-            if (checkForValidEmployees()) {
-                (context as MainActivity).showTitleScreen()
-                (context as MainActivity).saveEmployeesToDatabase()
-                findNavController().navigate(R.id.action_EmployeeListFrag_to_DatePickerFrag)
-            }
-            else {
-                val toast = resources.getString(R.string.employees_list_invalid_string)
-                (context as MainActivity).makeToastMessage(toast)
-            }
+            navigateDatePicker()
         }
-        updateConfirmButtonVisibility()
     }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
-    // Employee Dialog
+    /**
+     * NAVIGATION:  To EmployeeHoursFragment
+     */
     private fun navigateEditEmployee(index: Int) {
         employeesViewModel.selectEmployee(index)
         findNavController().navigate(R.id.action_EmployeeListFrag_to_EmployeeProfileFrag)
     }
+    private fun navigateDatePicker() {
+        if (checkForValidEmployees()) {
+            findNavController().navigate(R.id.action_EmployeeListFrag_to_DatePickerFrag)
+        }
+        else {
+            val toast = resources.getString(R.string.employees_list_invalid_string)
+            (context as MainActivity).makeToastMessage(toast)
+        }
+    }
+
+    /**
+     * DIALOG:  Add New Employee.
+     */
     private fun showNewEmployeeDialog() {
+        val dialogBox = binding.includeNewEmployeeDialog
+        dialogBox.root.visibility = View.VISIBLE
         employeesViewModel.setNewEmployeeDialogShowing(true)
         binding.btnEmployeeListConfirm.visibility = View.GONE
-        binding.includeNewEmployee.root.visibility = View.VISIBLE
-        binding.includeNewEmployee.etDialogNewEmployee.text.clear()
-        binding.includeNewEmployee.etDialogNewEmployee.doAfterTextChanged {
-            if (binding.includeNewEmployee.etDialogNewEmployee.text.isNullOrEmpty()) {
+        employeesViewModel.setConfirmEmployeesButtonShowing(false)
+
+        // If EditText is empty, the confirm button is hidden.
+        dialogBox.etDialogNewEmployee.doAfterTextChanged {
+            if (dialogBox.etDialogNewEmployee.text.isNullOrEmpty()) {
                 val wrmNeutral = ResourcesCompat.getColor(resources, R.color.warm_neutral, (context as MainActivity).theme)
-                binding.includeNewEmployee.btnDialogNewEmployeeConfirm.setBackgroundColor(wrmNeutral)
+                dialogBox.btnDialogNewEmployeeConfirm.setBackgroundColor(wrmNeutral)
             }
             else {
                 val sbGreen = ResourcesCompat.getColor(resources, R.color.starbucks_green, (context as MainActivity).theme)
-                binding.includeNewEmployee.btnDialogNewEmployeeConfirm.setBackgroundColor(sbGreen)
+                dialogBox.btnDialogNewEmployeeConfirm.setBackgroundColor(sbGreen)
             }
         }
-        binding.includeNewEmployee.cnstDialogNewEmployee.setOnClickListener {
+        dialogBox.etDialogNewEmployee.text.clear()
+
+        // If out-of-bounds area is clicked, dialog is hidden.
+        dialogBox.cnstDialogNewEmployee.setOnClickListener {
             hideNewEmployeeDialog()
         }
-        binding.includeNewEmployee.btnDialogNewEmployeeConfirm.setOnClickListener {
-            if (binding.includeNewEmployee.etDialogNewEmployee.text.isNullOrEmpty()) {
+
+        /**
+         * BUTTON:  Confirm new Employee name, updating EmployeesAdapter & Database.
+         */
+        dialogBox.btnDialogNewEmployeeConfirm.setOnClickListener {
+            if (dialogBox.etDialogNewEmployee.text.isNullOrEmpty()) {
                 val toast = resources.getString(R.string.employee_name_required)
                 (context as MainActivity).makeToastMessage(toast)
             }
             else {
-                val newEmployee = Employee(binding.includeNewEmployee.etDialogNewEmployee.text.toString(),employeesViewModel.generateUniqueID())
-                employeeListAdapter.addNewEmployee(newEmployee)
+                val newName = dialogBox.etDialogNewEmployee.text.toString()
+                val newEmployee = Employee(newName,employeesViewModel.generateUniqueID())
+                employeesAdapter.addNewEmployee(newEmployee)
                 (context as MainActivity).addNewEmployeeToDatabase(newEmployee)
                 updateConfirmButtonVisibility()
                 hideNewEmployeeDialog()
@@ -148,20 +159,13 @@ class EmployeeListFragment : Fragment() {
         }
     }
     private fun hideNewEmployeeDialog() {
+        binding.includeNewEmployeeDialog.root.visibility = View.GONE
         employeesViewModel.setNewEmployeeDialogShowing(false)
-        binding.includeNewEmployee.root.visibility = View.GONE
         binding.btnEmployeeListConfirm.visibility = View.VISIBLE
+        employeesViewModel.setConfirmEmployeesButtonShowing(true)
     }
-
-    // Firebase
-
 
     // Validity
-    private fun checkForValidEmployees(): Boolean {
-        return employeesViewModel.employees.value!!.size > 1
-    }
-
-    // Updates Views
     private fun updateConfirmButtonVisibility() {
         if (checkForValidEmployees()) {
             val sbGreen = ResourcesCompat.getColor(resources, R.color.starbucks_green, (context as MainActivity).theme)
@@ -172,4 +176,8 @@ class EmployeeListFragment : Fragment() {
             binding.btnEmployeeListConfirm.setBackgroundColor(wrmNeutral)
         }
     }
+    private fun checkForValidEmployees(): Boolean {
+        return employeesAdapter.itemCount > 1
+    }
+
 }

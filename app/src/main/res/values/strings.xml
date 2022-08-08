@@ -33,6 +33,8 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Email or password incorrect."</string>
-    <string name="sign_up_failed">"Failed to create new user."</string>
+    <string name="sign_up_failed">Failed to create new user.</string>
 
+    <string name="delete_confirmation1">This will delete </string>
+    <string name="delete_confirmation2"> and all their data.</string>
 </resources>

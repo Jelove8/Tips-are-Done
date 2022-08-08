@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.motion.widget.OnSwipe
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -34,8 +35,6 @@ class DatePickerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (context as MainActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-
         val datePickerVM: DatePickerViewModel by activityViewModels()
         datePickerViewModel = datePickerVM
 
@@ -49,6 +48,7 @@ class DatePickerFragment : Fragment() {
             binding.inputStartDate.updateDate(startDate.year,startDate.monthValue,startDate.dayOfMonth)
             binding.inputEndDate.updateDate(endDate.year,endDate.monthValue,endDate.dayOfMonth)
         }
+
 
         binding.inputStartDate.setOnDateChangedListener { _, year, month, dayOfMonth ->
             Log.d("meow","hello")

@@ -5,165 +5,88 @@
     android:id="@+id/cnst_user_login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/starbucks_green"
+    android:background="@color/white"
     tools:context=".views.UserLoginFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/subcnst_user_login1"
+    <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/subcnst_user_login2"
+        android:layout_marginTop="64dp"
+        android:layout_marginBottom="64dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/btn_sign_up"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/tv_title_screen1"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:elevation="32dp"
-            android:fontFamily="@font/lander"
-            android:text="tips"
-            android:textColor="@color/white"
-            android:textSize="64sp"
-            android:textStyle="bold"
-            android:typeface="serif"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="75dp"
+            android:gravity="center|center_vertical"
+            android:orientation="horizontal"
+            android:padding="8dp">
 
-        <TextView
-            android:id="@+id/tv_title_screen2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:elevation="32dp"
-            android:fontFamily="@font/lander"
-            android:text="are"
-            android:textColor="@color/white"
-            android:textSize="64sp"
-            android:textStyle="bold"
-            android:typeface="serif"
-            app:layout_constraintStart_toStartOf="@+id/tv_title_screen1"
-            app:layout_constraintTop_toBottomOf="@+id/tv_title_screen1" />
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="85dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/sodo"
+                android:text="Email"
+                android:textAlignment="center"
+                android:textSize="16sp" />
 
-        <TextView
-            android:id="@+id/tv_title_screen3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:elevation="32dp"
-            android:fontFamily="@font/lander"
-            android:text="done"
-            android:textColor="@color/white"
-            android:textSize="64sp"
-            android:textStyle="bold"
-            android:typeface="serif"
-            app:layout_constraintStart_toEndOf="@+id/tv_title_screen1"
-            app:layout_constraintTop_toTopOf="@+id/tv_title_screen2" />
-
-        <TextView
-            android:id="@+id/tv_title_screen4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:fontFamily="@font/lander"
-            android:text="."
-            android:textColor="@color/white"
-            android:textSize="64sp"
-            android:textStyle="bold"
-            android:typeface="serif"
-            app:layout_constraintStart_toEndOf="@+id/tv_title_screen3"
-            app:layout_constraintTop_toTopOf="@+id/tv_title_screen3" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/subcnst_user_login2"
-        android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:background="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+            <EditText
+                android:id="@+id/input_login_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:ems="10"
+                android:fontFamily="@font/sodo"
+                android:hint="email@email.com"
+                android:inputType="textEmailAddress"
+                android:minHeight="48dp"
+                android:textAlignment="center" />
+        </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/linearLayout"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="64dp"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="75dp"
+            android:layout_marginTop="16dp"
+            android:gravity="center|center_vertical"
+            android:orientation="horizontal"
+            android:padding="8dp">
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="85dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/sodo"
+                android:text="Password"
+                android:textAlignment="center"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/input_login_password"
                 android:layout_width="wrap_content"
-                android:layout_height="75dp"
-                android:gravity="center|center_vertical"
-                android:orientation="horizontal"
-                android:padding="8dp">
-
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="85dp"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/sodo"
-                    android:text="Email"
-                    android:textAlignment="center"
-                    android:textSize="16sp" />
-
-                <EditText
-                    android:id="@+id/input_login_email"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:ems="10"
-                    android:fontFamily="@font/sodo"
-                    android:hint="email@email.com"
-                    android:inputType="textEmailAddress"
-                    android:minHeight="48dp"
-                    android:text="jelovalera@gmail.com"
-                    android:textAlignment="center" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="75dp"
-                android:layout_marginTop="16dp"
-                android:gravity="center|center_vertical"
-                android:orientation="horizontal"
-                android:padding="8dp">
-
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="85dp"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/sodo"
-                    android:text="Password"
-                    android:textAlignment="center"
-                    android:textSize="16sp" />
-
-                <EditText
-                    android:id="@+id/input_login_password"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:ems="10"
-                    android:fontFamily="@font/sodo"
-                    android:hint="********"
-                    android:inputType="textPassword"
-                    android:minHeight="48dp"
-                    android:text="4.Santiago"
-                    android:textAlignment="center" />
-            </LinearLayout>
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:ems="10"
+                android:fontFamily="@font/sodo"
+                android:hint="********"
+                android:inputType="textPassword"
+                android:minHeight="48dp"
+                android:textAlignment="center" />
         </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/btn_user_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="32dp"
         android:fontFamily="@font/sodo"
         android:text="Login"
         android:textSize="16sp"
@@ -178,7 +101,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="32dp"
         android:fontFamily="@font/sodo"
         android:text="Sign Up"
         android:textSize="16sp"

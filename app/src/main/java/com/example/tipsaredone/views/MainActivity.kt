@@ -20,7 +20,6 @@ import com.example.tipsaredone.viewmodels.EmployeesViewModel
 import com.example.tipsaredone.viewmodels.HoursViewModel
 import com.example.tipsaredone.viewmodels.TipCollectionViewModel
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.ktx.Firebase
 import java.util.*
 import kotlin.concurrent.schedule
 
@@ -38,7 +37,10 @@ class MainActivity : AppCompatActivity() {
     private var signInRequired: Boolean = true
 
     private lateinit var weeklyTipReport: WeeklyTipReport
+
+
     private lateinit var databaseModel: DatabaseModel
+
 
     // ViewModels
     private lateinit var employeesViewModel: EmployeesViewModel
@@ -57,39 +59,26 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
-        // Firebase
-        databaseModel = DatabaseModel()
-
         // Initialize ViewModels
         employeesViewModel = ViewModelProvider(this)[EmployeesViewModel::class.java]
         datePickerViewModel = ViewModelProvider(this)[DatePickerViewModel::class.java]
         collectionViewModel = ViewModelProvider(this)[TipCollectionViewModel::class.java]
         hoursViewModel = ViewModelProvider(this)[HoursViewModel::class.java]
+
+        binding.includeContentMain.includeLogin.btnUserLogin.setOnClickListener {
+            val inputEmail = "jelovalera@gmail.com"
+            val inputPassword = "4.Santiago"
+            displayTitleAnimation()
+        }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-    }
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)
         return navController.navigateUp(appBarConfiguration)
                 || super.onSupportNavigateUp()
     }
 
-    fun showTitleScreen() {
-        binding.includeTitleScreen.root.visibility = View.VISIBLE
-        ObjectAnimator.ofFloat(binding.includeTitleScreen.root, "translationY", 100f).apply {
-            duration = 2000
-            start()
-        }
-        binding.toolbar.visibility = View.GONE
-        Timer().schedule(2000){
-            this@MainActivity.runOnUiThread {
-                binding.includeTitleScreen.root.visibility = View.GONE
-                binding.toolbar.visibility = View.VISIBLE
-            }
-        }
-    }
+
     fun showCalculatingScreen() {
         binding.includeCalculatingScreen.root.visibility = View.VISIBLE
         binding.toolbar.visibility = View.GONE
@@ -97,6 +86,44 @@ class MainActivity : AppCompatActivity() {
             this@MainActivity.runOnUiThread {
                 binding.includeCalculatingScreen.root.visibility = View.GONE
                 binding.toolbar.visibility = View.VISIBLE
+            }
+        }
+    }
+
+
+    // Animations
+    fun displayTitleAnimation() {
+
+        ObjectAnimator.ofFloat(binding.includeContentMain.includeLogin.root, "translationY", 1000f).apply {
+            duration = 500
+            start()
+        }
+        ObjectAnimator.ofFloat(binding.includeContentMain.includeTitleScreen.root, "translationY", 400f).apply {
+            duration = 500
+            start()
+        }
+        Timer().schedule(600) {
+            this@MainActivity.runOnUiThread {
+                Timer().schedule(500) {
+                    this@MainActivity.runOnUiThread {
+                        binding.toolbar.visibility = View.VISIBLE
+                    }
+                }
+                ObjectAnimator.ofFloat(binding.includeContentMain.includeTitleScreen.root, "translationY", -2000f).apply {
+                    duration = 600
+                    start()
+                }
+
+                ObjectAnimator.ofFloat(binding.includeContentMain.tvTitleScreenBackground, "translationY", -2200f).apply {
+                    duration = 600
+                    start()
+                }
+                Timer().schedule(550) {
+                    this@MainActivity.runOnUiThread {
+                        binding.includeContentMain.includeTitleScreen.root.visibility = View.GONE
+                        binding.includeContentMain.tvTitleScreenBackground.visibility = View.GONE
+                    }
+                }
             }
         }
     }
@@ -124,41 +151,32 @@ class MainActivity : AppCompatActivity() {
         Log.d(WEEKLY_REPORT,employeeNames)
     }
 
-    /*
-    fun saveWeeklyTipReport() {
-        val weeklyTipReportForStorage = mapOf(
-            "${weeklyTipReport.startDate.toString().removeSuffix("T00:00")} to ${weeklyTipReport.endDate.toString().removeSuffix("T00:00")}" to
-            weeklyTipReport)
-
-        firebaseDB.collection("WeeklyTipReports").document("AllReports").update(weeklyTipReportForStorage)
-            .addOnSuccessListener {
-                Log.d(WEEKLY_REPORT,"New weekly tip report added to database.")
-            }
-            .addOnFailureListener {
-                Log.d(WEEKLY_REPORT,"Failed to add weekly tip report to database.", it)
-            }
-    }
-     */
-
 
     // Firebase Auth
-    fun getSignInBool(): Boolean {
-        return signInRequired
-    }
-    fun signInUser(email: String, password: String) {
-        firebaseAuth = FirebaseAuth.getInstance()
-        firebaseAuth.signInWithEmailAndPassword(email,password)
+    fun signInUser(inputtedEmail: String, inputtedPassword: String) {
+        Log.d("FirebaseAuth","Attempting to sign in User: $inputtedEmail")
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(inputtedEmail,inputtedPassword)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    signInRequired = false
-                    findNavController(R.id.nav_host_fragment).navigate(R.id.action_userLoginFragment_to_EmployeeListFragment)
-                    binding.toolbar.visibility = View.VISIBLE
+                    Log.d("FirebaseAuth","Successfully signed in User: $inputtedEmail")
+                    Timer().schedule(800) {
+                        this@MainActivity.runOnUiThread {
+                            navigateToEmployeeListFragment()
+                        }
+                    }
                 } else {
+                    Log.d("FirebaseAuth","Failed to sign in User: $inputtedEmail")
                     val toast = resources.getString(R.string.login_failed)
                     makeToastMessage(toast)
                 }
             }
     }
+    private fun navigateToEmployeeListFragment() {
+        findNavController(R.id.nav_host_fragment).navigate(R.id.action_userLoginFragment_to_EmployeeListFragment)
+        binding.toolbar.visibility = View.VISIBLE
+    }
+
+
     fun signOutUser() {
         firebaseAuth = FirebaseAuth.getInstance()
         firebaseAuth.signOut()
@@ -179,20 +197,28 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
-    // Firestore
-    fun initializeDatabaseModel(adapter: EmployeesAdapter){
-        val employeesFromDatabase = databaseModel.initializeEmployees(firebaseAuth)
-        employeesViewModel.initializeEmployees(employeesFromDatabase)
+
+
+    // Firebase Database
+    fun initializeEmployeesFromDatabase(employeesAdapter: EmployeesAdapter) {
+        databaseModel = DatabaseModel()
+        databaseModel.readEmployeeDataFromDatabase(employeesAdapter)
     }
     fun addNewEmployeeToDatabase(newEmployee: Employee) {
-        databaseModel.addNewEmployee(newEmployee)
+        databaseModel.createNewEmployee(newEmployee)
     }
-    fun saveEmployeesToDatabase() {
+    fun updateExistingEmployee(selectedEmployee: Employee) {
+        employeesViewModel.employees.value!!.forEach {
+            if (it.id == selectedEmployee.id) {
+                it.name = selectedEmployee.name
+                it.tipReports = selectedEmployee.tipReports
+            }
+        }
+        databaseModel.updateEmployee(selectedEmployee)
     }
-    fun getDatabaseModel(): DatabaseModel {
-        return databaseModel
+    fun deleteExistingEmployee(selectedEmployee: Employee) {
+        databaseModel.deleteExistingEmployee(selectedEmployee)
     }
-
 
     // Misc
     fun makeToastMessage(message: String, isDurationShort: Boolean = true) {

@@ -1,9 +1,12 @@
 package com.example.tipsaredone.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 class Employee(
     var name: String,
     val id: String,
-    val tipReports: MutableList<IndividualTipReport> = mutableListOf()
+    var tipReports: MutableList<IndividualTipReport> = mutableListOf()
 ) {
 
     fun addTipReport(data: IndividualTipReport) {

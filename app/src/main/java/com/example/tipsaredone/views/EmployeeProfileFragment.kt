@@ -1,6 +1,7 @@
 package com.example.tipsaredone.views
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.core.content.res.ResourcesCompat
@@ -9,7 +10,6 @@ import androidx.core.view.MenuProvider
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tipsaredone.R
@@ -33,19 +33,26 @@ class EmployeeProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        /**
-         * INIT:   Initializing EmployeesViewModel & this fragment's views.
-         */
+        // Initializing ViewModel.
         val employeeVM: EmployeesViewModel by activityViewModels()
         employeesViewModel = employeeVM
-        val selectedEmployee = employeesViewModel.selectedEmployee.value!!
-        initializeViews(selectedEmployee)
+
+        // Initializing view based on selected employee.
+        val selectedEmployeeMock = Employee(employeesViewModel.selectedEmployee.value!!.name,employeesViewModel.selectedEmployee.value!!.id)
+        binding.tvEmployeeProfile.text = selectedEmployeeMock.name
+        binding.etEmployeeProfile.setText(selectedEmployeeMock.name)
+        binding.etEmployeeProfile.doAfterTextChanged {
+            if (!it.isNullOrEmpty()) {
+                selectedEmployeeMock.name = it.toString()
+            }
+            updateConfirmButtonVisibility()
+        }
+        Log.d("FirebaseDatabase","Employee Selected: ${selectedEmployeeMock.name}, ${selectedEmployeeMock.id}")
 
         /**
          * ITEMCLICK:   For existing employees, user can collect/uncollect distributed tips.
-         * VISIBILITY:  Only visible when editing an exisiting employeee.
          */
-        individualReportAdapter = IndividualReportsAdapter( employeesViewModel.selectedEmployee.value!!.tipReports,
+        individualReportAdapter = IndividualReportsAdapter(employeesViewModel.selectedEmployee.value!!.tipReports,
             collectClickCallback = fun(position: Int) {
                 individualReportAdapter.collectTips(position)
             },
@@ -56,6 +63,9 @@ class EmployeeProfileFragment : Fragment() {
         binding.rcyIndivTipReports.layoutManager = LinearLayoutManager(context as MainActivity)
         binding.rcyIndivTipReports.adapter = individualReportAdapter
 
+        /**
+         * BUTTON:  Delete selected employee.
+         */
         val menuHost: MenuHost = requireActivity()
         menuHost.addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -82,37 +92,24 @@ class EmployeeProfileFragment : Fragment() {
          * BUTTON:  Confirm employee edits, then navigate back to EmployeeListFragment.
          */
         binding.btnDialogConfirm.setOnClickListener {
-            val newName = binding.etEmployeeProfile.text
-
-            if (newName.isNullOrEmpty()) {
+            if (binding.etEmployeeProfile.text.isNullOrEmpty()) {
                 val toast = resources.getString(R.string.employee_name_required)
                 (context as MainActivity).makeToastMessage(toast)
             }
             else {
-                employeesViewModel.employees.value!!.forEach {
-                    if (it.id == employeesViewModel.selectedEmployee.value!!.id) {
-                        it.name = newName.toString()
-                    }
-                }
-                (context as MainActivity).getDatabaseModel().updateEmployee(employeesViewModel.selectedEmployee.value!!)
-                // Navigating back to EmployeeListFragment.
+                selectedEmployeeMock.name = binding.etEmployeeProfile.text.toString()
+                employeesViewModel.updateSelectedEmployee(selectedEmployeeMock)
+                (context as MainActivity).updateExistingEmployee(selectedEmployeeMock)
                 findNavController().navigate(R.id.action_EmployeeDialogFrag_to_EmployeeListFrag)
             }
         }
+        updateConfirmButtonVisibility()
     }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
-    private fun initializeViews(selectedEmployee: Employee) {
-        binding.tvEmployeeProfile.text = selectedEmployee.name
-        binding.etEmployeeProfile.setText(selectedEmployee.name)
-        binding.etEmployeeProfile.doAfterTextChanged {
-            updateConfirmButtonVisibility()
-        }
-        updateConfirmButtonVisibility()
-    }
     private fun updateConfirmButtonVisibility() {
         if (binding.etEmployeeProfile.text.isNotEmpty()) {
             val sbGreen = ResourcesCompat.getColor(resources, R.color.starbucks_green, (context as MainActivity).theme)
@@ -125,20 +122,32 @@ class EmployeeProfileFragment : Fragment() {
     }
 
     private fun showDeleteEmployeeDialog() {
+        val dialogBox = binding.includeDeleteEmployeeDialog
+        dialogBox.root.visibility = View.VISIBLE
         employeesViewModel.setDeleteEmployeeDialogShowing(true)
-        val selectedEmployee = employeesViewModel.selectedEmployee.value!!
         binding.btnDialogConfirm.visibility = View.GONE
-        binding.includeDeleteEmployeeDialog.root.visibility = View.VISIBLE
-        binding.includeDeleteEmployeeDialog.tvDialogDeleteEmployeeHeader.text = "Delete ${selectedEmployee.name} ?"
-        binding.includeDeleteEmployeeDialog.cnstDialogDeleteEmployee.setOnClickListener {
+
+        val selectedName = employeesViewModel.selectedEmployee.value!!.name
+        val deleteMessage = resources.getString(R.string.delete_confirmation1) + selectedName + resources.getString(R.string.delete_confirmation2)
+        dialogBox.tvDialogDeleteEmployee.text = deleteMessage
+
+        /**
+         * BUTTONS: Hide the Delete Confirmation dialog box.
+         */
+        dialogBox.cnstDialogDeleteEmployee.setOnClickListener {
             hideDeleteEmployeeDialog()
         }
-        binding.includeDeleteEmployeeDialog.btnDialogDeleteEmployeeCancel.setOnClickListener {
+        dialogBox.btnDialogDeleteEmployeeCancel.setOnClickListener {
             hideDeleteEmployeeDialog()
         }
-        binding.includeDeleteEmployeeDialog.btnDialogDeleteEmployeeConfirm.setOnClickListener {
+
+        /**
+         * BUTTON: Deletes an employee from database.
+         */
+        dialogBox.btnDialogDeleteEmployeeConfirm.setOnClickListener {
+            val selectedEmployee = employeesViewModel.selectedEmployee.value!!
             employeesViewModel.employees.value!!.remove(selectedEmployee)
-            (context as MainActivity).getDatabaseModel().deleteEmployee(selectedEmployee)
+            (context as MainActivity).deleteExistingEmployee(selectedEmployee)
             findNavController().navigate(R.id.action_EmployeeDialogFrag_to_EmployeeListFrag)
         }
     }
