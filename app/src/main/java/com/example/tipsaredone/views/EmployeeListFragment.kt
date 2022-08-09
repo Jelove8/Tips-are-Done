@@ -31,7 +31,7 @@ class EmployeeListFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (context as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        (context as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
         // Initialize EmployeesViewModel
         val employeesVM: EmployeesViewModel by activityViewModels()

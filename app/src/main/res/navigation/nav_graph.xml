@@ -16,7 +16,9 @@
             app:launchSingleTop="false" />
         <action
             android:id="@+id/action_EmployeeListFrag_to_DatePickerFrag"
-            app:destination="@id/DatePickerFragment" />
+            app:destination="@id/DatePickerFragment"
+            app:enterAnim="@anim/slide_to_the_left"
+            app:popEnterAnim="@anim/slide_to_the_right" />
     </fragment>
 
     <fragment
@@ -74,6 +76,7 @@
         tools:layout="@layout/fragment_user_login" >
         <action
             android:id="@+id/action_userLoginFragment_to_EmployeeListFragment"
-            app:destination="@id/EmployeeListFragment" />
+            app:destination="@id/EmployeeListFragment"
+            app:enterAnim="@anim/slide_to_the_right" />
     </fragment>
 </navigation>
