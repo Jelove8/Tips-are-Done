@@ -18,12 +18,9 @@ import java.time.ZoneOffset
 class DatePickerFragment : Fragment() {
 
     companion object {
-        const val SEVEN_DAYS_IN_MILLISECONDS_LONG = 604800000.toLong()
-        const val MILLISECONDS_IN_ONE_DAY = 86400000
     }
 
     private lateinit var datePickerViewModel: DatePickerViewModel
-    private var dateInputsInitialized = false
 
     private var _binding: FragmentDatePickerBinding? = null
     private val binding get() = _binding!!
@@ -51,11 +48,9 @@ class DatePickerFragment : Fragment() {
 
 
         binding.inputStartDate.setOnDateChangedListener { _, year, month, dayOfMonth ->
-            Log.d("meow","hello")
             datePickerViewModel.setStartDate(year,month,dayOfMonth)
         }
         binding.inputEndDate.setOnDateChangedListener { _, year, month, dayOfMonth ->
-            Log.d("meow","hello")
             datePickerViewModel.setEndDate(year,month,dayOfMonth)
         }
         binding.btnDatePickerConfirm.setOnClickListener {

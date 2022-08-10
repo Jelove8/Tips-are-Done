@@ -2,6 +2,7 @@ package com.example.tipsaredone.views
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,10 +15,6 @@ import com.example.tipsaredone.viewmodels.UserLoginViewModel
 import com.google.firebase.auth.FirebaseAuth
 
 class UserLoginFragment : Fragment() {
-
-    companion object {
-        const val FIREBASE_AUTH = "FirebaseAuth"
-    }
 
     private var _binding: FragmentUserLoginBinding? = null
     private val binding get() = _binding!!
@@ -34,6 +31,7 @@ class UserLoginFragment : Fragment() {
         val userLoginVM = ViewModelProvider(this)[UserLoginViewModel::class.java]
         userLoginViewModel = userLoginVM
 
+        updateLoginAndSignUpButtonVisibility()
 
         binding.inputLoginEmail.doAfterTextChanged {
             userLoginViewModel.setEmail(
@@ -49,18 +47,15 @@ class UserLoginFragment : Fragment() {
         }
 
         binding.btnUserLogin.setOnClickListener {
-            if (checkForValidInputs()) {
-                val inputEmail = binding.inputLoginEmail.text.toString()
-                val inputPassword = binding.inputLoginPassword.text.toString()
-                (context as MainActivity).displayTitleAnimation()
-            }
+           
+            updateLoginAndSignUpButtonVisibility()
         }
         binding.btnSignUp.setOnClickListener {
             if (checkForValidInputs()) {
                 (context as MainActivity).signUpNewUser(binding.inputLoginEmail.text.toString(),binding.inputLoginPassword.text.toString())
             }
         }
-        updateLoginAndSignUpButtonVisibility()
+
     }
     override fun onDestroyView() {
         super.onDestroyView()
@@ -81,15 +76,17 @@ class UserLoginFragment : Fragment() {
         return true
     }
     private fun updateLoginAndSignUpButtonVisibility() {
-        if (userLoginViewModel.email.value != null && userLoginViewModel.password.value != null) {
+        if (binding.inputLoginEmail.text.isNotEmpty() && binding.inputLoginPassword.text.isNotEmpty()) {
             val sbGreen = ResourcesCompat.getColor(resources, R.color.starbucks_green, (context as MainActivity).theme)
             binding.btnSignUp.setBackgroundColor(sbGreen)
             binding.btnUserLogin.setBackgroundColor(sbGreen)
+            Log.d("UserLogin","hello?1")
         }
         else {
             val wrmNeutral = ResourcesCompat.getColor(resources, R.color.warm_neutral, (context as MainActivity).theme)
             binding.btnSignUp.setBackgroundColor(wrmNeutral)
             binding.btnUserLogin.setBackgroundColor(wrmNeutral)
+            Log.d("UserLogin","hello?2")
         }
     }
 
