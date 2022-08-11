@@ -1,4 +1,4 @@
-package com.example.tipsaredone.views
+package com.example.tipsaredone.activities
 
 import android.os.Bundle
 import android.util.Log
@@ -144,37 +144,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     // Firebase Auth
-    fun signInUser(inputtedEmail: String, inputtedPassword: String) {
-        Log.d("FirebaseAuth","Attempting to sign in User: $inputtedEmail")
-        FirebaseAuth.getInstance().signInWithEmailAndPassword(inputtedEmail,inputtedPassword)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Log.d("FirebaseAuth","Successfully signed in User: $inputtedEmail")
-                    findNavController(R.id.nav_host_fragment).navigate(R.id.action_userLoginFragment_to_EmployeeListFragment)
-                } else {
-                    Log.d("FirebaseAuth","Failed to sign in User: $inputtedEmail")
-                    val toast = resources.getString(R.string.login_failed)
-                    makeToastMessage(toast)
-                }
-            }
-    }
-    fun signOutUser() {
-        firebaseAuth = FirebaseAuth.getInstance()
-        firebaseAuth.signOut()
-        signInRequired = true
-    }
-    fun signUpNewUser(email: String, password: String) {
-        firebaseAuth = FirebaseAuth.getInstance()
-        firebaseAuth.createUserWithEmailAndPassword(email,password)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    signInUser(email, password)
-                } else {
-                    val toast = resources.getString(R.string.sign_up_failed)
-                    makeToastMessage(toast)
-                }
-            }
-    }
+
 
     // Firebase Database
     fun initializeEmployeesFromDatabase(employeesAdapter: EmployeesAdapter) {

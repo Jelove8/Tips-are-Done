@@ -10,6 +10,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tipsaredone.R
+import com.example.tipsaredone.activities.MainActivity
 import com.example.tipsaredone.adapters.HoursAdapter
 import com.example.tipsaredone.databinding.FragmentEmployeeHoursBinding
 import com.example.tipsaredone.viewmodels.HoursViewModel

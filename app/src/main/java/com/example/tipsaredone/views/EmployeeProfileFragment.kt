@@ -13,6 +13,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tipsaredone.R
+import com.example.tipsaredone.activities.MainActivity
 import com.example.tipsaredone.adapters.IndividualReportsAdapter
 import com.example.tipsaredone.databinding.FragmentEmployeeProfileBinding
 import com.example.tipsaredone.model.Employee

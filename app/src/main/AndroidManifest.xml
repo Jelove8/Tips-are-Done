@@ -10,24 +10,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TipsAreDone">
         <activity
-            android:name=".LoginActivity"
-            android:exported="false"
+            android:name=".activities.LoginActivity"
+            android:exported="true"
             android:label="@string/title_activity_login"
-            android:theme="@style/Theme.TipsAreDone.NoActionBar" />
-        <activity
-            android:name=".views.UserLoginActivity"
-            android:exported="true"
-            android:theme="@style/Theme.TipsAreDone.NoActionBar"></activity>
-        <activity
-            android:name=".views.MainActivity"
-            android:configChanges="orientation|screenSize|screenLayout"
-            android:exported="true"
             android:theme="@style/Theme.TipsAreDone.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".activities.MainActivity"
+            android:configChanges="orientation|screenSize|screenLayout"
+            android:exported="true"
+            android:theme="@style/Theme.TipsAreDone.NoActionBar">
         </activity>
     </application>
 

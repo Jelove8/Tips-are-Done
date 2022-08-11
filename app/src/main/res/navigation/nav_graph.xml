@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/userLoginFragment">
+    app:startDestination="@id/EmployeeListFragment">
 
     <fragment
         android:id="@+id/EmployeeListFragment"
@@ -69,14 +69,5 @@
         <action
             android:id="@+id/action_DatePickerFrag_to_EmployeeHoursFrag"
             app:destination="@id/EmployeeHoursFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/userLoginFragment"
-        android:name="com.example.tipsaredone.views.UserLoginFragment"
-        android:label=""
-        tools:layout="@layout/fragment_user_login" >
-        <action
-            android:id="@+id/action_userLoginFragment_to_EmployeeListFragment"
-            app:destination="@id/EmployeeListFragment" />
     </fragment>
 </navigation>

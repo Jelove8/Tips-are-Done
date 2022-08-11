@@ -5,15 +5,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.constraintlayout.motion.widget.OnSwipe
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.tipsaredone.R
+import com.example.tipsaredone.activities.MainActivity
 import com.example.tipsaredone.databinding.FragmentDatePickerBinding
 import com.example.tipsaredone.viewmodels.DatePickerViewModel
 import java.time.LocalDate
-import java.time.ZoneOffset
 
 class DatePickerFragment : Fragment() {
 
