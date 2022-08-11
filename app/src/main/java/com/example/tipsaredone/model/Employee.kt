@@ -2,7 +2,6 @@ package com.example.tipsaredone.model
 
 import kotlinx.serialization.Serializable
 
-@Serializable
 class Employee(
     var name: String,
     val id: String,

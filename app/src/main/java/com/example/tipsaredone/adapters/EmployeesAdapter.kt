@@ -1,6 +1,5 @@
 package com.example.tipsaredone.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,12 +26,9 @@ class EmployeesAdapter(
         ItemView: View,
         itemClickCallback: ((Int) -> Unit)?
     ) : RecyclerView.ViewHolder(ItemView) {
+        private val employeeIndex: TextView = itemView.findViewById(R.id.tv_employee_list_index)
         private val employeeName: TextView = itemView.findViewById(R.id.tv_employee_list_name)
         private val employeeItem: ConstraintLayout = itemView.findViewById(R.id.cnst_employee_list)
-        private val frameUncollected: FrameLayout = itemView.findViewById(R.id.frame_tips_uncollected)
-        private val tvUncollected: TextView = itemView.findViewById(R.id.tv_uncollected_tips)
-        private val frameCollected: FrameLayout = itemView.findViewById(R.id.frame_tips_collected)
-
         init {
             employeeItem.setOnClickListener {
                 itemClickCallback?.invoke(adapterPosition)
@@ -41,16 +37,12 @@ class EmployeesAdapter(
 
         fun displayEmployeeInfo(employee: Employee) {
 
+            val index = adapterPosition + 1
+            employeeIndex.text = index.toString()
+
             employeeName.text = employee.name
 
             val uncollectedTips = employee.checkForUncollectedTips()
-            if (uncollectedTips == 0.0) {
-                frameCollected.visibility = View.VISIBLE
-            }
-            else {
-                tvUncollected.text = "$ $uncollectedTips"
-                frameUncollected.visibility = View.VISIBLE
-            }
         }
     }
 

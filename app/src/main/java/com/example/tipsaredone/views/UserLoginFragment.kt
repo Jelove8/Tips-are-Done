@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.doAfterTextChanged
+import androidx.navigation.fragment.findNavController
 import com.example.tipsaredone.R
 import com.example.tipsaredone.databinding.FragmentUserLoginBinding
 import com.example.tipsaredone.viewmodels.UserLoginViewModel
@@ -33,6 +34,10 @@ class UserLoginFragment : Fragment() {
 
         updateLoginAndSignUpButtonVisibility()
 
+        if (FirebaseAuth.getInstance().currentUser != null) {
+            findNavController().navigate(R.id.action_userLoginFragment_to_EmployeeListFragment)
+        }
+
         binding.inputLoginEmail.doAfterTextChanged {
             userLoginViewModel.setEmail(
                 if (it.isNullOrEmpty()) { null }
@@ -47,8 +52,9 @@ class UserLoginFragment : Fragment() {
         }
 
         binding.btnUserLogin.setOnClickListener {
-           
-            updateLoginAndSignUpButtonVisibility()
+            if (checkForValidInputs()) {
+                (context as MainActivity).signInUser(binding.inputLoginEmail.text.toString(),binding.inputLoginPassword.text.toString())
+            }
         }
         binding.btnSignUp.setOnClickListener {
             if (checkForValidInputs()) {
@@ -73,7 +79,7 @@ class UserLoginFragment : Fragment() {
             val toast = "An email and password must be provided."
             (context as MainActivity).makeToastMessage(toast)
         }
-        return true
+        return output
     }
     private fun updateLoginAndSignUpButtonVisibility() {
         if (binding.inputLoginEmail.text.isNotEmpty() && binding.inputLoginPassword.text.isNotEmpty()) {

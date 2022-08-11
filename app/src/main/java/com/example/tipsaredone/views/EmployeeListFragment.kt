@@ -32,10 +32,13 @@ class EmployeeListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (context as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        (context as MainActivity).supportActionBar?.title = "    My Employees"
 
         // Initialize EmployeesViewModel
         val employeesVM: EmployeesViewModel by activityViewModels()
         employeesViewModel = employeesVM
+
+        // Checks if a user is logged in.
 
         /**
          * ITEMCLICK:  Navigate to EmployeeProfileFragment to edit an employee.
@@ -47,11 +50,14 @@ class EmployeeListFragment : Fragment() {
         binding.rcyEmployeeList.layoutManager = LinearLayoutManager(context as MainActivity)
         binding.rcyEmployeeList.adapter = employeesAdapter
 
+        if (employeesAdapter.itemCount == 0) {
+            (context as MainActivity).initializeEmployeesFromDatabase(employeesAdapter)
+        }
+
         /**
          * INIT:  Firebase Database - reading employees from database, then populating the adapter.
          */
         if (employeesViewModel.getInitializeEmployeesBool()) {
-            (context as MainActivity).initializeEmployeesFromDatabase(employeesAdapter)
             updateConfirmButtonVisibility()
         }
 
@@ -89,6 +95,11 @@ class EmployeeListFragment : Fragment() {
         binding.btnEmployeeListConfirm.setOnClickListener {
             navigateDatePicker()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (context as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
     }
     override fun onDestroyView() {
         super.onDestroyView()

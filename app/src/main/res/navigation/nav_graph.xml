@@ -3,12 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/EmployeeListFragment">
+    app:startDestination="@id/userLoginFragment">
 
     <fragment
         android:id="@+id/EmployeeListFragment"
         android:name="com.example.tipsaredone.views.EmployeeListFragment"
-        android:label=""
+        android:label="My Employees"
+        android:fontFamily="@font/sodo"
         tools:layout="@layout/fragment_employees_list">
         <action
             android:id="@+id/action_EmployeeListFrag_to_EmployeeProfileFrag"
@@ -72,11 +73,10 @@
     <fragment
         android:id="@+id/userLoginFragment"
         android:name="com.example.tipsaredone.views.UserLoginFragment"
-        android:label="fragment_user_login"
+        android:label=""
         tools:layout="@layout/fragment_user_login" >
         <action
             android:id="@+id/action_userLoginFragment_to_EmployeeListFragment"
-            app:destination="@id/EmployeeListFragment"
-            app:enterAnim="@anim/slide_to_the_right" />
+            app:destination="@id/EmployeeListFragment" />
     </fragment>
 </navigation>

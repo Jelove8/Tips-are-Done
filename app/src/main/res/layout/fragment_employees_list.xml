@@ -23,11 +23,13 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="32dp"
         android:fontFamily="@font/sodo"
-        android:text="Confirm"
-        android:textSize="16sp"
-        app:icon="@drawable/icon_checkmark"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:text="Do Tips"
+        android:textSize="14sp"
+        app:icon="@drawable/icon_money_bag"
         app:iconGravity="textEnd"
-        app:iconSize="16dp"
+        app:iconSize="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

@@ -20,6 +20,7 @@
 
     <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.Light">
         <item name="android:fontFamily">@font/sodo</item>
+        <item name="android:textColorPrimary">@color/white</item>
     </style>
 
     <style name="TextAppearance.AppCompat.Widget.ActionBar.Title." parent="@android:style/TextAppearance">

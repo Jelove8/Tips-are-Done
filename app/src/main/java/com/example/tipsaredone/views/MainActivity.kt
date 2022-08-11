@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -65,11 +66,7 @@ class MainActivity : AppCompatActivity() {
         collectionViewModel = ViewModelProvider(this)[TipCollectionViewModel::class.java]
         hoursViewModel = ViewModelProvider(this)[HoursViewModel::class.java]
 
-        binding.includeContentMain.includeLogin.btnUserLogin.setOnClickListener {
-            val inputEmail = "jelovalera@gmail.com"
-            val inputPassword = "4.Santiago"
-            displayTitleAnimation()
-        }
+
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -92,6 +89,7 @@ class MainActivity : AppCompatActivity() {
 
 
     // Animations
+    /*
     fun displayTitleAnimation() {
 
         ObjectAnimator.ofFloat(binding.includeContentMain.includeLogin.root, "translationY", 1000f).apply {
@@ -127,7 +125,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
+*/
     fun getWeeklyTipReport(): WeeklyTipReport {
         return weeklyTipReport
     }
@@ -151,6 +149,14 @@ class MainActivity : AppCompatActivity() {
         Log.d(WEEKLY_REPORT,employeeNames)
     }
 
+    fun showToolbar(isShowing: Boolean) {
+        if (isShowing) {
+            binding.toolbar.visibility = View.VISIBLE
+        }
+        else {
+            binding.toolbar.visibility = View.GONE
+        }
+    }
 
     // Firebase Auth
     fun signInUser(inputtedEmail: String, inputtedPassword: String) {
@@ -159,11 +165,7 @@ class MainActivity : AppCompatActivity() {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d("FirebaseAuth","Successfully signed in User: $inputtedEmail")
-                    Timer().schedule(800) {
-                        this@MainActivity.runOnUiThread {
-                            navigateToEmployeeListFragment()
-                        }
-                    }
+                    findNavController(R.id.nav_host_fragment).navigate(R.id.action_userLoginFragment_to_EmployeeListFragment)
                 } else {
                     Log.d("FirebaseAuth","Failed to sign in User: $inputtedEmail")
                     val toast = resources.getString(R.string.login_failed)
@@ -172,7 +174,6 @@ class MainActivity : AppCompatActivity() {
             }
     }
     private fun navigateToEmployeeListFragment() {
-        findNavController(R.id.nav_host_fragment).navigate(R.id.action_userLoginFragment_to_EmployeeListFragment)
         binding.toolbar.visibility = View.VISIBLE
     }
 
@@ -187,13 +188,11 @@ class MainActivity : AppCompatActivity() {
         firebaseAuth.createUserWithEmailAndPassword(email,password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    signInUser(email,password)
+                    signInUser(email, password)
                 } else {
                     val toast = resources.getString(R.string.sign_up_failed)
                     makeToastMessage(toast)
                 }
-            }.addOnFailureListener {
-                makeToastMessage(it.toString())
             }
     }
 
