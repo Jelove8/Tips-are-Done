@@ -1,6 +1,5 @@
 package com.example.tipsaredone.views
 
-import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -8,14 +7,15 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.tipsaredone.R
 import com.example.tipsaredone.adapters.EmployeesAdapter
 import com.example.tipsaredone.databinding.ActivityMainBinding
-import com.example.tipsaredone.model.*
+import com.example.tipsaredone.model.DatabaseModel
+import com.example.tipsaredone.model.Employee
+import com.example.tipsaredone.model.WeeklyTipReport
 import com.example.tipsaredone.viewmodels.DatePickerViewModel
 import com.example.tipsaredone.viewmodels.EmployeesViewModel
 import com.example.tipsaredone.viewmodels.HoursViewModel
@@ -28,7 +28,6 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         const val WEEKLY_REPORT = "weekly_report"
-        const val FIREBASE = "firebase"
     }
 
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -39,9 +38,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var weeklyTipReport: WeeklyTipReport
 
-
     private lateinit var databaseModel: DatabaseModel
-
 
     // ViewModels
     private lateinit var employeesViewModel: EmployeesViewModel
@@ -65,8 +62,6 @@ class MainActivity : AppCompatActivity() {
         datePickerViewModel = ViewModelProvider(this)[DatePickerViewModel::class.java]
         collectionViewModel = ViewModelProvider(this)[TipCollectionViewModel::class.java]
         hoursViewModel = ViewModelProvider(this)[HoursViewModel::class.java]
-
-
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -74,7 +69,6 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration)
                 || super.onSupportNavigateUp()
     }
-
 
     fun showCalculatingScreen() {
         binding.includeCalculatingScreen.root.visibility = View.VISIBLE
@@ -86,7 +80,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
 
     // Animations
     /*
@@ -126,6 +119,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 */
+
     fun getWeeklyTipReport(): WeeklyTipReport {
         return weeklyTipReport
     }
@@ -149,15 +143,6 @@ class MainActivity : AppCompatActivity() {
         Log.d(WEEKLY_REPORT,employeeNames)
     }
 
-    fun showToolbar(isShowing: Boolean) {
-        if (isShowing) {
-            binding.toolbar.visibility = View.VISIBLE
-        }
-        else {
-            binding.toolbar.visibility = View.GONE
-        }
-    }
-
     // Firebase Auth
     fun signInUser(inputtedEmail: String, inputtedPassword: String) {
         Log.d("FirebaseAuth","Attempting to sign in User: $inputtedEmail")
@@ -173,11 +158,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
     }
-    private fun navigateToEmployeeListFragment() {
-        binding.toolbar.visibility = View.VISIBLE
-    }
-
-
     fun signOutUser() {
         firebaseAuth = FirebaseAuth.getInstance()
         firebaseAuth.signOut()
@@ -195,8 +175,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
     }
-
-
 
     // Firebase Database
     fun initializeEmployeesFromDatabase(employeesAdapter: EmployeesAdapter) {

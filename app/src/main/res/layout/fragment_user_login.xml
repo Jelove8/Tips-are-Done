@@ -43,7 +43,7 @@
                 android:layout_marginStart="16dp"
                 android:ems="10"
                 android:fontFamily="@font/sodo"
-                android:hint="email@email.com"
+                android:hint="user@email.com"
                 android:inputType="textEmailAddress"
                 android:minHeight="48dp"
                 android:textAlignment="center" />
