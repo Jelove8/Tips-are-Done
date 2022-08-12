@@ -8,43 +8,43 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-class UserAccount(private var currentUser: FirebaseUser?) {
+class UserAccount() {
+
     companion object {
         const val AUTH = "FirebaseAuth"
     }
 
-    private var rememberUserCredentials = false
+
 
 
     fun signInUser(email: String, password: String, callBackListener: ((Boolean) -> Unit?)) {
         Log.d("FirebaseAuth","Attempting to sign in User: $email")
         FirebaseAuth.getInstance().signInWithEmailAndPassword(email,password)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    currentUser = FirebaseAuth.getInstance().currentUser!!
-                    Log.d(AUTH,"Successfully signed in User: $email")
-                    callBackListener.invoke(true)
-                } else {
-                    callBackListener.invoke(false)
-                    Log.d(AUTH,"Failed to sign in User: $email")
-                }
+            .addOnSuccessListener {
+                Log.d(AUTH,"Successfully signed in user: $email")
+                callBackListener.invoke(true)
+            }
+            .addOnFailureListener {
+                Log.d(AUTH,"Failed to sign in user: $email")
+                callBackListener.invoke(false)
             }
     }
-    fun signUpUser(email: String, password: String): String? {
-        var outputString: String? = null
+    fun signUpUser(email: String, password: String, callBackListener: ((String?) -> Unit?)) {
+        Log.d("FirebaseAuth","Attempting to create new User: $email")
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email,password)
             .addOnSuccessListener {
-
+                Log.d(AUTH,"New user created: $email")
+                callBackListener(null)
             }
             .addOnFailureListener {
                 Log.d(AUTH,"Failed to create new user: $email")
-                outputString = it.toString()
+                callBackListener(it.toString())
             }
-        return outputString
     }
 
-    fun getRememberUserCredentials(callBackListener: ((Boolean) -> Unit?)) {
-        Firebase.firestore.collection("Users").document(currentUser!!.uid).get()
+    /*
+    fun getRememberUserCredentials(currentUser: FirebaseUser,callBackListener: ((Boolean) -> Unit?)) {
+        Firebase.firestore.collection("Users").document(currentUser.uid).get()
             .addOnSuccessListener {
                 val boolean = it.get("remember credentials") as Boolean
                 callBackListener.invoke(boolean)
@@ -55,22 +55,18 @@ class UserAccount(private var currentUser: FirebaseUser?) {
     }
     fun setRememberUserCredentials(boolean: Boolean) {
         val firebaseDB = Firebase.firestore
-        firebaseDB.collection(DatabaseModel.USERS).document(currentUser!!.uid).update("remember credentials",boolean)
+        firebaseDB.collection(DatabaseModel.USERS).document(FirebaseAuth.getInstance().currentUser!!.uid).update("remember credentials",boolean)
             .addOnSuccessListener {
                 if (boolean) {
-                    Log.d(AUTH, "Credentials will be saved: ${currentUser!!.email}")
+                    Log.d(AUTH, "Credentials will be saved: ${FirebaseAuth.getInstance().currentUser!!.email}")
                 }
                 else {
-                    Log.d(AUTH, "Credentials will not be saved: ${currentUser!!.email}")
+                    Log.d(AUTH, "Credentials will not be saved: ${FirebaseAuth.getInstance().currentUser!!.email}")
                 }
             }
             .addOnFailureListener {
                 Log.d(AUTH, "Failed to update user's 'rememberUserCredentials' field.")
             }
     }
-
-    fun getRememberUser() {
-
-    }
-
+*/
 }

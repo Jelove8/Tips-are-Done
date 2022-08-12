@@ -3,10 +3,8 @@ package com.example.tipsaredone.activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.core.content.ContextCompat.startActivity
 import com.example.tipsaredone.R
 import com.example.tipsaredone.databinding.ActivityLoginBinding
 import com.example.tipsaredone.model.UserAccount
@@ -31,36 +29,39 @@ class LoginActivity : AppCompatActivity() {
 
         fireStore = Firebase.firestore
         firebaseAuth = FirebaseAuth.getInstance()
+        userModel = UserAccount()
 
         if (firebaseAuth.currentUser != null) {
-            userModel = UserAccount(firebaseAuth.currentUser)
-            userModel.getRememberUser()
-            Log.d(UserAccount.AUTH,"User already signed in.")
+            navigateToMainActivity()
+        }
 
-            userModel.getRememberUserCredentials(
-                callBackListener = fun (bool: Boolean) {
-                    if (bool) {
-                        Log.d(UserAccount.AUTH, "User signing in.")
-                        navigateToMainActivity()
-                    } else {
-                        Log.d(UserAccount.AUTH, "User NOT signing in.")
-                    }
-                })
+        /*
+        if (firebaseAuth.currentUser != null) {
+            userModel.getRememberUserCredentials(firebaseAuth.currentUser!!,
+            callBackListener = fun(rememberCredentials: Boolean) {
+                // User automatically signs in, navigates to main.
+                if (rememberCredentials) {
+                    setRememberCredentialsCheckboxVisibility(true)
+                    val toast = resources.getString(R.string.user_already_signed_in)
+                    makeToastMessage(toast)
+                    navigateToMainActivity()
+                }
+                // User already signed in, but stays in LoginActivity.
+                else {
+                    setRememberCredentialsCheckboxVisibility(false)
+                    val email = firebaseAuth.currentUser!!.email.toString()
+                    firebaseAuth.signOut()
+                    binding.inputEmail.setText(email)
+                }
+            })
         }
-        else {
-            userModel = UserAccount(null)
-            Log.d(UserAccount.AUTH,"User not signed in.")
-        }
+*/
 
         binding.switchRememberMe.setOnClickListener {
-            userModel.setRememberUserCredentials(false)
-            binding.switchRememberMe.visibility = View.GONE
-            binding.switchRememberMeNot.visibility = View.VISIBLE
+            setRememberCredentialsCheckboxVisibility(false)
         }
         binding.switchRememberMeNot.setOnClickListener {
-            userModel.setRememberUserCredentials(true)
-            binding.switchRememberMe.visibility = View.VISIBLE
-            binding.switchRememberMeNot.visibility = View.GONE
+            setRememberCredentialsCheckboxVisibility(true)
         }
 
         binding.btnForgotPassword.setOnClickListener {
@@ -69,26 +70,31 @@ class LoginActivity : AppCompatActivity() {
 
         binding.btnCreateAccount.setOnClickListener {
             if (checkForNonNullInputs()) {
-                val email = binding.inputEmail.text.toString()
-                val password = binding.inputPassword.text.toString()
+                val inputEmail = binding.inputEmail.text.toString()
+                val inputPassword = binding.inputPassword.text.toString()
+                userModel.signUpUser(inputEmail, inputPassword,
 
-                val signUpErrorMessage = userModel.signUpUser(email, password)
-                if (signUpErrorMessage == null) {
-                    navigateToMainActivity()
-                }
-                else {
-                    makeToastMessage(signUpErrorMessage)
-                }
+                    callBackListener = fun(signUpSuccessful: String?) {
+                        if (signUpSuccessful == null) {
+                            makeToastMessage(resources.getString(R.string.account_creation_successful))
+                            navigateToMainActivity()
+                        }
+                        else {
+                            makeToastMessage(resources.getString(R.string.account_creation_unsuccessful))
+                        }
+                })
             }
         }
         binding.btnSignIn.setOnClickListener {
             if (checkForNonNullInputs()) {
-                val email = binding.inputEmail.text.toString()
-                val password = binding.inputPassword.text.toString()
+                val inputEmail = binding.inputEmail.text.toString()
+                val inputPassword = binding.inputPassword.text.toString()
+                userModel.signInUser(inputEmail, inputPassword,
 
-                userModel.signInUser(email,password,
-                callBackListener = fun(boolean: Boolean) {
-                    if (boolean) {
+                callBackListener = fun(signInSuccessful: Boolean) {
+                    if (signInSuccessful) {
+                        val toast = resources.getString(R.string.sign_in_successful)
+                        makeToastMessage(toast)
                         navigateToMainActivity()
                     }
                     else {
@@ -115,6 +121,17 @@ class LoginActivity : AppCompatActivity() {
             false
         }
     }
+
+    private fun setRememberCredentialsCheckboxVisibility(isChecked: Boolean) {
+        if (isChecked) {
+            binding.switchRememberMe.visibility = View.VISIBLE
+        }
+        else {
+            binding.switchRememberMe.visibility = View.GONE
+        }
+    }
+
+
 
     private fun makeToastMessage(message: String, durationIsShort: Boolean = true) {
         if (durationIsShort) {

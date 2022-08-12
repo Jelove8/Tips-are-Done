@@ -144,12 +144,12 @@
         android:id="@+id/switch_remember_me"
         android:layout_width="20dp"
         android:layout_height="20dp"
+        android:layout_marginStart="14dp"
         android:background="@drawable/icon_circled_checkmark"
         android:backgroundTint="@color/starbucks_green"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/switch_remember_me_not"
-        app:layout_constraintEnd_toEndOf="@+id/switch_remember_me_not"
-        app:layout_constraintStart_toStartOf="@+id/switch_remember_me_not"
-        app:layout_constraintTop_toTopOf="@+id/switch_remember_me_not" />
+        app:layout_constraintBottom_toBottomOf="@+id/header_remember_user"
+        app:layout_constraintStart_toEndOf="@+id/header_remember_user"
+        app:layout_constraintTop_toTopOf="@+id/header_remember_user" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

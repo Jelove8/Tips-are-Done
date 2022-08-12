@@ -9,13 +9,87 @@
     <fragment
         android:id="@+id/nav_host_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:defaultNavHost="true"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navGraph="@navigation/nav_graph" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/starbucks_green"
+            android:paddingStart="2dp"
+            android:paddingEnd="2dp"
+            android:paddingBottom="24dp"
+            android:text="Employees"
+            android:textSize="10sp"
+            android:theme="@style/NavbarButtons"
+            app:icon="@drawable/icon_groups"
+            app:iconGravity="textTop"
+            app:iconPadding="16dp" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/starbucks_green"
+            android:paddingStart="2dp"
+            android:paddingEnd="2dp"
+            android:paddingBottom="24dp"
+            android:text="Reports"
+            android:textSize="10sp"
+            android:theme="@style/NavbarButtons"
+            app:icon="@drawable/icon_report"
+            app:iconGravity="textTop"
+            app:iconPadding="16dp" />
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/starbucks_green"
+            android:paddingStart="2dp"
+            android:paddingEnd="2dp"
+            android:paddingBottom="24dp"
+            android:text="Do Tips"
+            android:textSize="10sp"
+            android:theme="@style/NavbarButtons"
+            app:icon="@drawable/icon_bank_notes"
+            app:iconGravity="textTop"
+            app:iconPadding="16dp" />
+
+        <Button
+            android:id="@+id/button5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/starbucks_green"
+            android:paddingStart="2dp"
+            android:paddingEnd="2dp"
+            android:paddingBottom="24dp"
+            android:text="Settings"
+            android:textSize="10sp"
+            android:theme="@style/NavbarButtons"
+            app:icon="@drawable/icon_settings"
+            app:iconGravity="textTop"
+            app:iconPadding="16dp" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
