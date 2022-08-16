@@ -22,7 +22,7 @@
         <item name="android:fontFamily">@font/sodo</item>
         <item name="android:textColorPrimary">@color/white</item>
         <item name="android:background">@drawable/square</item>
-        <item name="iconSize">20dp</item>
+        <item name="iconSize">24dp</item>
     </style>
 
 

@@ -30,9 +30,11 @@ class DatePickerFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (context as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
         val datePickerVM: DatePickerViewModel by activityViewModels()
         datePickerViewModel = datePickerVM
+
 
         if (datePickerViewModel.startDate.value == null || datePickerViewModel.endDate.value == null) {
             binding.inputStartDate.updateDate(LocalDate.now().year,LocalDate.now().monthValue,LocalDate.now().dayOfMonth)
@@ -59,6 +61,7 @@ class DatePickerFragment : Fragment() {
                 findNavController().navigate(R.id.action_DatePickerFrag_to_EmployeeHoursFrag)
             }
         }
+
     }
     override fun onDestroyView() {
         super.onDestroyView()

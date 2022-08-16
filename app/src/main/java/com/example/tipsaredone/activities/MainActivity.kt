@@ -62,6 +62,19 @@ class MainActivity : AppCompatActivity() {
         datePickerViewModel = ViewModelProvider(this)[DatePickerViewModel::class.java]
         collectionViewModel = ViewModelProvider(this)[TipCollectionViewModel::class.java]
         hoursViewModel = ViewModelProvider(this)[HoursViewModel::class.java]
+
+        binding.includeContentMain.navEmployees.setOnClickListener {
+            findNavController(R.id.nav_host_fragment).navigate(R.id.EmployeeListFragment)
+        }
+        binding.includeContentMain.navReports.setOnClickListener {
+
+        }
+        binding.includeContentMain.navDoTips.setOnClickListener {
+            findNavController(R.id.nav_host_fragment).navigate(R.id.DatePickerFragment)
+        }
+        binding.includeContentMain.navSettings.setOnClickListener {
+
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

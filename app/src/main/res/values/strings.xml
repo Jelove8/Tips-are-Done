@@ -60,4 +60,6 @@
     <string name="sign_in_successful">Sign in successful.</string>
     <string name="account_creation_successful">New account created.</string>
     <string name="account_creation_unsuccessful">Failed to create new account.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

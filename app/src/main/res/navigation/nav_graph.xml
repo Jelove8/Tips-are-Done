@@ -38,15 +38,11 @@
         android:id="@+id/DistributionFragment"
         android:name="com.example.tipsaredone.views.TipDistributionFragment"
         android:label="Tips Are Done"
-        tools:layout="@layout/fragment_tip_distribution" >
-        <action
-            android:id="@+id/action_outputTipsFragment_to_EmployeeFragment"
-            app:destination="@id/EmployeeListFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_tip_distribution" />
     <fragment
         android:id="@+id/EmployeeHoursFragment"
         android:name="com.example.tipsaredone.views.EmployeeHoursFragment"
-        android:label="How many hours did everyone work?"
+        android:label="Doin' Tips"
         tools:layout="@layout/fragment_employee_hours">
         <action
             android:id="@+id/action_HoursFrag_to_CollectionFrag"
@@ -64,7 +60,7 @@
     <fragment
         android:id="@+id/DatePickerFragment"
         android:name="com.example.tipsaredone.views.DatePickerFragment"
-        android:label=""
+        android:label="Before you start..."
         tools:layout="@layout/fragment_date_picker" >
         <action
             android:id="@+id/action_DatePickerFrag_to_EmployeeHoursFrag"

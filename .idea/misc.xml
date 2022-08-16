@@ -27,9 +27,10 @@
         <entry key="..\:/Users/jelov/AndroidStudioProjects/TipsareDone/app/src/main/res/layout/dialog_rounding_errors.xml" value="0.5" />
         <entry key="..\:/Users/jelov/AndroidStudioProjects/TipsareDone/app/src/main/res/layout/employee_dialog.xml" value="0.5" />
         <entry key="..\:/Users/jelov/AndroidStudioProjects/TipsareDone/app/src/main/res/layout/fragment_collection.xml" value="0.5208333333333334" />
-        <entry key="..\:/Users/jelov/AndroidStudioProjects/TipsareDone/app/src/main/res/layout/fragment_date_picker.xml" value="0.4092526690391459" />
+        <entry key="..\:/Users/jelov/AndroidStudioProjects/TipsareDone/app/src/main/res/layout/fragment_date_picker.xml" value="0.5" />
         <entry key="..\:/Users/jelov/AndroidStudioProjects/TipsareDone/app/src/main/res/layout/fragment_date_selector.xml" value="0.5208333333333334" />
         <entry key="..\:/Users/jelov/AndroidStudioProjects/TipsareDone/app/src/main/res/layout/fragment_distribution.xml" value="0.5" />
+        <entry key="..\:/Users/jelov/AndroidStudioProjects/TipsareDone/app/src/main/res/layout/fragment_do_tips.xml" value="0.5026041666666666" />
         <entry key="..\:/Users/jelov/AndroidStudioProjects/TipsareDone/app/src/main/res/layout/fragment_edit_employee.xml" value="0.5208333333333334" />
         <entry key="..\:/Users/jelov/AndroidStudioProjects/TipsareDone/app/src/main/res/layout/fragment_employee.xml" value="0.5208333333333334" />
         <entry key="..\:/Users/jelov/AndroidStudioProjects/TipsareDone/app/src/main/res/layout/fragment_employee_dialog.xml" value="0.5208333333333334" />
@@ -41,6 +42,7 @@
         <entry key="..\:/Users/jelov/AndroidStudioProjects/TipsareDone/app/src/main/res/layout/fragment_input_tips.xml" value="0.5208333333333334" />
         <entry key="..\:/Users/jelov/AndroidStudioProjects/TipsareDone/app/src/main/res/layout/fragment_numpad.xml" value="0.4787037037037037" />
         <entry key="..\:/Users/jelov/AndroidStudioProjects/TipsareDone/app/src/main/res/layout/fragment_output_tips.xml" value="0.5026041666666666" />
+        <entry key="..\:/Users/jelov/AndroidStudioProjects/TipsareDone/app/src/main/res/layout/fragment_reports.xml" value="0.5208333333333334" />
         <entry key="..\:/Users/jelov/AndroidStudioProjects/TipsareDone/app/src/main/res/layout/fragment_second.xml" value="0.5208333333333334" />
         <entry key="..\:/Users/jelov/AndroidStudioProjects/TipsareDone/app/src/main/res/layout/fragment_tip_collection.xml" value="0.5208333333333334" />
         <entry key="..\:/Users/jelov/AndroidStudioProjects/TipsareDone/app/src/main/res/layout/fragment_tippable_hours.xml" value="0.5208333333333334" />
@@ -51,6 +53,7 @@
         <entry key="..\:/Users/jelov/AndroidStudioProjects/TipsareDone/app/src/main/res/layout/viewholder_employee_list.xml" value="0.5208333333333334" />
         <entry key="..\:/Users/jelov/AndroidStudioProjects/TipsareDone/app/src/main/res/layout/viewholder_employees.xml" value="0.5208333333333334" />
         <entry key="..\:/Users/jelov/AndroidStudioProjects/TipsareDone/app/src/main/res/layout/viewholder_individual_reports.xml" value="0.5208333333333334" />
+        <entry key="..\:/Users/jelov/AndroidStudioProjects/TipsareDone/app/src/main/res/layout/viewholder_weekly_report.xml" value="0.5197916666666667" />
         <entry key="..\:/Users/jelov/AndroidStudioProjects/TipsareDone/app/src/main/res/menu/menu_confirm_employee_edits.xml" value="0.5208333333333334" />
         <entry key="..\:/Users/jelov/AndroidStudioProjects/TipsareDone/app/src/main/res/menu/menu_delete_employee.xml" value="0.28020833333333334" />
         <entry key="..\:/Users/jelov/AndroidStudioProjects/TipsareDone/app/src/main/res/menu/menu_frag_employees.xml" value="0.5208333333333334" />
