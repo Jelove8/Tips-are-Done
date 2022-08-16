@@ -20,6 +20,9 @@
             app:destination="@id/DatePickerFragment"
             app:enterAnim="@anim/slide_to_the_left"
             app:popEnterAnim="@anim/slide_to_the_right" />
+        <action
+            android:id="@+id/action_EmployeeListFragment_to_reportsFragment"
+            app:destination="@id/WeeklyReportsFragment" />
     </fragment>
 
     <fragment
@@ -66,4 +69,9 @@
             android:id="@+id/action_DatePickerFrag_to_EmployeeHoursFrag"
             app:destination="@id/EmployeeHoursFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/WeeklyReportsFragment"
+        android:name="com.example.tipsaredone.views.ReportsFragment"
+        android:label="Weekly Reports"
+        tools:layout="@layout/fragment_reports" />
 </navigation>

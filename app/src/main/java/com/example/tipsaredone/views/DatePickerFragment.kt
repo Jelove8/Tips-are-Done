@@ -36,24 +36,6 @@ class DatePickerFragment : Fragment() {
         datePickerViewModel = datePickerVM
 
 
-        if (datePickerViewModel.startDate.value == null || datePickerViewModel.endDate.value == null) {
-            binding.inputStartDate.updateDate(LocalDate.now().year,LocalDate.now().monthValue,LocalDate.now().dayOfMonth)
-            binding.inputEndDate.updateDate(LocalDate.now().year,LocalDate.now().monthValue,LocalDate.now().dayOfMonth)
-        }
-        else {
-            val startDate = datePickerViewModel.startDate.value!!
-            val endDate = datePickerViewModel.endDate.value!!
-            binding.inputStartDate.updateDate(startDate.year,startDate.monthValue,startDate.dayOfMonth)
-            binding.inputEndDate.updateDate(endDate.year,endDate.monthValue,endDate.dayOfMonth)
-        }
-
-
-        binding.inputStartDate.setOnDateChangedListener { _, year, month, dayOfMonth ->
-            datePickerViewModel.setStartDate(year,month,dayOfMonth)
-        }
-        binding.inputEndDate.setOnDateChangedListener { _, year, month, dayOfMonth ->
-            datePickerViewModel.setEndDate(year,month,dayOfMonth)
-        }
         binding.btnDatePickerConfirm.setOnClickListener {
             if (checkDateValidity()) {
                 Log.d("meow","hello")

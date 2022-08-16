@@ -67,10 +67,7 @@ class MainActivity : AppCompatActivity() {
             findNavController(R.id.nav_host_fragment).navigate(R.id.EmployeeListFragment)
         }
         binding.includeContentMain.navReports.setOnClickListener {
-
-        }
-        binding.includeContentMain.navDoTips.setOnClickListener {
-            findNavController(R.id.nav_host_fragment).navigate(R.id.DatePickerFragment)
+            findNavController(R.id.nav_host_fragment).navigate(R.id.WeeklyReportsFragment)
         }
         binding.includeContentMain.navSettings.setOnClickListener {
 

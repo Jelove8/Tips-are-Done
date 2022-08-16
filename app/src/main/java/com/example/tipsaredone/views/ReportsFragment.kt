@@ -14,7 +14,7 @@ class ReportsFragment : Fragment() {
         fun newInstance() = ReportsFragment()
     }
 
-    private lateinit var viewModel: ReportsViewModel
+    private lateinit var reportsViewModel: ReportsViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,10 +23,13 @@ class ReportsFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_reports, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(ReportsViewModel::class.java)
-        // TODO: Use the ViewModel
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        reportsViewModel = ViewModelProvider(this)[ReportsViewModel::class.java]
+
+
+
     }
 
 }
