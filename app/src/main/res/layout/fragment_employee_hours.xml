@@ -9,7 +9,7 @@
     tools:context=".views.EmployeeListFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cnst_employee_hours_header"
+        android:id="@+id/subcnst_employee_hours_header"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/white"
@@ -21,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/tv_employees_header11"
+            android:id="@+id/tv_employee_hours_header1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="39dp"
@@ -35,7 +35,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tv_hours_header1"
+            android:id="@+id/tv_employee_hours_header2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="39dp"
@@ -54,35 +54,20 @@
         android:id="@+id/rcy_employee_hours"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/cnst_employee_hours_footer"
+        app:layout_constraintBottom_toTopOf="@+id/subcnst_employee_hours_footer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cnst_employee_hours_header" />
+        app:layout_constraintTop_toBottomOf="@+id/subcnst_employee_hours_header" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cnst_employee_hours_footer"
+        android:id="@+id/subcnst_employee_hours_footer"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:elevation="8dp"
+        android:layout_height="wrap_content"
         android:padding="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent">
-
-        <Button
-            android:id="@+id/btn_employee_hours_confirm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/sodo"
-            android:text="Confirm"
-            android:textSize="16sp"
-            app:icon="@drawable/icon_checkmark"
-            app:iconGravity="textEnd"
-            app:iconSize="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_total_hours_label"
@@ -108,5 +93,28 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <include
+        android:id="@+id/include_date_picker"
+        layout="@layout/fragment_date_picker"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/btn_date_picker_cancel"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/icon_x_mark"
+        android:backgroundTint="@color/warm_neutral"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

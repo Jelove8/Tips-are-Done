@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/action_do_tips"
-        android:icon="@drawable/icon_bank_notes"
+        android:icon="@drawable/icon_write"
         android:title="@string/do_tips"
         android:tooltipText="Do Tips"
         app:showAsAction="always|withText" />

@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tipsaredone.R
 import com.example.tipsaredone.activities.MainActivity
+import com.example.tipsaredone.activities.ReportActivity
 import com.example.tipsaredone.adapters.HoursAdapter
 import com.example.tipsaredone.databinding.FragmentEmployeeHoursBinding
 import com.example.tipsaredone.viewmodels.HoursViewModel
@@ -35,20 +36,21 @@ class EmployeeHoursFragment : Fragment() {
         hoursViewModel = hoursVM
 
         // Initializing Views
-        updateConfirmButtonVisibility()
+       // updateConfirmButtonVisibility()
         updateSumOfHours()
         hoursAdapter = HoursAdapter(hoursViewModel.tipReports.value!!,
 
             // TextChanged: When employee hours are edited.
             textChangedCallback = fun(_: Int) {
                 updateSumOfHours()
-                updateConfirmButtonVisibility()
+               // updateConfirmButtonVisibility()
             }
         )
-        binding.rcyEmployeeHours.layoutManager = LinearLayoutManager(context as MainActivity)
+        binding.rcyEmployeeHours.layoutManager = LinearLayoutManager(context as ReportActivity)
         binding.rcyEmployeeHours.adapter = hoursAdapter
 
         // Button: Confirm employees and navigate to next fragment.
+        /*
         binding.btnEmployeeHoursConfirm.setOnClickListener {
             if (checkForValidHours()) {
                 findNavController().navigate(R.id.action_HoursFrag_to_CollectionFrag)
@@ -58,6 +60,7 @@ class EmployeeHoursFragment : Fragment() {
                 (context as MainActivity).makeToastMessage(toast)
             }
         }
+         */
     }
     override fun onDestroyView() {
         super.onDestroyView()
@@ -65,16 +68,7 @@ class EmployeeHoursFragment : Fragment() {
     }
     
     // Updates Views
-    private fun updateConfirmButtonVisibility() {
-        if (checkForValidHours()) {
-            val sbGreen = ResourcesCompat.getColor(resources, R.color.starbucks_green, (context as MainActivity).theme)
-            binding.btnEmployeeHoursConfirm.setBackgroundColor(sbGreen)
-        }
-        else {
-            val wrmNeutral = ResourcesCompat.getColor(resources, R.color.warm_neutral, (context as MainActivity).theme)
-            binding.btnEmployeeHoursConfirm.setBackgroundColor(wrmNeutral)
-        }
-    }
+
     private fun updateSumOfHours() {
         binding.tvTotalHours.text = hoursViewModel.getSumOfHours().toString()
     }

@@ -1,5 +1,6 @@
 package com.example.tipsaredone.views
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.core.view.MenuHost
@@ -12,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tipsaredone.R
 import com.example.tipsaredone.activities.MainActivity
+import com.example.tipsaredone.activities.ReportActivity
 import com.example.tipsaredone.adapters.WeeklyReportsAdapter
 import com.example.tipsaredone.databinding.FragmentReportsBinding
 import com.example.tipsaredone.viewmodels.EmployeesViewModel
@@ -55,7 +57,8 @@ class ReportsFragment : Fragment() {
                     R.id.action_do_tips -> {
                         val employeesViewModel: EmployeesViewModel by activityViewModels()
                         if (employeesViewModel.employees.value!!.size > 1) {
-                            findNavController().navigate(R.id.DatePickerFragment)
+                            val intent = Intent(context as MainActivity, ReportActivity::class.java)
+                            startActivity(intent)
                             true
                         }
                         else {
