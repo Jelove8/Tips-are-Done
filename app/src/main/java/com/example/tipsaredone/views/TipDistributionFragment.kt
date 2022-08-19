@@ -9,6 +9,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tipsaredone.R
+import com.example.tipsaredone.activities.MainActivity
 import com.example.tipsaredone.adapters.DistributionAdapter
 import com.example.tipsaredone.databinding.FragmentTipDistributionBinding
 import com.example.tipsaredone.viewmodels.TipCollectionViewModel
@@ -47,7 +48,6 @@ class TipDistributionFragment : Fragment() {
             // Clearing inputted data, except for employee names
             val tipCollectionViewModel: TipCollectionViewModel by activityViewModels()
             tipCollectionViewModel.clearTipsCollected()
-            findNavController().navigate(R.id.action_outputTipsFragment_to_EmployeeFragment)
         }
     }
     override fun onDestroyView() {

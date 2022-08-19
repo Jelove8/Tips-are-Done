@@ -1,5 +1,6 @@
-package com.example.tipsaredone.views
+package com.example.tipsaredone.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -62,6 +63,24 @@ class MainActivity : AppCompatActivity() {
         datePickerViewModel = ViewModelProvider(this)[DatePickerViewModel::class.java]
         collectionViewModel = ViewModelProvider(this)[TipCollectionViewModel::class.java]
         hoursViewModel = ViewModelProvider(this)[HoursViewModel::class.java]
+
+        binding.includeContentMain.navEmployees.setOnClickListener {
+            findNavController(R.id.nav_host_fragment).navigate(R.id.EmployeeListFragment)
+        }
+        binding.includeContentMain.navReports.setOnClickListener {
+            findNavController(R.id.nav_host_fragment).navigate(R.id.WeeklyReportsFragment)
+        }
+        binding.includeContentMain.navSettings.setOnClickListener {
+            findNavController(R.id.nav_host_fragment).navigate(R.id.SettingsFragment)
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        if (FirebaseAuth.getInstance().currentUser == null) {
+            navigateToUserLoginActivity()
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -128,7 +147,7 @@ class MainActivity : AppCompatActivity() {
         weeklyTipReport.startDate = datePickerViewModel.getStartDateString()
         weeklyTipReport.endDate = datePickerViewModel.getEndDateString()
         weeklyTipReport.initializeIndividualReports(employeesViewModel.employees.value!!)
-        hoursViewModel.initializeTipReports(weeklyTipReport.individualReports)
+        hoursViewModel.initializeTipReports(employeesViewModel.employees.value!!)
 
         Log.d(WEEKLY_REPORT,"Initialized")
         Log.d(WEEKLY_REPORT,"Start: ${weeklyTipReport.startDate},  End: ${weeklyTipReport.endDate}")
@@ -144,37 +163,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     // Firebase Auth
-    fun signInUser(inputtedEmail: String, inputtedPassword: String) {
-        Log.d("FirebaseAuth","Attempting to sign in User: $inputtedEmail")
-        FirebaseAuth.getInstance().signInWithEmailAndPassword(inputtedEmail,inputtedPassword)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Log.d("FirebaseAuth","Successfully signed in User: $inputtedEmail")
-                    findNavController(R.id.nav_host_fragment).navigate(R.id.action_userLoginFragment_to_EmployeeListFragment)
-                } else {
-                    Log.d("FirebaseAuth","Failed to sign in User: $inputtedEmail")
-                    val toast = resources.getString(R.string.login_failed)
-                    makeToastMessage(toast)
-                }
-            }
+    fun navigateToUserLoginActivity() {
+        val intent = Intent(this,UserLoginActivity::class.java)
+        startActivity(intent)
     }
-    fun signOutUser() {
-        firebaseAuth = FirebaseAuth.getInstance()
-        firebaseAuth.signOut()
-        signInRequired = true
-    }
-    fun signUpNewUser(email: String, password: String) {
-        firebaseAuth = FirebaseAuth.getInstance()
-        firebaseAuth.createUserWithEmailAndPassword(email,password)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    signInUser(email, password)
-                } else {
-                    val toast = resources.getString(R.string.sign_up_failed)
-                    makeToastMessage(toast)
-                }
-            }
-    }
+
 
     // Firebase Database
     fun initializeEmployeesFromDatabase(employeesAdapter: EmployeesAdapter) {
@@ -206,6 +199,8 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this,message,Toast.LENGTH_LONG).show()
         }
     }
+
+
 
 
 

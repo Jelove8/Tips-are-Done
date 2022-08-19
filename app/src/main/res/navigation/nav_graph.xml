@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/userLoginFragment">
+    app:startDestination="@id/EmployeeListFragment">
 
     <fragment
         android:id="@+id/EmployeeListFragment"
@@ -20,6 +20,12 @@
             app:destination="@id/DatePickerFragment"
             app:enterAnim="@anim/slide_to_the_left"
             app:popEnterAnim="@anim/slide_to_the_right" />
+        <action
+            android:id="@+id/action_EmployeeListFragment_to_reportsFragment"
+            app:destination="@id/WeeklyReportsFragment" />
+        <action
+            android:id="@+id/action_EmployeeListFragment_to_settingsFragment"
+            app:destination="@id/SettingsFragment" />
     </fragment>
 
     <fragment
@@ -38,15 +44,11 @@
         android:id="@+id/DistributionFragment"
         android:name="com.example.tipsaredone.views.TipDistributionFragment"
         android:label="Tips Are Done"
-        tools:layout="@layout/fragment_tip_distribution" >
-        <action
-            android:id="@+id/action_outputTipsFragment_to_EmployeeFragment"
-            app:destination="@id/EmployeeListFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_tip_distribution" />
     <fragment
         android:id="@+id/EmployeeHoursFragment"
         android:name="com.example.tipsaredone.views.EmployeeHoursFragment"
-        android:label="How many hours did everyone work?"
+        android:label="Doin' Tips"
         tools:layout="@layout/fragment_employee_hours">
         <action
             android:id="@+id/action_HoursFrag_to_CollectionFrag"
@@ -64,19 +66,20 @@
     <fragment
         android:id="@+id/DatePickerFragment"
         android:name="com.example.tipsaredone.views.DatePickerFragment"
-        android:label=""
+        android:label="Before you start..."
         tools:layout="@layout/fragment_date_picker" >
         <action
             android:id="@+id/action_DatePickerFrag_to_EmployeeHoursFrag"
             app:destination="@id/EmployeeHoursFragment" />
     </fragment>
     <fragment
-        android:id="@+id/userLoginFragment"
-        android:name="com.example.tipsaredone.views.UserLoginFragment"
-        android:label=""
-        tools:layout="@layout/fragment_user_login" >
-        <action
-            android:id="@+id/action_userLoginFragment_to_EmployeeListFragment"
-            app:destination="@id/EmployeeListFragment" />
-    </fragment>
+        android:id="@+id/WeeklyReportsFragment"
+        android:name="com.example.tipsaredone.views.ReportsFragment"
+        android:label="Weekly Reports"
+        tools:layout="@layout/fragment_reports" />
+    <fragment
+        android:id="@+id/SettingsFragment"
+        android:name="com.example.tipsaredone.views.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
 </navigation>

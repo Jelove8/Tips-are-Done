@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cnst_weekly_report"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="4dp">
+
+    <TextView
+        android:id="@+id/label_start_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:text="Start Date"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_conversion_absoluteHeight="0dp"
+        tools:layout_conversion_absoluteWidth="0dp" />
+
+    <TextView
+        android:id="@+id/label_end_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="End Date"
+        app:layout_constraintStart_toStartOf="@+id/label_start_date"
+        app:layout_constraintTop_toBottomOf="@+id/label_start_date"
+        tools:layout_conversion_absoluteHeight="0dp"
+        tools:layout_conversion_absoluteWidth="0dp" />
+
+    <TextView
+        android:id="@+id/label_total_hours"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total Hours"
+        app:layout_constraintStart_toStartOf="@+id/label_start_date"
+        app:layout_constraintTop_toBottomOf="@+id/label_end_date"
+        tools:layout_conversion_absoluteHeight="0dp"
+        tools:layout_conversion_absoluteWidth="0dp" />
+
+    <TextView
+        android:id="@+id/label_tips"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tips"
+        app:layout_constraintStart_toStartOf="@+id/label_start_date"
+        app:layout_constraintTop_toBottomOf="@+id/label_total_hours" />
+
+    <TextView
+        android:id="@+id/label_tip_rate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tip Rate"
+        app:layout_constraintStart_toStartOf="@+id/label_start_date"
+        app:layout_constraintTop_toBottomOf="@+id/label_tips" />
+
+    <TextView
+        android:id="@+id/label_rounding_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Error"
+        app:layout_constraintStart_toStartOf="@+id/label_start_date"
+        app:layout_constraintTop_toBottomOf="@+id/label_tip_rate" />
+
+    <TextView
+        android:id="@+id/tv_weekly_report_start_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:hint="Jan 1, 2022"
+        app:layout_constraintStart_toEndOf="@+id/label_start_date"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_conversion_absoluteHeight="0dp"
+        tools:layout_conversion_absoluteWidth="0dp" />
+
+    <TextView
+        android:id="@+id/tv_weekly_report_end_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Jan 8, 2022"
+        app:layout_constraintStart_toStartOf="@+id/tv_weekly_report_start_date"
+        app:layout_constraintTop_toBottomOf="@+id/tv_weekly_report_start_date"
+        tools:layout_conversion_absoluteHeight="0dp"
+        tools:layout_conversion_absoluteWidth="0dp" />
+
+    <TextView
+        android:id="@+id/tv_weekly_report_total_hours"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="80.76"
+        app:layout_constraintStart_toStartOf="@+id/tv_weekly_report_start_date"
+        app:layout_constraintTop_toBottomOf="@+id/tv_weekly_report_end_date"
+        tools:layout_conversion_absoluteHeight="0dp"
+        tools:layout_conversion_absoluteWidth="0dp" />
+
+    <TextView
+        android:id="@+id/tv_weekly_report_collected_tips"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="80.00"
+        app:layout_constraintStart_toStartOf="@+id/tv_weekly_report_start_date"
+        app:layout_constraintTop_toBottomOf="@+id/tv_weekly_report_total_hours"
+        tools:layout_conversion_absoluteHeight="0dp"
+        tools:layout_conversion_absoluteWidth="0dp" />
+
+    <TextView
+        android:id="@+id/tv_weekly_report_tip_rate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="1.27"
+        app:layout_constraintStart_toStartOf="@+id/tv_weekly_report_start_date"
+        app:layout_constraintTop_toBottomOf="@+id/tv_weekly_report_collected_tips"
+        tools:layout_conversion_absoluteHeight="0dp"
+        tools:layout_conversion_absoluteWidth="0dp" />
+
+    <TextView
+        android:id="@+id/tv_weekly_report_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="No Error"
+        app:layout_constraintStart_toStartOf="@+id/tv_weekly_report_tip_rate"
+        app:layout_constraintTop_toBottomOf="@+id/tv_weekly_report_tip_rate"
+        tools:layout_conversion_absoluteHeight="0dp"
+        tools:layout_conversion_absoluteWidth="0dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

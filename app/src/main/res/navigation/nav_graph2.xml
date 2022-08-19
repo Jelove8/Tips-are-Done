@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph2"
+    app:startDestination="@id/employeeHoursFragment">
+    <fragment
+        android:id="@+id/employeeHoursFragment"
+        android:name="com.example.tipsaredone.views.EmployeeHoursFragment"
+        android:label="EmployeeHoursFragment"
+        tools:layout="@layout/fragment_employee_hours">
+        <action
+            android:id="@+id/action_employeeHoursFragment_to_tipCollectionFragment"
+            app:destination="@id/tipCollectionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/tipCollectionFragment"
+        android:name="com.example.tipsaredone.views.TipCollectionFragment"
+        android:label="fragment_tip_collection"
+        tools:layout="@layout/fragment_tip_collection" >
+        <action
+            android:id="@+id/action_tipCollectionFragment_to_tipDistributionFragment"
+            app:destination="@id/tipDistributionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/tipDistributionFragment"
+        android:name="com.example.tipsaredone.views.TipDistributionFragment"
+        android:label="TipDistributionFragment"
+        tools:layout="@layout/fragment_tip_distribution"/>
+</navigation>

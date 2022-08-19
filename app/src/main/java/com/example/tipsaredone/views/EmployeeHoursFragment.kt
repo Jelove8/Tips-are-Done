@@ -10,8 +10,11 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tipsaredone.R
+import com.example.tipsaredone.activities.MainActivity
+import com.example.tipsaredone.activities.ReportActivity
 import com.example.tipsaredone.adapters.HoursAdapter
 import com.example.tipsaredone.databinding.FragmentEmployeeHoursBinding
+import com.example.tipsaredone.viewmodels.EmployeesViewModel
 import com.example.tipsaredone.viewmodels.HoursViewModel
 
 class EmployeeHoursFragment : Fragment() {
@@ -28,28 +31,30 @@ class EmployeeHoursFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         // Initialize EmployeesViewModel
         val hoursVM: HoursViewModel by activityViewModels()
         hoursViewModel = hoursVM
 
-        // Initializing Views
-        updateConfirmButtonVisibility()
-        updateSumOfHours()
-        hoursAdapter = HoursAdapter(hoursViewModel.tipReports.value!!,
+        val employeesVM: EmployeesViewModel by activityViewModels()
+        hoursViewModel.initializeTipReports(employeesVM.employees.value!!)
 
+        hoursAdapter = HoursAdapter(hoursViewModel.employeeHoursList.value!!,
             // TextChanged: When employee hours are edited.
             textChangedCallback = fun(_: Int) {
                 updateSumOfHours()
                 updateConfirmButtonVisibility()
             }
         )
-        binding.rcyEmployeeHours.layoutManager = LinearLayoutManager(context as MainActivity)
+        binding.rcyEmployeeHours.layoutManager = LinearLayoutManager(context as ReportActivity)
         binding.rcyEmployeeHours.adapter = hoursAdapter
+        hoursAdapter.initializeTipReports(employeesVM.employees.value!!)
 
-        // Button: Confirm employees and navigate to next fragment.
+        updateConfirmButtonVisibility()
+        updateSumOfHours()
+        // Button: Confirm employees and navi
+        // gate to next fragment.
         binding.btnEmployeeHoursConfirm.setOnClickListener {
-            if (checkForValidHours()) {
+            if (hoursAdapter.checkForValidHours()) {
                 findNavController().navigate(R.id.action_HoursFrag_to_CollectionFrag)
             }
             else {
@@ -57,6 +62,7 @@ class EmployeeHoursFragment : Fragment() {
                 (context as MainActivity).makeToastMessage(toast)
             }
         }
+
     }
     override fun onDestroyView() {
         super.onDestroyView()
@@ -65,26 +71,65 @@ class EmployeeHoursFragment : Fragment() {
     
     // Updates Views
     private fun updateConfirmButtonVisibility() {
-        if (checkForValidHours()) {
-            val sbGreen = ResourcesCompat.getColor(resources, R.color.starbucks_green, (context as MainActivity).theme)
+        if (hoursAdapter.checkForValidHours()) {
+            val sbGreen = ResourcesCompat.getColor(resources, R.color.starbucks_green, (context as ReportActivity).theme)
             binding.btnEmployeeHoursConfirm.setBackgroundColor(sbGreen)
         }
         else {
-            val wrmNeutral = ResourcesCompat.getColor(resources, R.color.warm_neutral, (context as MainActivity).theme)
+            val wrmNeutral = ResourcesCompat.getColor(resources, R.color.warm_neutral, (context as ReportActivity).theme)
             binding.btnEmployeeHoursConfirm.setBackgroundColor(wrmNeutral)
         }
     }
     private fun updateSumOfHours() {
-        binding.tvTotalHours.text = hoursViewModel.getSumOfHours().toString()
+        binding.tvTotalHours.text = hoursAdapter.getSumOfHours().toString()
     }
 
-    private fun checkForValidHours(): Boolean {
-        var output = true
-        hoursViewModel.tipReports.value!!.forEach {
-            if (it.employeeHours == null) {
-                output = false
-            }
+
+    private fun displayDatePicker(isShown: Boolean) {
+        if (isShown) {
+            binding.subcnstDatePicker.visibility = View.VISIBLE
         }
-        return output
+        else {
+            binding.subcnstDatePicker.visibility = View.GONE
+        }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
