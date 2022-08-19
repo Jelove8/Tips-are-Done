@@ -16,7 +16,7 @@
     <string name="employees_list_invalid_string">Two or more employees are required.</string>
     <string name="employee_name_required">A name must be entered.</string>
     <string name="dates_required">Both dates must be filled out.</string>
-    <string name="employee_hours_required">Every field must be filled..</string>
+    <string name="employee_hours_required">There are no hours inputted.</string>
 
     <string name="invalid_dates1">Both dates must be filled out.</string>
     <string name="invalid_dates2">The dates entered are invalid.</string>

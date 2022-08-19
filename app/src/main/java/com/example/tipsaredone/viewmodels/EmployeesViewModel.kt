@@ -59,6 +59,11 @@ class EmployeesViewModel: ViewModel() {
         _confirmEmployeesButtonShowing.value = boolean
     }
 
+    fun addIndividualTipReport(newEmployee: Employee) {
+        _individualTipReports.value!!.add(IndividualTipReport(newEmployee.name,newEmployee.id))
+        _individualTipReports.value!!.sortBy { it.employeeName }
+    }
+
     fun deleteSelectedEmployee() {
         _employees.value!!.remove(_selectedEmployee.value!!)
 
@@ -85,6 +90,11 @@ class EmployeesViewModel: ViewModel() {
             if (it.id == _selectedEmployee.value!!.id) {
                 it.name = updatedEmployee.name
                 it.tipReports = updatedEmployee.tipReports
+            }
+        }
+        _individualTipReports.value!!.forEach {
+            if (it.employeeID == updatedEmployee.id) {
+                it.employeeName = updatedEmployee.name
             }
         }
     }

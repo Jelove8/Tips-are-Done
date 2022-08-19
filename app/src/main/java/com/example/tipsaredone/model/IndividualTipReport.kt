@@ -1,9 +1,11 @@
 package com.example.tipsaredone.model
 
-import java.time.LocalDateTime
+import kotlinx.serialization.Serializable
 
-class IndividualTipReport(
-    val employeeName: String,
+
+@Serializable
+data class IndividualTipReport (
+    var employeeName: String,
     val employeeID: String,
     var employeeHours: Double? = null,
     var distributedTips: Double? = null,

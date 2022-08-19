@@ -1,9 +1,12 @@
 package com.example.tipsaredone.activities
 
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -16,12 +19,16 @@ import com.example.tipsaredone.adapters.EmployeesAdapter
 import com.example.tipsaredone.databinding.ActivityMainBinding
 import com.example.tipsaredone.model.DatabaseModel
 import com.example.tipsaredone.model.Employee
+import com.example.tipsaredone.model.IndividualTipReport
 import com.example.tipsaredone.model.WeeklyTipReport
 import com.example.tipsaredone.viewmodels.DatePickerViewModel
 import com.example.tipsaredone.viewmodels.EmployeesViewModel
 import com.example.tipsaredone.viewmodels.HoursViewModel
 import com.example.tipsaredone.viewmodels.TipCollectionViewModel
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.encodeToJsonElement
 import java.util.*
 import kotlin.concurrent.schedule
 
@@ -29,6 +36,7 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         const val WEEKLY_REPORT = "weekly_report"
+        const val EXTRA_INDIVIDUAL_TIP_REPORTS = "Individual Employee Tip Reports"
     }
 
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -142,29 +150,20 @@ class MainActivity : AppCompatActivity() {
     fun getWeeklyTipReport(): WeeklyTipReport {
         return weeklyTipReport
     }
-    fun initializeWeeklyTipReport() {
-        weeklyTipReport = WeeklyTipReport()
-        weeklyTipReport.startDate = datePickerViewModel.getStartDateString()
-        weeklyTipReport.endDate = datePickerViewModel.getEndDateString()
-        weeklyTipReport.initializeIndividualReports(employeesViewModel.employees.value!!)
-
-        Log.d(WEEKLY_REPORT,"Initialized")
-        Log.d(WEEKLY_REPORT,"Start: ${weeklyTipReport.startDate},  End: ${weeklyTipReport.endDate}")
-        var employeeNames = ""
-        for ((i,report) in weeklyTipReport.individualReports.withIndex()) {
-            employeeNames += if (i == 0) {
-                report.employeeName
-            } else {
-                ", ${report.employeeName}"
-            }
-        }
-        Log.d(WEEKLY_REPORT,employeeNames)
-    }
 
     // Firebase Auth
     fun navigateToUserLoginActivity() {
         val intent = Intent(this,UserLoginActivity::class.java)
         startActivity(intent)
+    }
+
+    fun navigateToReportActivity() {
+        val intent = Intent(this,ReportActivity::class.java)
+
+        val tipReportsJson = Json.encodeToJsonElement(employeesViewModel.employees.value!!)
+        Log.d("meow",tipReportsJson.toString())
+        intent.putExtra(EXTRA_INDIVIDUAL_TIP_REPORTS,tipReportsJson.toString())
+
     }
 
 
@@ -197,6 +196,22 @@ class MainActivity : AppCompatActivity() {
         else {
             Toast.makeText(this,message,Toast.LENGTH_LONG).show()
         }
+    }
+
+    fun displayNavbar(isVisible: Boolean) {
+        if (isVisible) {
+            binding.includeContentMain.mainNavbar.visibility = View.VISIBLE
+        }
+        else {
+            binding.includeContentMain.mainNavbar.visibility = View.GONE
+        }
+    }
+
+    fun hideKeyboard() {
+        val inputManager =
+            this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val v = this.currentFocus ?: return
+        inputManager.hideSoftInputFromWindow(v.windowToken, 0)
     }
 
 

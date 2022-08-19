@@ -27,8 +27,6 @@ class EmployeeListFragment : Fragment() {
     private lateinit var employeesViewModel: EmployeesViewModel
     private lateinit var employeesAdapter: EmployeesAdapter
 
-    private var initialBool: Boolean = true
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentEmployeesListBinding.inflate(inflater, container, false)
         return binding.root
@@ -36,7 +34,6 @@ class EmployeeListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (context as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
-        (context as MainActivity).supportActionBar?.title = "My Employees"
 
         // Initialize EmployeesViewModel
         val employeesVM: EmployeesViewModel by activityViewModels()
@@ -59,7 +56,6 @@ class EmployeeListFragment : Fragment() {
         if (employeesAdapter.itemCount == 0) {
             (context as MainActivity).initializeEmployeesFromDatabase(employeesAdapter)
         }
-
 
         /**
          * BUTTON:  Navigate to EmployeeProfileFragment to add a new employee.
@@ -88,13 +84,6 @@ class EmployeeListFragment : Fragment() {
                 }
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
-
-
-    }
-
-    override fun onResume() {
-        super.onResume()
-        (context as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
     }
     override fun onDestroyView() {
         super.onDestroyView()
@@ -157,6 +146,7 @@ class EmployeeListFragment : Fragment() {
                 val newName = dialogBox.etDialogNewEmployee.text.toString()
                 val newEmployee = Employee(newName,employeesViewModel.generateUniqueID())
                 employeesAdapter.addNewEmployee(newEmployee)
+                employeesViewModel.addIndividualTipReport(newEmployee)
                 (context as MainActivity).addNewEmployeeToDatabase(newEmployee)
                 hideNewEmployeeDialog()
             }
@@ -169,7 +159,6 @@ class EmployeeListFragment : Fragment() {
     }
 
     // Validity
-
     private fun checkForValidEmployees(): Boolean {
         return employeesAdapter.itemCount > 1
     }
