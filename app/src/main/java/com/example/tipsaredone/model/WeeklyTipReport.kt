@@ -58,7 +58,7 @@ class WeeklyTipReport(
     private fun getSumHours(): Double {
         var sum = 0.0
         individualReports.forEach {
-           sum += it.employeeHours
+           sum += it.employeeHours!!
         }
         return sum
     }
@@ -67,7 +67,7 @@ class WeeklyTipReport(
         tipRate = sumOfBills / getSumHours()
 
         for (report in individualReports) {
-            val rawTips = tipRate * report.employeeHours
+            val rawTips = tipRate * report.employeeHours!!
             val roundedTips = BigDecimal(rawTips).setScale(0, RoundingMode.HALF_EVEN)
             report.distributedTips = roundedTips.toDouble()
         }
@@ -75,7 +75,7 @@ class WeeklyTipReport(
         val expectedTotal = sumOfBills
         var actualTotal = 0.0
         individualReports.forEach {
-            actualTotal += it.distributedTips
+            actualTotal += it.distributedTips!!
         }
 
         val roundingError = actualTotal - expectedTotal
@@ -98,12 +98,12 @@ class WeeklyTipReport(
         secondEmployee = employeesCopy.random()
 
         if (roundingError < 0.0) {
-            firstEmployee.distributedTips = firstEmployee.distributedTips + 1.0
-            secondEmployee.distributedTips = secondEmployee.distributedTips + 1.0
+            firstEmployee.distributedTips = firstEmployee.distributedTips!! + 1.0
+            secondEmployee.distributedTips = secondEmployee.distributedTips!! + 1.0
         }
         else if (roundingError > 0.0) {
-            firstEmployee.distributedTips = firstEmployee.distributedTips - 1.0
-            secondEmployee.distributedTips = secondEmployee.distributedTips - 1.0
+            firstEmployee.distributedTips = firstEmployee.distributedTips!! - 1.0
+            secondEmployee.distributedTips = secondEmployee.distributedTips!! - 1.0
         }
 
         for (emp in individualReports) {

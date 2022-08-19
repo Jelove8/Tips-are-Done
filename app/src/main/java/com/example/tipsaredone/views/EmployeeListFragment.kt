@@ -1,6 +1,7 @@
 package com.example.tipsaredone.views
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.MenuHost
@@ -26,6 +27,8 @@ class EmployeeListFragment : Fragment() {
     private lateinit var employeesViewModel: EmployeesViewModel
     private lateinit var employeesAdapter: EmployeesAdapter
 
+    private var initialBool: Boolean = true
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentEmployeesListBinding.inflate(inflater, container, false)
         return binding.root
@@ -39,7 +42,6 @@ class EmployeeListFragment : Fragment() {
         val employeesVM: EmployeesViewModel by activityViewModels()
         employeesViewModel = employeesVM
 
-        // Checks if a user is logged in.
 
         /**
          * ITEMCLICK:  Navigate to EmployeeProfileFragment to edit an employee.
@@ -57,6 +59,7 @@ class EmployeeListFragment : Fragment() {
         if (employeesAdapter.itemCount == 0) {
             (context as MainActivity).initializeEmployeesFromDatabase(employeesAdapter)
         }
+
 
         /**
          * BUTTON:  Navigate to EmployeeProfileFragment to add a new employee.

@@ -59,9 +59,18 @@ class EmployeesAdapter(
     }
 
     fun addNewEmployee(newEmployee: Employee) {
-        employees.add(newEmployee)
-        employees.sortBy { it.name }
-        notifyDataSetChanged()
+        var checkForUniqueID = true
+        employees.forEach {
+            if (it.id == newEmployee.id) {
+                checkForUniqueID = false
+            }
+        }
+
+        if (checkForUniqueID) {
+            employees.add(newEmployee)
+            employees.sortBy { it.name }
+            notifyDataSetChanged()
+        }
     }
     fun deleteEmployee(position: Int) {
         employees.removeAt(position)

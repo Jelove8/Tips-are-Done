@@ -4,13 +4,13 @@ import java.time.LocalDateTime
 
 class IndividualTipReport(
     val employeeName: String,
-    var employeeID: String,
-    var employeeHours: Double,
-    var distributedTips: Double,
-    var startDate: String,
-    var endDate: String,
-    var majorRoundingError: Int?,
-    var collected: Boolean
+    val employeeID: String,
+    var employeeHours: Double? = null,
+    var distributedTips: Double? = null,
+    var startDate: String? = null,
+    var endDate: String? = null,
+    var majorRoundingError: Int? = null,
+    var collected: Boolean? = null
 )
 
 

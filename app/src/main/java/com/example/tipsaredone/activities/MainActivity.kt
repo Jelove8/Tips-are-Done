@@ -64,6 +64,9 @@ class MainActivity : AppCompatActivity() {
         binding.includeContentMain.navEmployees.setOnClickListener {
             findNavController(R.id.nav_host_fragment).navigate(R.id.EmployeeListFragment)
         }
+        binding.includeContentMain.navTips.setOnClickListener {
+            findNavController(R.id.nav_host_fragment).navigate(R.id.EmployeeHoursFragment)
+        }
         binding.includeContentMain.navReports.setOnClickListener {
             findNavController(R.id.nav_host_fragment).navigate(R.id.WeeklyReportsFragment)
         }

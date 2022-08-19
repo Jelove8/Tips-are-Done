@@ -41,7 +41,7 @@ class IndividualReportsAdapter(
             endDate.text = individualTipReport.endDate.toString()
             amount.text = individualTipReport.distributedTips.toString()
 
-            if (individualTipReport.collected) {
+            if (individualTipReport.collected!!) {
                 collectButton.visibility = View.GONE
                 uncollectButton.visibility = View.VISIBLE
             }

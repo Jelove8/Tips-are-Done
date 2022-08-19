@@ -14,6 +14,7 @@ import com.example.tipsaredone.activities.MainActivity
 import com.example.tipsaredone.activities.ReportActivity
 import com.example.tipsaredone.adapters.HoursAdapter
 import com.example.tipsaredone.databinding.FragmentEmployeeHoursBinding
+import com.example.tipsaredone.model.EmployeeHours
 import com.example.tipsaredone.viewmodels.EmployeesViewModel
 import com.example.tipsaredone.viewmodels.HoursViewModel
 
@@ -21,6 +22,9 @@ class EmployeeHoursFragment : Fragment() {
 
     private lateinit var hoursViewModel: HoursViewModel
     private lateinit var hoursAdapter: HoursAdapter
+
+    private lateinit var employeesViewModel: EmployeesViewModel
+    private var initBool: Boolean = true
 
     private var _binding: FragmentEmployeeHoursBinding? = null
     private val binding get() = _binding!!
@@ -31,37 +35,31 @@ class EmployeeHoursFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (context as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
+
         // Initialize EmployeesViewModel
         val hoursVM: HoursViewModel by activityViewModels()
         hoursViewModel = hoursVM
 
         val employeesVM: EmployeesViewModel by activityViewModels()
-        hoursViewModel.initializeTipReports(employeesVM.employees.value!!)
+        employeesViewModel = employeesVM
 
-        hoursAdapter = HoursAdapter(hoursViewModel.employeeHoursList.value!!,
+
+        hoursAdapter = HoursAdapter(employeesViewModel.individualTipReports.value!!,
             // TextChanged: When employee hours are edited.
             textChangedCallback = fun(_: Int) {
-                updateSumOfHours()
-                updateConfirmButtonVisibility()
+
             }
         )
-        binding.rcyEmployeeHours.layoutManager = LinearLayoutManager(context as ReportActivity)
+        binding.rcyEmployeeHours.layoutManager = LinearLayoutManager(context as MainActivity)
         binding.rcyEmployeeHours.adapter = hoursAdapter
-        hoursAdapter.initializeTipReports(employeesVM.employees.value!!)
 
-        updateConfirmButtonVisibility()
-        updateSumOfHours()
+
+
+
         // Button: Confirm employees and navi
         // gate to next fragment.
-        binding.btnEmployeeHoursConfirm.setOnClickListener {
-            if (hoursAdapter.checkForValidHours()) {
-                findNavController().navigate(R.id.action_HoursFrag_to_CollectionFrag)
-            }
-            else {
-                val toast = resources.getString(R.string.employee_hours_required)
-                (context as MainActivity).makeToastMessage(toast)
-            }
-        }
+
 
     }
     override fun onDestroyView() {
@@ -70,29 +68,9 @@ class EmployeeHoursFragment : Fragment() {
     }
     
     // Updates Views
-    private fun updateConfirmButtonVisibility() {
-        if (hoursAdapter.checkForValidHours()) {
-            val sbGreen = ResourcesCompat.getColor(resources, R.color.starbucks_green, (context as ReportActivity).theme)
-            binding.btnEmployeeHoursConfirm.setBackgroundColor(sbGreen)
-        }
-        else {
-            val wrmNeutral = ResourcesCompat.getColor(resources, R.color.warm_neutral, (context as ReportActivity).theme)
-            binding.btnEmployeeHoursConfirm.setBackgroundColor(wrmNeutral)
-        }
-    }
-    private fun updateSumOfHours() {
-        binding.tvTotalHours.text = hoursAdapter.getSumOfHours().toString()
-    }
 
 
-    private fun displayDatePicker(isShown: Boolean) {
-        if (isShown) {
-            binding.subcnstDatePicker.visibility = View.VISIBLE
-        }
-        else {
-            binding.subcnstDatePicker.visibility = View.GONE
-        }
-    }
+
 
 
 

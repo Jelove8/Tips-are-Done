@@ -14,8 +14,8 @@ class Employee(
     fun checkForUncollectedTips(): Double {
         var output = 0.0
         tipReports.forEach {
-            if (!it.collected) {
-                output += it.distributedTips
+            if (!it.collected!!) {
+                output += it.distributedTips!!
             }
         }
         return output
