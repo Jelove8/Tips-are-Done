@@ -1,17 +1,14 @@
 package com.example.tipsaredone.activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.example.tipsaredone.R
 import com.example.tipsaredone.databinding.ActivityUserLoginBinding
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 
 class UserLoginActivity : AppCompatActivity() {
 
@@ -20,9 +17,7 @@ class UserLoginActivity : AppCompatActivity() {
     }
 
     private lateinit var binding: ActivityUserLoginBinding
-
     private var rememberingCurrentUser: Boolean = false
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +25,7 @@ class UserLoginActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         if (FirebaseAuth.getInstance().currentUser != null) {
-            //navigateToMainActivity()
+            navigateToMainActivity()
         }
 
         binding.switchRememberMe.setOnClickListener {
@@ -41,7 +36,7 @@ class UserLoginActivity : AppCompatActivity() {
         }
 
         binding.btnForgotPassword.setOnClickListener {
-
+            TODO()
         }
 
         binding.btnCreateAccount.setOnClickListener {
@@ -51,6 +46,7 @@ class UserLoginActivity : AppCompatActivity() {
                 signUpUser(inputEmail,inputPassword)
             }
         }
+
         binding.btnSignIn.setOnClickListener {
             if (checkForNonNullInputs()) {
                 val inputEmail = binding.inputEmail.text.toString()
@@ -69,6 +65,7 @@ class UserLoginActivity : AppCompatActivity() {
         else {
             binding.switchRememberMe.visibility = View.GONE
         }
+        TODO()
     }
     private fun signInUser(email: String, password: String) {
         Log.d(AUTH,"Attempting to sign in User: $email")
@@ -123,18 +120,11 @@ class UserLoginActivity : AppCompatActivity() {
 
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
+
+
+
+
+
+
 

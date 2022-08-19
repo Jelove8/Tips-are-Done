@@ -34,9 +34,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
 
-    private lateinit var firebaseAuth: FirebaseAuth
-    private var signInRequired: Boolean = true
-
     private lateinit var weeklyTipReport: WeeklyTipReport
 
     private lateinit var databaseModel: DatabaseModel
