@@ -5,7 +5,7 @@
     android:id="@+id/cnst_login_activity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.LoginActivity">
+    tools:context=".activities.UserLoginActivity">
 
     <TextView
         android:id="@+id/header_login"

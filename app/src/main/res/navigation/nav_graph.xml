@@ -23,6 +23,9 @@
         <action
             android:id="@+id/action_EmployeeListFragment_to_reportsFragment"
             app:destination="@id/WeeklyReportsFragment" />
+        <action
+            android:id="@+id/action_EmployeeListFragment_to_settingsFragment"
+            app:destination="@id/SettingsFragment" />
     </fragment>
 
     <fragment
@@ -74,4 +77,9 @@
         android:name="com.example.tipsaredone.views.ReportsFragment"
         android:label="Weekly Reports"
         tools:layout="@layout/fragment_reports" />
+    <fragment
+        android:id="@+id/SettingsFragment"
+        android:name="com.example.tipsaredone.views.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
 </navigation>

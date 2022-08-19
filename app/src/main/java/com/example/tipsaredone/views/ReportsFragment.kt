@@ -17,6 +17,7 @@ import com.example.tipsaredone.activities.ReportActivity
 import com.example.tipsaredone.adapters.WeeklyReportsAdapter
 import com.example.tipsaredone.databinding.FragmentReportsBinding
 import com.example.tipsaredone.viewmodels.EmployeesViewModel
+import com.example.tipsaredone.viewmodels.HoursViewModel
 import com.example.tipsaredone.viewmodels.ReportsViewModel
 
 class ReportsFragment : Fragment() {

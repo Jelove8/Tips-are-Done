@@ -1,5 +1,6 @@
 package com.example.tipsaredone.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -70,7 +71,15 @@ class MainActivity : AppCompatActivity() {
             findNavController(R.id.nav_host_fragment).navigate(R.id.WeeklyReportsFragment)
         }
         binding.includeContentMain.navSettings.setOnClickListener {
+            findNavController(R.id.nav_host_fragment).navigate(R.id.SettingsFragment)
+        }
+    }
 
+    override fun onStart() {
+        super.onStart()
+
+        if (FirebaseAuth.getInstance().currentUser == null) {
+            navigateToUserLoginActivity()
         }
     }
 
@@ -138,7 +147,7 @@ class MainActivity : AppCompatActivity() {
         weeklyTipReport.startDate = datePickerViewModel.getStartDateString()
         weeklyTipReport.endDate = datePickerViewModel.getEndDateString()
         weeklyTipReport.initializeIndividualReports(employeesViewModel.employees.value!!)
-        hoursViewModel.initializeTipReports(weeklyTipReport.individualReports)
+        hoursViewModel.initializeTipReports(employeesViewModel.employees.value!!)
 
         Log.d(WEEKLY_REPORT,"Initialized")
         Log.d(WEEKLY_REPORT,"Start: ${weeklyTipReport.startDate},  End: ${weeklyTipReport.endDate}")
@@ -154,6 +163,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     // Firebase Auth
+    fun navigateToUserLoginActivity() {
+        val intent = Intent(this,UserLoginActivity::class.java)
+        startActivity(intent)
+    }
 
 
     // Firebase Database
@@ -186,6 +199,8 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this,message,Toast.LENGTH_LONG).show()
         }
     }
+
+
 
 
 

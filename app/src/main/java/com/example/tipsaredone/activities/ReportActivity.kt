@@ -21,7 +21,7 @@ class ReportActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding = ActivityReportBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -49,5 +49,8 @@ class ReportActivity : AppCompatActivity() {
         else {
             binding.btnFab.visibility = View.GONE
         }
+    }
+    fun updateFAB(config: Int) {
+        fabConfiguration = config
     }
 }
