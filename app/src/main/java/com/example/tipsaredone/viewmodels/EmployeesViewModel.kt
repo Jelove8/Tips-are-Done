@@ -59,6 +59,18 @@ class EmployeesViewModel: ViewModel() {
         _confirmEmployeesButtonShowing.value = boolean
     }
 
+    fun deleteSelectedEmployee() {
+        _employees.value!!.remove(_selectedEmployee.value!!)
+
+        var reportToDelete: IndividualTipReport? = null
+        _individualTipReports.value!!.forEach {
+            if (it.employeeID == _selectedEmployee.value!!.id) {
+                reportToDelete = it
+            }
+        }
+        _individualTipReports.value!!.remove(reportToDelete)
+    }
+
     fun selectEmployee(index: Int?) {
         _selectedEmployee.value =
             if (index == null) {

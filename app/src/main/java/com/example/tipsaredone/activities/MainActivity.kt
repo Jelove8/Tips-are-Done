@@ -147,7 +147,6 @@ class MainActivity : AppCompatActivity() {
         weeklyTipReport.startDate = datePickerViewModel.getStartDateString()
         weeklyTipReport.endDate = datePickerViewModel.getEndDateString()
         weeklyTipReport.initializeIndividualReports(employeesViewModel.employees.value!!)
-        hoursViewModel.initializeTipReports(employeesViewModel.employees.value!!)
 
         Log.d(WEEKLY_REPORT,"Initialized")
         Log.d(WEEKLY_REPORT,"Start: ${weeklyTipReport.startDate},  End: ${weeklyTipReport.endDate}")

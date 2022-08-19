@@ -146,9 +146,8 @@ class EmployeeProfileFragment : Fragment() {
          * BUTTON: Deletes an employee from database.
          */
         dialogBox.btnDialogDeleteEmployeeConfirm.setOnClickListener {
-            val selectedEmployee = employeesViewModel.selectedEmployee.value!!
-            employeesViewModel.employees.value!!.remove(selectedEmployee)
-            (context as MainActivity).deleteExistingEmployee(selectedEmployee)
+            employeesViewModel.deleteSelectedEmployee()
+            (context as MainActivity).deleteExistingEmployee(employeesViewModel.selectedEmployee.value!!)
             findNavController().navigate(R.id.action_EmployeeDialogFrag_to_EmployeeListFrag)
         }
     }

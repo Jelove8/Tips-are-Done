@@ -45,6 +45,7 @@ class EmployeeHoursFragment : Fragment() {
         employeesViewModel = employeesVM
 
 
+
         hoursAdapter = HoursAdapter(employeesViewModel.individualTipReports.value!!,
             // TextChanged: When employee hours are edited.
             textChangedCallback = fun(_: Int) {
@@ -54,7 +55,9 @@ class EmployeeHoursFragment : Fragment() {
         binding.rcyEmployeeHours.layoutManager = LinearLayoutManager(context as MainActivity)
         binding.rcyEmployeeHours.adapter = hoursAdapter
 
-
+        if (hoursAdapter.itemCount == 0) {
+            employeesViewModel.initializeTipReports()
+        }
 
 
         // Button: Confirm employees and navi
