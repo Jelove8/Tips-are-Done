@@ -32,6 +32,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.encodeToJsonElement
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.concurrent.schedule
 
 class MainActivity : AppCompatActivity() {
@@ -160,8 +161,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun navigateToReportActivity() {
+        val employeesJson = convertEmployeesToJson(employeesViewModel.employees.value!!)
         val intent = Intent(this,ReportActivity::class.java)
-
+        intent.putStringArrayListExtra("employees",employeesJson)
         startActivity(intent)
 
 
@@ -191,16 +193,13 @@ class MainActivity : AppCompatActivity() {
 
 
     // JSON
-    fun convertEmployeesToJson(employees: MutableList<Employee>) {
+    fun convertEmployeesToJson(employees: MutableList<Employee>): ArrayList<String> {
         val gson = Gson()
-        val employeesJsonList = mutableListOf<String>()
+        val employeesJsonList = arrayListOf<String>()
         employees.forEach {
             employeesJsonList.add(gson.toJson(it))
         }
-
-        employeesJsonList.forEach {
-            Log.d("meow",it)
-        }
+        return employeesJsonList
     }
 
     // Misc
