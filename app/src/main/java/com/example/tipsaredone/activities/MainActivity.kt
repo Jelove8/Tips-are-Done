@@ -26,6 +26,8 @@ import com.example.tipsaredone.viewmodels.EmployeesViewModel
 import com.example.tipsaredone.viewmodels.HoursViewModel
 import com.example.tipsaredone.viewmodels.TipCollectionViewModel
 import com.google.firebase.auth.FirebaseAuth
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.encodeToJsonElement
@@ -160,9 +162,8 @@ class MainActivity : AppCompatActivity() {
     fun navigateToReportActivity() {
         val intent = Intent(this,ReportActivity::class.java)
 
-        val tipReportsJson = Json.encodeToJsonElement(employeesViewModel.employees.value!!)
-        Log.d("meow",tipReportsJson.toString())
-        intent.putExtra(EXTRA_INDIVIDUAL_TIP_REPORTS,tipReportsJson.toString())
+        startActivity(intent)
+
 
     }
 
@@ -186,6 +187,20 @@ class MainActivity : AppCompatActivity() {
     }
     fun deleteExistingEmployee(selectedEmployee: Employee) {
         databaseModel.deleteExistingEmployee(selectedEmployee)
+    }
+
+
+    // JSON
+    fun convertEmployeesToJson(employees: MutableList<Employee>) {
+        val gson = Gson()
+        val employeesJsonList = mutableListOf<String>()
+        employees.forEach {
+            employeesJsonList.add(gson.toJson(it))
+        }
+
+        employeesJsonList.forEach {
+            Log.d("meow",it)
+        }
     }
 
     // Misc

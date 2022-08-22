@@ -17,5 +17,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navGraph="@navigation/nav_graph2"
-        tools:layout="@layout/fragment_employee_hours" />
+        tools:layout="@layout/fragment_tip_collection" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -106,6 +106,7 @@ class EmployeeHoursFragment : Fragment() {
                 displayDatePicker(false)
             }
             binding.btnDatePickerConfirm.setOnClickListener {
+                (context as MainActivity).convertEmployeesToJson(employeesViewModel.employees.value!!)
                 (context as MainActivity).navigateToReportActivity()
             }
         }

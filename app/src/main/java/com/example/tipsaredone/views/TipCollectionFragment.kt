@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tipsaredone.R
 import com.example.tipsaredone.activities.MainActivity
+import com.example.tipsaredone.activities.ReportActivity
 import com.example.tipsaredone.adapters.TipCollectionAdapter
 import com.example.tipsaredone.databinding.FragmentTipCollectionBinding
 import com.example.tipsaredone.viewmodels.TipCollectionViewModel
@@ -42,20 +43,17 @@ class TipCollectionFragment : Fragment() {
                 updateConfirmButtonVisibility()
             }
         )
-        binding.rcyTipCollection.layoutManager = LinearLayoutManager(context as MainActivity)
+        binding.rcyTipCollection.layoutManager = LinearLayoutManager(context as ReportActivity)
         binding.rcyTipCollection.adapter = tipCollectionAdapter
 
         binding.btnTipCollectionConfirm.setOnClickListener {
             // Navigates up if checkBillAmounts() returns true
             if (checkForValidInputs()) {
                 val tipsCollected = tipCollectionViewModel.tipsCollected.value!!
-                (context as MainActivity).getWeeklyTipReport().setTipsCollected(tipsCollected)
-                (context as MainActivity).showCalculatingScreen()
-                findNavController().navigate(R.id.action_CollectionFrag_to_DistributionFrag)
             }
             else {
                 val toast = getValidityString()
-                (context as MainActivity).makeToastMessage(toast)
+                (context as ReportActivity).makeToastMessage(toast)
             }
         }
     }
@@ -68,11 +66,11 @@ class TipCollectionFragment : Fragment() {
     private fun updateConfirmButtonVisibility() {
         val button: View = binding.btnTipCollectionConfirm
         if (checkForValidInputs()) {
-            val sbGreen = ResourcesCompat.getColor(resources, R.color.starbucks_green, (context as MainActivity).theme)
+            val sbGreen = ResourcesCompat.getColor(resources, R.color.starbucks_green, (context as ReportActivity).theme)
             button.setBackgroundColor(sbGreen)
         }
         else {
-            val wrmNeutral = ResourcesCompat.getColor(resources, R.color.warm_neutral, (context as MainActivity).theme)
+            val wrmNeutral = ResourcesCompat.getColor(resources, R.color.warm_neutral, (context as ReportActivity).theme)
             button.setBackgroundColor(wrmNeutral)
         }
     }

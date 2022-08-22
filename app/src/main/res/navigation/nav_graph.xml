@@ -29,31 +29,10 @@
     </fragment>
 
     <fragment
-        android:id="@+id/CollectionFragment"
-        android:name="com.example.tipsaredone.views.TipCollectionFragment"
-        android:label="Tips Are Almost Done"
-        tools:layout="@layout/fragment_tip_collection" >
-        <action
-            android:id="@+id/action_CollectionFrag_to_DistributionFrag"
-            app:destination="@id/DistributionFragment"
-            app:enterAnim="@anim/slide_to_the_left"
-            app:popEnterAnim="@anim/slide_to_the_right" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/DistributionFragment"
-        android:name="com.example.tipsaredone.views.TipDistributionFragment"
-        android:label="Tips Are Done"
-        tools:layout="@layout/fragment_tip_distribution" />
-    <fragment
         android:id="@+id/EmployeeHoursFragment"
         android:name="com.example.tipsaredone.views.EmployeeHoursFragment"
         android:label="Doin' Tips"
-        tools:layout="@layout/fragment_employee_hours">
-        <action
-            android:id="@+id/action_HoursFrag_to_CollectionFrag"
-            app:destination="@id/CollectionFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_employee_hours"/>
     <fragment
         android:id="@+id/EmployeeDialogFragment"
         android:name="com.example.tipsaredone.views.EmployeeProfileFragment"
