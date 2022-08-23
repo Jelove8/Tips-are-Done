@@ -1,10 +1,8 @@
 package com.example.tipsaredone.activities
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -27,13 +25,7 @@ import com.example.tipsaredone.viewmodels.HoursViewModel
 import com.example.tipsaredone.viewmodels.TipCollectionViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.encodeToJsonElement
-import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.concurrent.schedule
 
 class MainActivity : AppCompatActivity() {
 
@@ -100,17 +92,6 @@ class MainActivity : AppCompatActivity() {
                 || super.onSupportNavigateUp()
     }
 
-    fun showCalculatingScreen() {
-        binding.includeCalculatingScreen.root.visibility = View.VISIBLE
-        binding.toolbar.visibility = View.GONE
-        Timer().schedule(1200){
-            this@MainActivity.runOnUiThread {
-                binding.includeCalculatingScreen.root.visibility = View.GONE
-                binding.toolbar.visibility = View.VISIBLE
-            }
-        }
-    }
-
     // Animations
     /*
     fun displayTitleAnimation() {
@@ -154,6 +135,15 @@ class MainActivity : AppCompatActivity() {
         return weeklyTipReport
     }
 
+    private fun createWeeklyTipReport(): String {
+        val startDate = datePickerViewModel.startDate.value!!.toString()
+        val endDate = datePickerViewModel.endDate.value!!.toString()
+        val individualReports = employeesViewModel.individualTipReports.value!!
+        val newWeeklyTipReport = WeeklyTipReport(individualReports, startDate, endDate)
+
+        val gson = Gson()
+        return gson.toJson(newWeeklyTipReport)
+    }
     // Firebase Auth
     fun navigateToUserLoginActivity() {
         val intent = Intent(this,UserLoginActivity::class.java)
@@ -161,11 +151,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun navigateToReportActivity() {
-        val employeesJson = convertEmployeesToJson(employeesViewModel.employees.value!!)
-        val intent = Intent(this,ReportActivity::class.java)
-        intent.putStringArrayListExtra("employees",employeesJson)
-        startActivity(intent)
 
+        val weeklyTipReportJson = createWeeklyTipReport()
 
     }
 
@@ -200,6 +187,14 @@ class MainActivity : AppCompatActivity() {
             employeesJsonList.add(gson.toJson(it))
         }
         return employeesJsonList
+    }
+    fun convertIndividualReportsToJson(individualReports: MutableList<IndividualTipReport>): ArrayList<String> {
+        val gson = Gson()
+        val reportsJson = arrayListOf<String>()
+        individualReports.forEach {
+            reportsJson.add(gson.toJson(it))
+        }
+        return reportsJson
     }
 
     // Misc

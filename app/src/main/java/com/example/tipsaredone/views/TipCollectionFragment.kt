@@ -1,20 +1,20 @@
 package com.example.tipsaredone.views
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.res.ResourcesCompat
+import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.tipsaredone.R
-import com.example.tipsaredone.activities.MainActivity
 import com.example.tipsaredone.activities.ReportActivity
 import com.example.tipsaredone.adapters.TipCollectionAdapter
 import com.example.tipsaredone.databinding.FragmentTipCollectionBinding
 import com.example.tipsaredone.viewmodels.TipCollectionViewModel
+
 
 class TipCollectionFragment : Fragment() {
 
@@ -23,6 +23,7 @@ class TipCollectionFragment : Fragment() {
 
     private lateinit var tipCollectionViewModel: TipCollectionViewModel
     private lateinit var tipCollectionAdapter: TipCollectionAdapter
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentTipCollectionBinding.inflate(inflater,container,false)
@@ -35,45 +36,26 @@ class TipCollectionFragment : Fragment() {
         tipCollectionViewModel = tipCollectionVM
         updateSumOfBillsTV()
 
+
         // Bills RecyclerView
         tipCollectionAdapter = TipCollectionAdapter(
             tipCollectionViewModel.tipsCollected.value!!,
             textChangedCallback = fun(_: Int, _: Double?) {
                 updateSumOfBillsTV()
-                updateConfirmButtonVisibility()
+                checkForValidInputs()
             }
         )
         binding.rcyTipCollection.layoutManager = LinearLayoutManager(context as ReportActivity)
         binding.rcyTipCollection.adapter = tipCollectionAdapter
 
-        binding.btnTipCollectionConfirm.setOnClickListener {
-            // Navigates up if checkBillAmounts() returns true
-            if (checkForValidInputs()) {
-                val tipsCollected = tipCollectionViewModel.tipsCollected.value!!
-            }
-            else {
-                val toast = getValidityString()
-                (context as ReportActivity).makeToastMessage(toast)
-            }
-        }
+
     }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
-    // Updates views
-    private fun updateConfirmButtonVisibility() {
-        val button: View = binding.btnTipCollectionConfirm
-        if (checkForValidInputs()) {
-            val sbGreen = ResourcesCompat.getColor(resources, R.color.starbucks_green, (context as ReportActivity).theme)
-            button.setBackgroundColor(sbGreen)
-        }
-        else {
-            val wrmNeutral = ResourcesCompat.getColor(resources, R.color.warm_neutral, (context as ReportActivity).theme)
-            button.setBackgroundColor(wrmNeutral)
-        }
-    }
+
     private fun updateSumOfBillsTV() {
         binding.tvTotalTips.text = tipCollectionViewModel.getTotalCollected().toString()
     }
@@ -86,7 +68,14 @@ class TipCollectionFragment : Fragment() {
                 (tipCollectionViewModel.tipsCollected.value!![4] % 20.00) +
                 (tipCollectionViewModel.tipsCollected.value!![5] % 50.00) +
                 (tipCollectionViewModel.tipsCollected.value!![6] % 100.00)
-        return sumOfModulos == 0.0
+
+        return if (sumOfModulos == 0.0) {
+            true
+        }
+        else {
+            (context as ReportActivity).makeToastMessage(getValidityString())
+            false
+        }
     }
     private fun getValidityString(): String {
         val sumOfModulos = (tipCollectionViewModel.tipsCollected.value!![0] % 1.00) +
@@ -100,14 +89,14 @@ class TipCollectionFragment : Fragment() {
         return when {
             // At least one EditText input must be filled.
             tipCollectionViewModel.tipsCollected.value!!.sum() == 0.0 -> {
-                resources.getString(R.string.invalid_bills1)
+                resources.getString(com.example.tipsaredone.R.string.invalid_bills1)
             }
             // An input(s) is not divisible by their corresponding bill type.
             sumOfModulos != 0.0 -> {
-                resources.getString(R.string.invalid_bills2)
+                resources.getString(com.example.tipsaredone.R.string.invalid_bills2)
             }
             else -> {
-                resources.getString(R.string.error_has_occurred)
+                resources.getString(com.example.tipsaredone.R.string.error_has_occurred)
             }
         }
 

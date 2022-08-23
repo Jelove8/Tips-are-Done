@@ -1,11 +1,14 @@
 package com.example.tipsaredone.views
 
-import android.content.Context
+import android.app.DatePickerDialog
 import android.os.Bundle
-import android.view.*
-import android.view.GestureDetector.SimpleOnGestureListener
-import android.view.View.OnTouchListener
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.CalendarView
 import android.widget.DatePicker
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.tipsaredone.R
@@ -13,7 +16,8 @@ import com.example.tipsaredone.activities.ReportActivity
 import com.example.tipsaredone.databinding.FragmentDatePickerBinding
 import com.example.tipsaredone.viewmodels.DatePickerViewModel
 import java.time.LocalDate
-import kotlin.math.abs
+import java.time.LocalDateTime
+import java.util.*
 
 
 class DatePickerFragment : Fragment() {
@@ -36,12 +40,8 @@ class DatePickerFragment : Fragment() {
         reportActivity = (context as ReportActivity)
 
 
-        binding.startDatePicker.setOnDateChangedListener { _, year, monthOfYear, dayOfMonth ->
-            datePickerViewModel.setStartDate(year, monthOfYear, dayOfMonth)
-        }
-        binding.endDatePicker.setOnDateChangedListener { _, year, monthOfYear, dayOfMonth ->
-            datePickerViewModel.setEndDate(year, monthOfYear, dayOfMonth)
-        }
+
+
     }
     override fun onDestroyView() {
         super.onDestroyView()
@@ -53,12 +53,12 @@ class DatePickerFragment : Fragment() {
             if (datePickerViewModel.startDate.value!!.isBefore(datePickerViewModel.endDate.value!!)) {
                 true
             } else {
-                val toast = resources.getString(R.string.invalid_dates2)
+                resources.getString(R.string.invalid_dates2)
               // (context as MainActivity).makeToastMessage(toast)
                 false
             }
         } else {
-            val toast = resources.getString(R.string.invalid_dates1)
+            resources.getString(R.string.invalid_dates1)
            //  (context as MainActivity).makeToastMessage(toast)
             false
         }
@@ -108,49 +108,5 @@ class DatePickerFragment : Fragment() {
             val endDay = datePickerViewModel.endDate.value!!.dayOfMonth
             binding.endDatePicker.updateDate(endYear,endMonth,endDay)
         }
-    }
-}
-
-open class OnSwipeTouchListener(context: Context?) : OnTouchListener {
-
-    companion object {
-        private const val SWIPE_DISTANCE_THRESHOLD = 100
-        private const val SWIPE_VELOCITY_THRESHOLD = 100
-    }
-
-    private val gestureDetector: GestureDetector
-    fun onSwipeLeft() {}
-    fun onSwipeRight() {}
-    override fun onTouch(v: View, event: MotionEvent): Boolean {
-        v.performClick()
-        return gestureDetector.onTouchEvent(event)
-    }
-
-    private inner class GestureListener : SimpleOnGestureListener() {
-        override fun onDown(e: MotionEvent): Boolean {
-            return true
-        }
-
-        override fun onFling(
-            e1: MotionEvent,
-            e2: MotionEvent,
-            velocityX: Float,
-            velocityY: Float
-        ): Boolean {
-            val distanceX = e2.x - e1.x
-            val distanceY = e2.y - e1.y
-            if (abs(distanceX) > abs(distanceY) && abs(distanceX) > Companion.SWIPE_DISTANCE_THRESHOLD && abs(
-                    velocityX
-                ) > Companion.SWIPE_VELOCITY_THRESHOLD
-            ) {
-                if (distanceX > 0) onSwipeRight() else onSwipeLeft()
-                return true
-            }
-            return false
-        }
-    }
-
-    init {
-        gestureDetector = GestureDetector(context, GestureListener())
     }
 }

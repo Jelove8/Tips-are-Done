@@ -1,10 +1,9 @@
 package com.example.tipsaredone.views
 
-import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
+import android.util.Log
 import android.view.*
-import android.view.inputmethod.InputMethodManager
-import androidx.core.content.ContextCompat.getSystemService
+import android.widget.DatePicker
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -15,9 +14,10 @@ import com.example.tipsaredone.R
 import com.example.tipsaredone.activities.MainActivity
 import com.example.tipsaredone.adapters.HoursAdapter
 import com.example.tipsaredone.databinding.FragmentEmployeeHoursBinding
+import com.example.tipsaredone.viewmodels.DatePickerViewModel
 import com.example.tipsaredone.viewmodels.EmployeesViewModel
 import com.example.tipsaredone.viewmodels.HoursViewModel
-import io.grpc.Context
+import java.util.*
 
 
 class EmployeeHoursFragment : Fragment() {
@@ -26,6 +26,7 @@ class EmployeeHoursFragment : Fragment() {
     private lateinit var hoursAdapter: HoursAdapter
 
     private lateinit var employeesViewModel: EmployeesViewModel
+    private lateinit var datePickerViewModel: DatePickerViewModel
     private var initBool: Boolean = true
 
     private var _binding: FragmentEmployeeHoursBinding? = null
@@ -45,6 +46,9 @@ class EmployeeHoursFragment : Fragment() {
 
         val employeesVM: EmployeesViewModel by activityViewModels()
         employeesViewModel = employeesVM
+
+        val datePickerVM: DatePickerViewModel by activityViewModels()
+        datePickerViewModel = datePickerVM
 
         hoursAdapter = HoursAdapter(employeesViewModel.individualTipReports.value!!,
             // TextChanged: When employee hours are edited.
@@ -99,6 +103,17 @@ class EmployeeHoursFragment : Fragment() {
             binding.btnDatePickerConfirm.visibility = View.VISIBLE
             (context as MainActivity).displayNavbar(false)
 
+            val startDate = datePickerViewModel.startDate.value!!
+            val endDate = datePickerViewModel.endDate.value!!
+
+            binding.includeDatePicker.startDatePicker.init(startDate.year,startDate.monthValue,startDate.dayOfMonth) { _, year, month, day ->
+                datePickerViewModel.setStartDate(year,month,day)
+            }
+
+            binding.includeDatePicker.endDatePicker.init(endDate.year,endDate.monthValue,endDate.dayOfMonth) { _, year, month, day ->
+                datePickerViewModel.setEndDate(year,month,day)
+            }
+
             binding.btnDatePickerCancel.setOnClickListener {
                 displayDatePicker(false)
             }
@@ -106,8 +121,10 @@ class EmployeeHoursFragment : Fragment() {
                 displayDatePicker(false)
             }
             binding.btnDatePickerConfirm.setOnClickListener {
-                (context as MainActivity).convertEmployeesToJson(employeesViewModel.employees.value!!)
-                (context as MainActivity).navigateToReportActivity()
+                if (checkForValidDates()) {
+                    (context as MainActivity).convertEmployeesToJson(employeesViewModel.employees.value!!)
+                    (context as MainActivity).navigateToReportActivity()
+                }
             }
         }
         else {
@@ -117,7 +134,6 @@ class EmployeeHoursFragment : Fragment() {
             (context as MainActivity).displayNavbar(true)
         }
     }
-
 
     private fun updateSumOfHoursHeader() {
         val newSum = hoursAdapter.getSumOfHours()
@@ -135,6 +151,19 @@ class EmployeeHoursFragment : Fragment() {
         }
         else {
             true
+        }
+    }
+
+    private fun checkForValidDates(): Boolean {
+        val startDate = datePickerViewModel.startDate.value!!
+        val endDate = datePickerViewModel.endDate.value!!
+
+        return if (startDate.isBefore(endDate)) {
+            true
+        }
+        else {
+            (context as MainActivity).makeToastMessage(resources.getString(R.string.invalid_dates2))
+            false
         }
     }
 

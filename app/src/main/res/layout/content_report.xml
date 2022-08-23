@@ -18,4 +18,22 @@
         app:layout_constraintTop_toTopOf="parent"
         app:navGraph="@navigation/nav_graph2"
         tools:layout="@layout/fragment_tip_collection" />
+
+    <Button
+        android:id="@+id/btn_tip_collection_confirm"
+        android:layout_width="wrap_content"
+        android:layout_height="56dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/warm_neutral"
+        android:elevation="64dp"
+        android:fontFamily="@font/sodo"
+        android:text="Confirm"
+        app:icon="@drawable/icon_checkmark"
+        app:iconGravity="textEnd"
+        app:iconSize="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="SpeakableTextPresentCheck" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

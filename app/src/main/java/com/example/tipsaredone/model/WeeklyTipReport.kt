@@ -3,6 +3,7 @@ package com.example.tipsaredone.model
 import android.icu.lang.UCharacter.GraphemeClusterBreak.L
 import java.math.BigDecimal
 import java.math.RoundingMode
+import java.time.LocalDate
 import java.time.LocalDateTime
 import kotlin.math.absoluteValue
 
@@ -16,44 +17,6 @@ class WeeklyTipReport(
     var majorRoundingError: Int? = null,
 
 ) {
-    fun initializeIndividualReports(employees: MutableList<Employee>) {
-        employees.sortBy { it.name }
-        employees.forEach {
-            individualReports.add(
-                IndividualTipReport(it.name,it.id,0.0,0.0,startDate!!,endDate!!,null,false)
-            )
-        }
-
-    }
-
-    fun setTipsCollected(data: MutableList<Double>) {
-        for ((i,item) in data.withIndex()) {
-            when (i) {
-                0 -> {
-                    bills.add(mapOf("Ones" to item.toInt()))
-                }
-                1 -> {
-                    bills.add(mapOf("Twos" to item.toInt()))
-                }
-                2 -> {
-                    bills.add(mapOf("Fives" to item.toInt()))
-                }
-                3 -> {
-                    bills.add(mapOf("Tens" to item.toInt()))
-                }
-                4 -> {
-                    bills.add(mapOf("Twenties" to item.toInt()))
-                }
-                5 -> {
-                    bills.add(mapOf("Fifties" to item.toInt()))
-                }
-                6 -> {
-                    bills.add(mapOf("Hundreds" to item.toInt()))
-                }
-            }
-        }
-        sumOfBills = data.sum()
-    }
 
     private fun getSumHours(): Double {
         var sum = 0.0

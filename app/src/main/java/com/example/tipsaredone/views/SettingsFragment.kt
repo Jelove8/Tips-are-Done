@@ -24,6 +24,7 @@ class SettingsFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (context as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
         binding.btnSignOut.setOnClickListener {
             val userEmail = FirebaseAuth.getInstance().currentUser!!.email

@@ -18,6 +18,7 @@ class TipCollectionAdapter(private val tipsCollected: MutableList<Double>,
         private val tvIndex: TextView = itemView.findViewById(R.id.tv_employee_index)
         private val tvBillType: TextView = itemView.findViewById(R.id.tv_indiv_report_endDate)
         private val etBillAmount: EditText = itemView.findViewById(R.id.et_employee_hours)
+        private val tvDollarSign: TextView = itemView.findViewById(R.id.tv_dollar_sign)
 
         init {
             tvIndex.visibility = View.INVISIBLE
@@ -55,6 +56,8 @@ class TipCollectionAdapter(private val tipsCollected: MutableList<Double>,
                     "Error"
                 }
             }
+
+            tvDollarSign.visibility = View.VISIBLE
 
             if (amount == 0.0) {
                 etBillAmount.text.clear()
