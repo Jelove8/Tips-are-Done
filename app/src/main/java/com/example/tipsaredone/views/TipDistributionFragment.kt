@@ -30,8 +30,7 @@ class TipDistributionFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Distributing Tips
-        val weeklyTipReport = (context as MainActivity).getWeeklyTipReport()
-        weeklyTipReport.distributeTips()
+        val weeklyTipReport = (context as MainActivity).getWeeklyReport()
 
         if (weeklyTipReport.majorRoundingError != null) {
             showRoundingErrorDialog()
@@ -48,6 +47,7 @@ class TipDistributionFragment : Fragment() {
             // Clearing inputted data, except for employee names
             val tipCollectionViewModel: TipCollectionViewModel by activityViewModels()
             tipCollectionViewModel.clearTipsCollected()
+            findNavController().navigate(R.id.action_tipDistribution_to_weeklyReports)
         }
     }
     override fun onDestroyView() {
@@ -58,7 +58,7 @@ class TipDistributionFragment : Fragment() {
     private fun showRoundingErrorDialog() {
         binding.includeRoundingErrorsDialog.root.visibility = View.VISIBLE
 
-        val roundingError = (context as MainActivity).getWeeklyTipReport().majorRoundingError!!
+        val roundingError = (context as MainActivity).getWeeklyReport().majorRoundingError!!
         val errorMessage = if (roundingError < 0.0) {
             "You will have $${roundingError.absoluteValue} leftover."
         }

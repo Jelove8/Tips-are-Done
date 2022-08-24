@@ -1,41 +1,36 @@
 package com.example.tipsaredone.model
 
-import android.icu.lang.UCharacter.GraphemeClusterBreak.L
 import java.math.BigDecimal
 import java.math.RoundingMode
-import java.time.LocalDate
-import java.time.LocalDateTime
 import kotlin.math.absoluteValue
 
 class WeeklyTipReport(
     var individualReports: MutableList<IndividualTipReport> = mutableListOf(),
     var startDate: String? = null,
     var endDate: String? = null,
-    var bills: MutableList<Map<String,Int>> = mutableListOf(),
-    var sumOfBills: Double = 0.0,
+    var collectedTips: MutableList<Map<String,Int>> = mutableListOf(),
+    var totalHours: Double = 0.0,
+    var totalCollected: Double = 0.0,
     var tipRate: Double = 0.0,
     var majorRoundingError: Int? = null,
 
-) {
-
-    private fun getSumHours(): Double {
-        var sum = 0.0
-        individualReports.forEach {
-           sum += it.employeeHours!!
-        }
-        return sum
-    }
+    ) {
 
     fun distributeTips() {
-        tipRate = sumOfBills / getSumHours()
+        tipRate = totalCollected / totalHours
 
         for (report in individualReports) {
-            val rawTips = tipRate * report.employeeHours!!
+            val rawTips = if (report.employeeHours != null) {
+                tipRate * report.employeeHours!!
+            }
+            else {
+                0.0
+            }
             val roundedTips = BigDecimal(rawTips).setScale(0, RoundingMode.HALF_EVEN)
             report.distributedTips = roundedTips.toDouble()
         }
 
-        val expectedTotal = sumOfBills
+        val expectedTotal = totalCollected
         var actualTotal = 0.0
         individualReports.forEach {
             actualTotal += it.distributedTips!!

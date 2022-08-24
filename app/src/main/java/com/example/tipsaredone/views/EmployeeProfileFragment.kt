@@ -101,7 +101,7 @@ class EmployeeProfileFragment : Fragment() {
                 selectedEmployeeMock.name = binding.etEmployeeProfile.text.toString()
                 employeesViewModel.updateSelectedEmployee(selectedEmployeeMock)
                 (context as MainActivity).updateExistingEmployee(selectedEmployeeMock)
-                findNavController().navigate(R.id.action_EmployeeDialogFrag_to_EmployeeListFrag)
+                findNavController().navigate(R.id.EmployeeListFragment)
             }
         }
         updateConfirmButtonVisibility()
@@ -148,7 +148,7 @@ class EmployeeProfileFragment : Fragment() {
         dialogBox.btnDialogDeleteEmployeeConfirm.setOnClickListener {
             employeesViewModel.deleteSelectedEmployee()
             (context as MainActivity).deleteExistingEmployee(employeesViewModel.selectedEmployee.value!!)
-            findNavController().navigate(R.id.action_EmployeeDialogFrag_to_EmployeeListFrag)
+            findNavController().navigate(R.id.EmployeeListFragment)
         }
     }
     private fun hideDeleteEmployeeDialog() {

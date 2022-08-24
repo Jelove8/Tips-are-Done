@@ -30,8 +30,7 @@ class SettingsFragment : Fragment() {
             val userEmail = FirebaseAuth.getInstance().currentUser!!.email
             FirebaseAuth.getInstance().signOut()
 
-            val intent = Intent(context as MainActivity,UserLoginActivity::class.java)
-            startActivity(intent)
+            (context as MainActivity).navigateToUserLoginActivity()
 
             Log.d(UserLoginActivity.AUTH,"User signed out: $userEmail ")
         }

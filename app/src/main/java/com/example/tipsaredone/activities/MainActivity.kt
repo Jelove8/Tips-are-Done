@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
 
-    private lateinit var weeklyTipReport: WeeklyTipReport
+    private var weeklyTipReport: WeeklyTipReport? = null
 
     private lateinit var databaseModel: DatabaseModel
 
@@ -64,6 +64,7 @@ class MainActivity : AppCompatActivity() {
         collectionViewModel = ViewModelProvider(this)[TipCollectionViewModel::class.java]
         hoursViewModel = ViewModelProvider(this)[HoursViewModel::class.java]
 
+        // Navbar Buttons
         binding.includeContentMain.navEmployees.setOnClickListener {
             findNavController(R.id.nav_host_fragment).navigate(R.id.EmployeeListFragment)
         }
@@ -80,7 +81,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-
         if (FirebaseAuth.getInstance().currentUser == null) {
             navigateToUserLoginActivity()
         }
@@ -92,68 +92,60 @@ class MainActivity : AppCompatActivity() {
                 || super.onSupportNavigateUp()
     }
 
-    // Animations
-    /*
-    fun displayTitleAnimation() {
 
-        ObjectAnimator.ofFloat(binding.includeContentMain.includeLogin.root, "translationY", 1000f).apply {
-            duration = 500
-            start()
-        }
-        ObjectAnimator.ofFloat(binding.includeContentMain.includeTitleScreen.root, "translationY", 400f).apply {
-            duration = 500
-            start()
-        }
-        Timer().schedule(600) {
-            this@MainActivity.runOnUiThread {
-                Timer().schedule(500) {
-                    this@MainActivity.runOnUiThread {
-                        binding.toolbar.visibility = View.VISIBLE
-                    }
-                }
-                ObjectAnimator.ofFloat(binding.includeContentMain.includeTitleScreen.root, "translationY", -2000f).apply {
-                    duration = 600
-                    start()
-                }
-
-                ObjectAnimator.ofFloat(binding.includeContentMain.tvTitleScreenBackground, "translationY", -2200f).apply {
-                    duration = 600
-                    start()
-                }
-                Timer().schedule(550) {
-                    this@MainActivity.runOnUiThread {
-                        binding.includeContentMain.includeTitleScreen.root.visibility = View.GONE
-                        binding.includeContentMain.tvTitleScreenBackground.visibility = View.GONE
-                    }
-                }
-            }
-        }
+    fun getWeeklyReport(): WeeklyTipReport {
+        return weeklyTipReport!!
     }
-*/
-
-    fun getWeeklyTipReport(): WeeklyTipReport {
-        return weeklyTipReport
-    }
-
-    private fun createWeeklyTipReport(): String {
+    fun createWeeklyReport() {
         val startDate = datePickerViewModel.startDate.value!!.toString()
         val endDate = datePickerViewModel.endDate.value!!.toString()
         val individualReports = employeesViewModel.individualTipReports.value!!
-        val newWeeklyTipReport = WeeklyTipReport(individualReports, startDate, endDate)
-
-        val gson = Gson()
-        return gson.toJson(newWeeklyTipReport)
+        weeklyTipReport = WeeklyTipReport(individualReports, startDate, endDate)
     }
-    // Firebase Auth
+    fun calculateWeeklyReport() {
+        val collectedTips = collectionViewModel.tipsCollected.value!!
+        val collectedTipsAsMap = mutableListOf<Map<String,Int>>()
+        for ((i,item) in collectedTips.withIndex()) {
+            when (i) {
+                0 -> {
+                    collectedTipsAsMap.add(mapOf(Pair("Ones",item.toInt())))
+                }
+                1 -> {
+                    collectedTipsAsMap.add(mapOf(Pair("Twos",item.toInt())))
+                }
+                2 -> {
+                    collectedTipsAsMap.add(mapOf(Pair("Fives",item.toInt())))
+                }
+                3 -> {
+                    collectedTipsAsMap.add(mapOf(Pair("Tens",item.toInt())))
+                }
+                4 -> {
+                    collectedTipsAsMap.add(mapOf(Pair("Twenties",item.toInt())))
+                }
+                5 -> {
+                    collectedTipsAsMap.add(mapOf(Pair("Fifties",item.toInt())))
+                }
+                6 -> {
+                    collectedTipsAsMap.add(mapOf(Pair("Hundreds",item.toInt())))
+                }
+            }
+        }
+
+        val individualReports = employeesViewModel.individualTipReports.value!!
+        individualReports.forEach {
+            if (it.employeeHours != null) {
+                weeklyTipReport!!.totalHours += it.employeeHours!!
+            }
+        }
+        weeklyTipReport!!.totalCollected = collectedTips.sum()
+        weeklyTipReport!!.distributeTips()
+    }
+
+    // Activity Navigation
     fun navigateToUserLoginActivity() {
+        FirebaseAuth.getInstance().signOut()
         val intent = Intent(this,UserLoginActivity::class.java)
         startActivity(intent)
-    }
-
-    fun navigateToReportActivity() {
-
-        val weeklyTipReportJson = createWeeklyTipReport()
-
     }
 
 
@@ -177,7 +169,6 @@ class MainActivity : AppCompatActivity() {
     fun deleteExistingEmployee(selectedEmployee: Employee) {
         databaseModel.deleteExistingEmployee(selectedEmployee)
     }
-
 
     // JSON
     fun convertEmployeesToJson(employees: MutableList<Employee>): ArrayList<String> {

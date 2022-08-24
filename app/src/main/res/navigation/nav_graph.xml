@@ -12,45 +12,24 @@
         android:fontFamily="@font/sodo"
         tools:layout="@layout/fragment_employees_list">
         <action
-            android:id="@+id/action_EmployeeListFrag_to_EmployeeProfileFrag"
-            app:destination="@id/EmployeeDialogFragment"
-            app:launchSingleTop="false" />
-        <action
-            android:id="@+id/action_EmployeeListFrag_to_DatePickerFrag"
-            app:destination="@id/DatePickerFragment"
-            app:enterAnim="@anim/slide_to_the_left"
-            app:popEnterAnim="@anim/slide_to_the_right" />
-        <action
-            android:id="@+id/action_EmployeeListFragment_to_reportsFragment"
-            app:destination="@id/WeeklyReportsFragment" />
-        <action
-            android:id="@+id/action_EmployeeListFragment_to_settingsFragment"
-            app:destination="@id/SettingsFragment" />
+            android:id="@+id/action_employeeList_to_employeeProfile"
+            app:destination="@id/EmployeeProfileFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/EmployeeHoursFragment"
         android:name="com.example.tipsaredone.views.EmployeeHoursFragment"
         android:label="Doin' Tips"
-        tools:layout="@layout/fragment_employee_hours"/>
+        tools:layout="@layout/fragment_employee_hours">
+        <action
+            android:id="@+id/action_employeeHours_toTipCollection"
+            app:destination="@id/tipCollectionFragment" />
+    </fragment>
     <fragment
-        android:id="@+id/EmployeeDialogFragment"
+        android:id="@+id/EmployeeProfileFragment"
         android:name="com.example.tipsaredone.views.EmployeeProfileFragment"
         android:label="Employee Profile"
-        tools:layout="@layout/fragment_employee_profile" >
-        <action
-            android:id="@+id/action_EmployeeDialogFrag_to_EmployeeListFrag"
-            app:destination="@id/EmployeeListFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/DatePickerFragment"
-        android:name="com.example.tipsaredone.views.DatePickerFragment"
-        android:label="Before you start..."
-        tools:layout="@layout/fragment_date_picker" >
-        <action
-            android:id="@+id/action_DatePickerFrag_to_EmployeeHoursFrag"
-            app:destination="@id/EmployeeHoursFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_employee_profile" />
     <fragment
         android:id="@+id/WeeklyReportsFragment"
         android:name="com.example.tipsaredone.views.ReportsFragment"
@@ -61,4 +40,23 @@
         android:name="com.example.tipsaredone.views.SettingsFragment"
         android:label="Settings"
         tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/tipCollectionFragment"
+        android:name="com.example.tipsaredone.views.TipCollectionFragment"
+        android:label="Weekly Tip Collection"
+        tools:layout="@layout/fragment_tip_collection" >
+        <action
+            android:id="@+id/action_tipCollectionFragment_to_tipDistributionFragment"
+            app:destination="@id/tipDistributionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/tipDistributionFragment"
+        android:name="com.example.tipsaredone.views.TipDistributionFragment"
+        android:label="TipDistributionFragment"
+        tools:layout="@layout/fragment_tip_distribution">
+        <action
+            android:id="@+id/action_tipDistribution_to_weeklyReports"
+            app:destination="@id/WeeklyReportsFragment" />
+    </fragment>
+
 </navigation>

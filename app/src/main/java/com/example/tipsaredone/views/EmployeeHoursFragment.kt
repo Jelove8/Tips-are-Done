@@ -1,14 +1,13 @@
 package com.example.tipsaredone.views
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import android.widget.DatePicker
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tipsaredone.R
 import com.example.tipsaredone.activities.MainActivity
@@ -17,7 +16,6 @@ import com.example.tipsaredone.databinding.FragmentEmployeeHoursBinding
 import com.example.tipsaredone.viewmodels.DatePickerViewModel
 import com.example.tipsaredone.viewmodels.EmployeesViewModel
 import com.example.tipsaredone.viewmodels.HoursViewModel
-import java.util.*
 
 
 class EmployeeHoursFragment : Fragment() {
@@ -89,6 +87,11 @@ class EmployeeHoursFragment : Fragment() {
 
 
     }
+
+    override fun onStart() {
+        super.onStart()
+        (context as MainActivity).displayNavbar(true)
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -123,7 +126,7 @@ class EmployeeHoursFragment : Fragment() {
             binding.btnDatePickerConfirm.setOnClickListener {
                 if (checkForValidDates()) {
                     (context as MainActivity).convertEmployeesToJson(employeesViewModel.employees.value!!)
-                    (context as MainActivity).navigateToReportActivity()
+                    findNavController().navigate(R.id.action_employeeHours_toTipCollection)
                 }
             }
         }

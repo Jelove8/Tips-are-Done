@@ -95,17 +95,9 @@ class EmployeeListFragment : Fragment() {
      */
     private fun navigateEditEmployee(index: Int) {
         employeesViewModel.selectEmployee(index)
-        findNavController().navigate(R.id.action_EmployeeListFrag_to_EmployeeProfileFrag)
+        findNavController().navigate(R.id.action_employeeList_to_employeeProfile)
     }
-    private fun navigateDatePicker() {
-        if (checkForValidEmployees()) {
-            findNavController().navigate(R.id.action_EmployeeListFrag_to_DatePickerFrag)
-        }
-        else {
-            val toast = resources.getString(R.string.employees_list_invalid_string)
-            (context as MainActivity).makeToastMessage(toast)
-        }
-    }
+
 
     /**
      * DIALOG:  Add New Employee.

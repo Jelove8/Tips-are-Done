@@ -1,16 +1,15 @@
 package com.example.tipsaredone.views
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.tipsaredone.activities.ReportActivity
+import com.example.tipsaredone.R
+import com.example.tipsaredone.activities.MainActivity
 import com.example.tipsaredone.adapters.TipCollectionAdapter
 import com.example.tipsaredone.databinding.FragmentTipCollectionBinding
 import com.example.tipsaredone.viewmodels.TipCollectionViewModel
@@ -36,6 +35,8 @@ class TipCollectionFragment : Fragment() {
         tipCollectionViewModel = tipCollectionVM
         updateSumOfBillsTV()
 
+        (context as MainActivity).createWeeklyReport()
+
 
         // Bills RecyclerView
         tipCollectionAdapter = TipCollectionAdapter(
@@ -45,8 +46,15 @@ class TipCollectionFragment : Fragment() {
                 checkForValidInputs()
             }
         )
-        binding.rcyTipCollection.layoutManager = LinearLayoutManager(context as ReportActivity)
+        binding.rcyTipCollection.layoutManager = LinearLayoutManager(context as MainActivity)
         binding.rcyTipCollection.adapter = tipCollectionAdapter
+
+        binding.btnConfirmCollection.setOnClickListener {
+            if (checkForValidInputs()) {
+                (context as MainActivity).calculateWeeklyReport()
+                findNavController().navigate(R.id.action_tipCollectionFragment_to_tipDistributionFragment)
+            }
+        }
 
 
     }
@@ -73,7 +81,7 @@ class TipCollectionFragment : Fragment() {
             true
         }
         else {
-            (context as ReportActivity).makeToastMessage(getValidityString())
+            (context as MainActivity).makeToastMessage(getValidityString())
             false
         }
     }
