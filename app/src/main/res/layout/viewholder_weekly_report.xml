@@ -5,122 +5,238 @@
     android:id="@+id/cnst_weekly_report"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="4dp">
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp">
 
-    <TextView
-        android:id="@+id/label_start_date"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cnst_weekly_report_tip_data"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:text="Start Date"
+        android:layout_marginTop="8dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_conversion_absoluteHeight="0dp"
-        tools:layout_conversion_absoluteWidth="0dp" />
+        app:layout_constraintTop_toBottomOf="@+id/cnst_weekly_report_date_data">
+
+        <TextView
+            android:id="@+id/tv_weekly_report_total_hours"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:fontFamily="@font/sodo"
+            android:hint="80.76 hrs"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/label_total_hours"
+            app:layout_constraintTop_toTopOf="@+id/label_total_hours"
+            tools:layout_conversion_absoluteHeight="0dp"
+            tools:layout_conversion_absoluteWidth="0dp" />
+
+        <TextView
+            android:id="@+id/tv_weekly_report_collected_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:fontFamily="@font/sodo"
+            android:hint="$ 80.00"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/label_tips"
+            app:layout_constraintTop_toTopOf="@+id/label_tips"
+            tools:layout_conversion_absoluteHeight="0dp"
+            tools:layout_conversion_absoluteWidth="0dp" />
+
+        <TextView
+            android:id="@+id/tv_weekly_report_tip_rate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:fontFamily="@font/sodo"
+            android:hint="$ 1.27 / hr "
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/label_tip_rate"
+            app:layout_constraintTop_toTopOf="@+id/label_tip_rate"
+            tools:layout_conversion_absoluteHeight="0dp"
+            tools:layout_conversion_absoluteWidth="0dp" />
+
+        <TextView
+            android:id="@+id/tv_weekly_report_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:fontFamily="@font/sodo"
+            android:hint="No Error"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/label_rounding_error"
+            app:layout_constraintTop_toTopOf="@+id/label_rounding_error"
+            tools:layout_conversion_absoluteHeight="0dp"
+            tools:layout_conversion_absoluteWidth="0dp" />
+
+        <TextView
+            android:id="@+id/label_total_hours"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sodo"
+            android:text="Total Hours"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_conversion_absoluteHeight="0dp"
+            tools:layout_conversion_absoluteWidth="0dp" />
+
+        <TextView
+            android:id="@+id/label_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/sodo"
+            android:text="Total Tips"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@+id/label_total_hours"
+            app:layout_constraintTop_toBottomOf="@+id/label_total_hours" />
+
+        <TextView
+            android:id="@+id/label_tip_rate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/sodo"
+            android:text="Tip Rate"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@+id/label_tips"
+            app:layout_constraintTop_toBottomOf="@+id/label_tips" />
+
+        <TextView
+            android:id="@+id/label_rounding_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/sodo"
+            android:text="Error"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@+id/label_tip_rate"
+            app:layout_constraintTop_toBottomOf="@+id/label_tip_rate" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cnst_weekly_report_date_data"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/rounded_square"
+        android:backgroundTint="@color/warm_neutral"
+        android:padding="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/label_end_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="64dp"
+            android:fontFamily="@font/sodo"
+            android:text="End Date"
+            android:textAllCaps="false"
+            android:textColor="@color/default_text"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_conversion_absoluteHeight="0dp"
+            tools:layout_conversion_absoluteWidth="0dp" />
+
+        <TextView
+            android:id="@+id/label_start_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="64dp"
+            android:fontFamily="@font/sodo"
+            android:text="Start Date"
+            android:textAllCaps="false"
+            android:textColor="@color/default_text"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_conversion_absoluteHeight="0dp"
+            tools:layout_conversion_absoluteWidth="0dp" />
+
+        <TextView
+            android:id="@+id/tv_weekly_report_start_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/sodo"
+            android:text="Jan 1, 2022"
+            android:textAllCaps="false"
+            android:textColor="@color/default_text"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@+id/label_start_date"
+            app:layout_constraintStart_toStartOf="@+id/label_start_date"
+            app:layout_constraintTop_toBottomOf="@+id/label_start_date"
+            tools:layout_conversion_absoluteHeight="0dp"
+            tools:layout_conversion_absoluteWidth="0dp" />
+
+        <TextView
+            android:id="@+id/tv_weekly_report_end_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/sodo"
+            android:text="Jan 8, 2022"
+            android:textAllCaps="false"
+            android:textColor="@color/default_text"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@+id/label_end_date"
+            app:layout_constraintStart_toStartOf="@+id/label_end_date"
+            app:layout_constraintTop_toBottomOf="@+id/label_end_date"
+            tools:layout_conversion_absoluteHeight="0dp"
+            tools:layout_conversion_absoluteWidth="0dp" />
+
+        <TextView
+            android:id="@+id/tv_underline1"
+            android:layout_width="80dp"
+            android:layout_height="2dp"
+            android:background="@color/default_text"
+            app:layout_constraintEnd_toEndOf="@+id/label_start_date"
+            app:layout_constraintStart_toStartOf="@+id/label_start_date"
+            app:layout_constraintTop_toBottomOf="@+id/label_start_date" />
+
+        <TextView
+            android:id="@+id/tv_underline2"
+            android:layout_width="80dp"
+            android:layout_height="2dp"
+            android:background="@color/default_text"
+            app:layout_constraintEnd_toEndOf="@id/label_end_date"
+            app:layout_constraintStart_toStartOf="@id/label_end_date"
+            app:layout_constraintTop_toBottomOf="@id/label_end_date" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcy_included_employees"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/cnst_weekly_report_tip_data"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/cnst_weekly_report_tip_data"
+        app:layout_constraintTop_toBottomOf="@+id/cnst_weekly_report_date_data" />
 
     <TextView
-        android:id="@+id/label_end_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="End Date"
-        app:layout_constraintStart_toStartOf="@+id/label_start_date"
-        app:layout_constraintTop_toBottomOf="@+id/label_start_date"
-        tools:layout_conversion_absoluteHeight="0dp"
-        tools:layout_conversion_absoluteWidth="0dp" />
+        android:id="@+id/tv_underline3"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:background="@color/default_text"
+        app:layout_constraintEnd_toEndOf="@+id/cnst_weekly_report_tip_data"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rcy_included_employees" />
 
     <TextView
-        android:id="@+id/label_total_hours"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Total Hours"
-        app:layout_constraintStart_toStartOf="@+id/label_start_date"
-        app:layout_constraintTop_toBottomOf="@+id/label_end_date"
-        tools:layout_conversion_absoluteHeight="0dp"
-        tools:layout_conversion_absoluteWidth="0dp" />
-
-    <TextView
-        android:id="@+id/label_tips"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tips"
-        app:layout_constraintStart_toStartOf="@+id/label_start_date"
-        app:layout_constraintTop_toBottomOf="@+id/label_total_hours" />
-
-    <TextView
-        android:id="@+id/label_tip_rate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tip Rate"
-        app:layout_constraintStart_toStartOf="@+id/label_start_date"
-        app:layout_constraintTop_toBottomOf="@+id/label_tips" />
-
-    <TextView
-        android:id="@+id/label_rounding_error"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Error"
-        app:layout_constraintStart_toStartOf="@+id/label_start_date"
-        app:layout_constraintTop_toBottomOf="@+id/label_tip_rate" />
-
-    <TextView
-        android:id="@+id/tv_weekly_report_start_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:hint="Jan 1, 2022"
-        app:layout_constraintStart_toEndOf="@+id/label_start_date"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_conversion_absoluteHeight="0dp"
-        tools:layout_conversion_absoluteWidth="0dp" />
-
-    <TextView
-        android:id="@+id/tv_weekly_report_end_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="Jan 8, 2022"
-        app:layout_constraintStart_toStartOf="@+id/tv_weekly_report_start_date"
-        app:layout_constraintTop_toBottomOf="@+id/tv_weekly_report_start_date"
-        tools:layout_conversion_absoluteHeight="0dp"
-        tools:layout_conversion_absoluteWidth="0dp" />
-
-    <TextView
-        android:id="@+id/tv_weekly_report_total_hours"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="80.76"
-        app:layout_constraintStart_toStartOf="@+id/tv_weekly_report_start_date"
-        app:layout_constraintTop_toBottomOf="@+id/tv_weekly_report_end_date"
-        tools:layout_conversion_absoluteHeight="0dp"
-        tools:layout_conversion_absoluteWidth="0dp" />
-
-    <TextView
-        android:id="@+id/tv_weekly_report_collected_tips"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="80.00"
-        app:layout_constraintStart_toStartOf="@+id/tv_weekly_report_start_date"
-        app:layout_constraintTop_toBottomOf="@+id/tv_weekly_report_total_hours"
-        tools:layout_conversion_absoluteHeight="0dp"
-        tools:layout_conversion_absoluteWidth="0dp" />
-
-    <TextView
-        android:id="@+id/tv_weekly_report_tip_rate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="1.27"
-        app:layout_constraintStart_toStartOf="@+id/tv_weekly_report_start_date"
-        app:layout_constraintTop_toBottomOf="@+id/tv_weekly_report_collected_tips"
-        tools:layout_conversion_absoluteHeight="0dp"
-        tools:layout_conversion_absoluteWidth="0dp" />
-
-    <TextView
-        android:id="@+id/tv_weekly_report_error"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="No Error"
-        app:layout_constraintStart_toStartOf="@+id/tv_weekly_report_tip_rate"
-        app:layout_constraintTop_toBottomOf="@+id/tv_weekly_report_tip_rate"
-        tools:layout_conversion_absoluteHeight="0dp"
-        tools:layout_conversion_absoluteWidth="0dp" />
+        android:id="@+id/tv_underline4"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:background="@color/default_text"
+        app:layout_constraintEnd_toEndOf="@id/rcy_included_employees"
+        app:layout_constraintStart_toStartOf="@id/rcy_included_employees"
+        app:layout_constraintTop_toBottomOf="@id/rcy_included_employees" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

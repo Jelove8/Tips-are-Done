@@ -2,6 +2,8 @@ package com.example.tipsaredone.model
 
 import android.util.Log
 import com.example.tipsaredone.adapters.EmployeesAdapter
+import com.example.tipsaredone.adapters.IndividualReportsAdapter
+import com.example.tipsaredone.adapters.WeeklyReportsAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
@@ -15,6 +17,20 @@ class DatabaseModel() {
         const val WEEKLY_REPORTS = "WeeklyReports"
         const val ID = "id"
         const val NAME = "name"
+        const val START_DATE = "startDate"
+        const val END_DATE = "endDate"
+        const val INDIVIDUAL_REPORTS = "individualReports"
+        const val TOTAL_HOURS = "totalHours"
+        const val COLLECTED_TIPS = "collectedTips"
+        const val TOTAL_COLLECTED = "totalCollected"
+        const val TIP_RATE = "tipRate"
+        const val MAJOR_ROUNDING_ERROR = "majorRoundingError"
+
+        const val EMPLOYEE_NAME = "employeeName"
+        const val EMPLOYEE_ID = "employeeID"
+        const val EMPLOYEE_HOURS = "employeeHours"
+        const val DISTRIBUTED_TIPS = "distributedTips"
+        const val COLLECTED_BOOLEAN = "collected"
     }
 
     private var currentUserUID: String = FirebaseAuth.getInstance().currentUser!!.uid
@@ -102,6 +118,74 @@ class DatabaseModel() {
             }
             .addOnFailureListener {
                 Log.d("FirebaseDatabase", "Failed to saved new weekly report.")
+            }
+    }
+
+    fun readWeeklyIndividualReportsFromDatabase(reportStartDate: String, reportEndDate: String, individualReportsAdapter: IndividualReportsAdapter) {
+        var startDateString = ""
+        var endDateString = ""
+        reportStartDate.forEach {
+            if (it.toString() != "-") {
+                startDateString += it.toString()
+            }
+        }
+        reportEndDate.forEach {
+            if (it.toString() != "-") {
+                endDateString += it.toString()
+            }
+        }
+        val documentID = "$startDateString-$endDateString"
+
+
+        firebaseDB.collection(USERS).document(currentUserUID).collection(WEEKLY_REPORTS).document(documentID).collection(INDIVIDUAL_REPORTS).get()
+            .addOnSuccessListener { individualReports ->
+                for (report in individualReports) {
+                    val reportEmployeeName = report.data[EMPLOYEE_NAME].toString()
+                    val reportEmployeeID = report.data[EMPLOYEE_ID].toString()
+                    val reportEmployeeHoursJson = report.data[EMPLOYEE_HOURS].toString()
+                    val reportEmployeeHours = if (reportEmployeeHoursJson == "null") {
+                        0.0
+                    } else {
+                        reportEmployeeHoursJson.toDouble()
+                    }
+                    val reportDistributedTipsJson = report.data[DISTRIBUTED_TIPS].toString()
+                    val reportDistributedTips = if (reportDistributedTipsJson == "null") {
+                        0.0
+                    } else {
+                        reportDistributedTipsJson.toDouble()
+                    }
+                    val reportCollectedBoolean = report.data[COLLECTED_BOOLEAN]
+                }
+
+            }
+    }
+
+    fun readWeeklyReportsFromDatabase(weeklyReportsAdapter: WeeklyReportsAdapter) {
+        val currentUserUID = FirebaseAuth.getInstance().currentUser!!.uid
+        firebaseDB.collection(USERS).document(currentUserUID).collection(WEEKLY_REPORTS).get()
+            .addOnSuccessListener { weeklyReports ->
+                for (report in weeklyReports) {
+                    val reportStartDate = report.data[START_DATE].toString()
+                    val reportEndDate = report.data[END_DATE].toString()
+                    val reportTotalHours = report.data[TOTAL_HOURS].toString().toDouble()
+                    val reportTotalCollected = report.data[TOTAL_COLLECTED].toString().toDouble()
+                    val reportTipRate = report.data[TIP_RATE].toString().toDouble()
+                    val reportError = report.data[MAJOR_ROUNDING_ERROR].toString().toInt()
+
+
+
+                    weeklyReportsAdapter.addNewWeeklyReport(
+                        WeeklyReport(reportStartDate,reportEndDate,
+                        mutableListOf(),reportTotalHours,
+                        mutableListOf(),reportTotalCollected,
+                        reportTipRate,reportError
+                    ))
+                    Log.d("FirebaseDatabase","Reading Weekly Report: ${report.id}")
+                }
+                Log.d("FirebaseDatabase","${weeklyReports.size()} All weekly reports read.")
+            }
+            .addOnFailureListener {
+                Log.d("FirebaseDatabase", it.toString())
             }
     }
 

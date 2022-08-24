@@ -4,8 +4,6 @@ import android.util.Log
 import com.example.tipsaredone.activities.MainActivity
 import java.math.BigDecimal
 import java.math.RoundingMode
-import java.time.LocalDate
-import java.util.*
 import kotlin.math.absoluteValue
 
 data class WeeklyReport(
@@ -75,6 +73,7 @@ data class WeeklyReport(
 
     fun distributeTips() {
         tipRate = totalCollected / totalHours
+        tipRate = (tipRate * 100).toInt() / 100.0
 
         for (report in individualReports) {
             val rawTips = if (report.employeeHours != null) {

@@ -44,6 +44,8 @@ class ReportsFragment : Fragment() {
         binding.rcyReportsFrag.layoutManager = LinearLayoutManager(context as MainActivity)
         binding.rcyReportsFrag.adapter = weeklyReportsAdapter
 
+        (context as MainActivity).initializeWeeklyReportsFromDatabase(weeklyReportsAdapter)
+
         val menuHost: MenuHost = requireActivity()
         menuHost.addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {

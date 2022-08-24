@@ -10,7 +10,7 @@ data class IndividualTipReport (
     var startDate: String? = null,
     var endDate: String? = null,
     var majorRoundingError: Int? = null,
-    var collected: Boolean? = null
+    var collected: Boolean = false
 )
 
 

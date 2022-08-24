@@ -15,6 +15,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.tipsaredone.R
 import com.example.tipsaredone.adapters.EmployeesAdapter
+import com.example.tipsaredone.adapters.WeeklyReportsAdapter
 import com.example.tipsaredone.databinding.ActivityMainBinding
 import com.example.tipsaredone.model.*
 import com.example.tipsaredone.viewmodels.DatePickerViewModel
@@ -124,6 +125,9 @@ class MainActivity : AppCompatActivity() {
         databaseModel.deleteExistingEmployee(selectedEmployee)
     }
 
+    fun initializeWeeklyReportsFromDatabase(weeklyReportsAdapter: WeeklyReportsAdapter) {
+        databaseModel.readWeeklyReportsFromDatabase(weeklyReportsAdapter)
+    }
     fun addNewWeeklyReportToDatabase(newWeeklyReport: WeeklyReport) {
         databaseModel.saveWeeklyReport(newWeeklyReport)
     }
