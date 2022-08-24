@@ -15,17 +15,14 @@ import com.example.tipsaredone.adapters.HoursAdapter
 import com.example.tipsaredone.databinding.FragmentEmployeeHoursBinding
 import com.example.tipsaredone.viewmodels.DatePickerViewModel
 import com.example.tipsaredone.viewmodels.EmployeesViewModel
-import com.example.tipsaredone.viewmodels.HoursViewModel
 
 
 class EmployeeHoursFragment : Fragment() {
 
-    private lateinit var hoursViewModel: HoursViewModel
     private lateinit var hoursAdapter: HoursAdapter
 
     private lateinit var employeesViewModel: EmployeesViewModel
     private lateinit var datePickerViewModel: DatePickerViewModel
-    private var initBool: Boolean = true
 
     private var _binding: FragmentEmployeeHoursBinding? = null
     private val binding get() = _binding!!
@@ -37,10 +34,6 @@ class EmployeeHoursFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (context as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
-
-        // Initialize EmployeesViewModel
-        val hoursVM: HoursViewModel by activityViewModels()
-        hoursViewModel = hoursVM
 
         val employeesVM: EmployeesViewModel by activityViewModels()
         employeesViewModel = employeesVM
@@ -59,6 +52,7 @@ class EmployeeHoursFragment : Fragment() {
 
         if (hoursAdapter.itemCount == 0) {
             employeesViewModel.initializeTipReports()
+            hoursAdapter.notifyDataSetChanged()
         }
         updateSumOfHoursHeader()
 
@@ -84,10 +78,7 @@ class EmployeeHoursFragment : Fragment() {
                 }
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
-
-
     }
-
     override fun onStart() {
         super.onStart()
         (context as MainActivity).displayNavbar(true)
@@ -125,7 +116,13 @@ class EmployeeHoursFragment : Fragment() {
             }
             binding.btnDatePickerConfirm.setOnClickListener {
                 if (checkForValidDates()) {
-                    (context as MainActivity).convertEmployeesToJson(employeesViewModel.employees.value!!)
+                    val selectedStartDate = datePickerViewModel.startDate.value!!
+                    val selectedEndDate = datePickerViewModel.endDate.value!!
+                    (context as MainActivity).createWeeklyReport(selectedStartDate,selectedEndDate)
+
+                    val individualReports = employeesViewModel.individualTipReports.value!!
+                    (context as MainActivity).getWeeklyReport().initializeReports(individualReports)
+
                     findNavController().navigate(R.id.action_employeeHours_toTipCollection)
                 }
             }

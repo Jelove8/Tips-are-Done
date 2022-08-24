@@ -35,6 +35,10 @@ class SettingsFragment : Fragment() {
             Log.d(UserLoginActivity.AUTH,"User signed out: $userEmail ")
         }
     }
+    override fun onStart() {
+        super.onStart()
+        (context as MainActivity).displayNavbar(true)
+    }
     override fun onDestroy() {
         super.onDestroy()
         _binding = null

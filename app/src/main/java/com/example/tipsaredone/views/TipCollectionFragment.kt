@@ -23,7 +23,6 @@ class TipCollectionFragment : Fragment() {
     private lateinit var tipCollectionViewModel: TipCollectionViewModel
     private lateinit var tipCollectionAdapter: TipCollectionAdapter
 
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentTipCollectionBinding.inflate(inflater,container,false)
         return binding.root
@@ -33,10 +32,6 @@ class TipCollectionFragment : Fragment() {
 
         val tipCollectionVM: TipCollectionViewModel by activityViewModels()
         tipCollectionViewModel = tipCollectionVM
-        updateSumOfBillsTV()
-
-        (context as MainActivity).createWeeklyReport()
-
 
         // Bills RecyclerView
         tipCollectionAdapter = TipCollectionAdapter(
@@ -48,24 +43,28 @@ class TipCollectionFragment : Fragment() {
         )
         binding.rcyTipCollection.layoutManager = LinearLayoutManager(context as MainActivity)
         binding.rcyTipCollection.adapter = tipCollectionAdapter
+        updateSumOfBillsTV()
 
         binding.btnConfirmCollection.setOnClickListener {
             if (checkForValidInputs()) {
-                (context as MainActivity).calculateWeeklyReport()
+                val collectedTips = tipCollectionViewModel.tipsCollected.value!!
+                (context as MainActivity).getWeeklyReport().initializeCollectedTips(collectedTips)
+                (context as MainActivity).getWeeklyReport().distributeTips()
                 findNavController().navigate(R.id.action_tipCollectionFragment_to_tipDistributionFragment)
             }
         }
-
-
+    }
+    override fun onStart() {
+        super.onStart()
+        (context as MainActivity).displayNavbar(false)
     }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
-
     private fun updateSumOfBillsTV() {
-        binding.tvTotalTips.text = tipCollectionViewModel.getTotalCollected().toString()
+        binding.tvTotalTips.text = tipCollectionAdapter.getTotalCollected().toString()
     }
 
     private fun checkForValidInputs(): Boolean {

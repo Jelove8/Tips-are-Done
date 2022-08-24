@@ -85,6 +85,10 @@ class EmployeeListFragment : Fragment() {
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
+    override fun onStart() {
+        super.onStart()
+        (context as MainActivity).displayNavbar(true)
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

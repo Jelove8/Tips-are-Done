@@ -87,4 +87,8 @@ class TipCollectionAdapter(private val tipsCollected: MutableList<Double>,
         tipsCollected[position] = newAmount ?: 0.0
     }
 
+    fun getTotalCollected(): Double {
+        return tipsCollected.sum()
+    }
+
 }

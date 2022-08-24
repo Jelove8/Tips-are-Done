@@ -12,6 +12,7 @@ class DatabaseModel() {
     companion object {
         const val USERS = "Users"
         const val EMPLOYEES = "Employees"
+        const val WEEKLY_REPORTS = "WeeklyReports"
         const val ID = "id"
         const val NAME = "name"
     }
@@ -20,7 +21,7 @@ class DatabaseModel() {
 
     private val firebaseDB: FirebaseFirestore = Firebase.firestore
     private val employees = mutableListOf<Employee>()
-    private val weeklyTipReports = mutableListOf<WeeklyTipReport>()
+    private val weeklyReports = mutableListOf<WeeklyReport>()
     private val individualTipReports = mutableListOf<IndividualTipReport>()
 
     init {
@@ -73,6 +74,19 @@ class DatabaseModel() {
             .addOnSuccessListener {
                 Log.d("FirebaseDatabase","Successfully updated employee:   ${selectedEmployee.name}") }
             .addOnFailureListener { Log.d("FirebaseDatabase","Failed to update employee:    ${selectedEmployee.name}    $it")}
+    }
+
+
+    fun saveWeeklyReport(weeklyReport: WeeklyReport) {
+        firebaseDB.collection(USERS).document(currentUserUID).collection(WEEKLY_REPORTS).document().set(weeklyReport)
+            .addOnSuccessListener {
+                weeklyReports.add(weeklyReport)
+                weeklyReports.sortBy { it.startDate }
+                Log.d("FirebaseDatabase", "Successfully saved new weekly report.")
+            }
+            .addOnFailureListener {
+                Log.d("FirebaseDatabase", "Failed to saved new weekly report.")
+            }
     }
 
 }

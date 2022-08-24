@@ -32,12 +32,12 @@ class EmployeesViewModel: ViewModel() {
     val confirmEmployeesButtonShowing: LiveData<Boolean> = _confirmEmployeesButtonShowing
 
     fun initializeTipReports() {
-        if (_employees.value != null) {
+        if (_employees.value!!.isNotEmpty()) {
             _employees.value!!.forEach {
                 _individualTipReports.value!!.add(IndividualTipReport(it.name,it.id))
             }
-            _individualTipReports.value!!.sortBy { it.employeeName }
         }
+        _individualTipReports.value!!.sortBy { it.employeeName }
     }
 
     fun initializeViewModelBool(): Boolean {

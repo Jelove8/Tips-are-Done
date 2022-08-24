@@ -67,6 +67,10 @@ class ReportsFragment : Fragment() {
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
+    override fun onStart() {
+        super.onStart()
+        (context as MainActivity).displayNavbar(true)
+    }
     override fun onDestroy() {
         super.onDestroy()
         _binding = null

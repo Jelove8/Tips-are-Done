@@ -32,7 +32,7 @@ class TipDistributionFragment : Fragment() {
         // Distributing Tips
         val weeklyTipReport = (context as MainActivity).getWeeklyReport()
 
-        if (weeklyTipReport.majorRoundingError != null) {
+        if (weeklyTipReport.majorRoundingError != 0) {
             showRoundingErrorDialog()
         }
         val roundedTipRate = (weeklyTipReport.tipRate * 100).toInt().toDouble() / 100
@@ -44,9 +44,7 @@ class TipDistributionFragment : Fragment() {
 
         // Button Logic
         binding.btnSaveEmployees.setOnClickListener {
-            // Clearing inputted data, except for employee names
-            val tipCollectionViewModel: TipCollectionViewModel by activityViewModels()
-            tipCollectionViewModel.clearTipsCollected()
+            (context as MainActivity).addNewWeeklyReportToDatabase(weeklyTipReport)
             findNavController().navigate(R.id.action_tipDistribution_to_weeklyReports)
         }
     }
@@ -58,7 +56,7 @@ class TipDistributionFragment : Fragment() {
     private fun showRoundingErrorDialog() {
         binding.includeRoundingErrorsDialog.root.visibility = View.VISIBLE
 
-        val roundingError = (context as MainActivity).getWeeklyReport().majorRoundingError!!
+        val roundingError = (context as MainActivity).getWeeklyReport().majorRoundingError
         val errorMessage = if (roundingError < 0.0) {
             "You will have $${roundingError.absoluteValue} leftover."
         }
