@@ -1,6 +1,8 @@
 package com.example.tipsaredone.model
 
 import android.util.Log
+import com.example.tipsaredone.activities.MainActivity
+import com.example.tipsaredone.activities.UserLoginActivity
 import com.example.tipsaredone.adapters.EmployeesAdapter
 import com.example.tipsaredone.adapters.IndividualReportsAdapter
 import com.example.tipsaredone.adapters.WeeklyReportsAdapter
@@ -8,6 +10,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import javax.security.auth.callback.Callback
 
 class DatabaseModel() {
 
@@ -33,7 +36,6 @@ class DatabaseModel() {
         const val COLLECTED_BOOLEAN = "collected"
     }
 
-    private var currentUserUID: String = FirebaseAuth.getInstance().currentUser!!.uid
 
     private val firebaseDB: FirebaseFirestore = Firebase.firestore
     private val employees = mutableListOf<Employee>()
@@ -42,8 +44,33 @@ class DatabaseModel() {
 
     init {
         Log.d("FirebaseDatabase","DataBaseModel initialized.")
-        Log.d("FirebaseDatabase","Current User: $currentUserUID")
+        Log.d("FirebaseDatabase","Current User: ")
     }
+
+    fun readRememberUserBooleanForUserLogin(userLoginActivity: UserLoginActivity) {
+        val currentUserUID = FirebaseAuth.getInstance().currentUser!!.uid
+        firebaseDB.collection(USERS).document(currentUserUID).get()
+            .addOnSuccessListener { document ->
+                if (!document.data.isNullOrEmpty()) {
+                    val rememberMeBoolean = document.data!![UserLoginActivity.REMEMBER_USER_BOOL].toString().toBoolean()
+                    if (rememberMeBoolean) {
+                        userLoginActivity.navigateToMainActivity()
+                    }
+                    Log.d("FirebaseDatabase","Successfully read 'remember me' boolean for UserLogin: $rememberMeBoolean")
+                }
+            }
+            .addOnFailureListener {
+                Log.d("FirebaseDatabase","Failed to read 'remember me' boolean for UserLogin: $it")
+            }
+    }
+
+    fun setRememberUserBoolean(boolean: Boolean, currentUserID: String) {
+        firebaseDB.collection(USERS).document(currentUserID).update(UserLoginActivity.REMEMBER_USER_BOOL,boolean)
+            .addOnSuccessListener {
+                Log.d("FirebaseDatabase","Successfully changed 'remember me' boolean to $boolean.")
+            }
+    }
+
 
     fun readEmployeeDataFromDatabase(employeesAdapter: EmployeesAdapter) {
         val currentUserUID = FirebaseAuth.getInstance().currentUser!!.uid
@@ -62,7 +89,7 @@ class DatabaseModel() {
     }
 
     fun createNewEmployee(newEmployee: Employee) {
-        firebaseDB.collection(USERS).document(currentUserUID).collection(EMPLOYEES).document(newEmployee.id).set(newEmployee)
+        firebaseDB.collection(USERS).document(FirebaseAuth.getInstance().currentUser!!.uid).collection(EMPLOYEES).document(newEmployee.id).set(newEmployee)
             .addOnSuccessListener {
                 employees.add(newEmployee)
                 employees.sortBy { it.name }
@@ -74,7 +101,7 @@ class DatabaseModel() {
     }
 
     fun deleteExistingEmployee(selectedEmployee: Employee) {
-        firebaseDB.collection("Users").document(currentUserUID).collection("Employees").document(selectedEmployee.id).delete()
+        firebaseDB.collection("Users").document(FirebaseAuth.getInstance().currentUser!!.uid).collection("Employees").document(selectedEmployee.id).delete()
             .addOnSuccessListener {
                 Log.d("FirebaseDatabase", "Employee deleted from database: ${selectedEmployee.name}")
             }
@@ -86,7 +113,7 @@ class DatabaseModel() {
     }
 
     fun updateEmployee(selectedEmployee: Employee) {
-        firebaseDB.collection(USERS).document(currentUserUID).collection(EMPLOYEES).document(selectedEmployee.id).set(selectedEmployee)
+        firebaseDB.collection(USERS).document(FirebaseAuth.getInstance().currentUser!!.uid).collection(EMPLOYEES).document(selectedEmployee.id).set(selectedEmployee)
             .addOnSuccessListener {
                 Log.d("FirebaseDatabase","Successfully updated employee:   ${selectedEmployee.name}") }
             .addOnFailureListener { Log.d("FirebaseDatabase","Failed to update employee:    ${selectedEmployee.name}    $it")}
@@ -110,7 +137,7 @@ class DatabaseModel() {
         }
         val documentID = "$startDateString-$endDateString"
 
-        firebaseDB.collection(USERS).document(currentUserUID).collection(WEEKLY_REPORTS).document(documentID).set(weeklyReport)
+        firebaseDB.collection(USERS).document(FirebaseAuth.getInstance().currentUser!!.uid).collection(WEEKLY_REPORTS).document(documentID).set(weeklyReport)
             .addOnSuccessListener {
                 weeklyReports.add(weeklyReport)
                 weeklyReports.sortBy { it.startDate }
@@ -137,7 +164,7 @@ class DatabaseModel() {
         val documentID = "$startDateString-$endDateString"
 
 
-        firebaseDB.collection(USERS).document(currentUserUID).collection(WEEKLY_REPORTS).document(documentID).collection(INDIVIDUAL_REPORTS).get()
+        firebaseDB.collection(USERS).document(FirebaseAuth.getInstance().currentUser!!.uid).collection(WEEKLY_REPORTS).document(documentID).collection(INDIVIDUAL_REPORTS).get()
             .addOnSuccessListener { individualReports ->
                 for (report in individualReports) {
                     val reportEmployeeName = report.data[EMPLOYEE_NAME].toString()

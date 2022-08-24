@@ -133,7 +133,7 @@
             android:id="@+id/label_end_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="64dp"
+            android:layout_marginEnd="50dp"
             android:fontFamily="@font/sodo"
             android:text="End Date"
             android:textAllCaps="false"
@@ -148,7 +148,7 @@
             android:id="@+id/label_start_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="64dp"
+            android:layout_marginStart="50dp"
             android:fontFamily="@font/sodo"
             android:text="Start Date"
             android:textAllCaps="false"
@@ -226,17 +226,8 @@
         android:layout_width="0dp"
         android:layout_height="2dp"
         android:background="@color/default_text"
-        app:layout_constraintEnd_toEndOf="@+id/cnst_weekly_report_tip_data"
+        app:layout_constraintEnd_toEndOf="@+id/rcy_included_employees"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rcy_included_employees" />
-
-    <TextView
-        android:id="@+id/tv_underline4"
-        android:layout_width="0dp"
-        android:layout_height="2dp"
-        android:background="@color/default_text"
-        app:layout_constraintEnd_toEndOf="@id/rcy_included_employees"
-        app:layout_constraintStart_toStartOf="@id/rcy_included_employees"
-        app:layout_constraintTop_toBottomOf="@id/rcy_included_employees" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,11 +10,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TipsAreDone">
         <activity
-            android:name=".activities.ReportActivity"
-            android:exported="false"
-            android:label="@string/title_activity_report"
-            android:theme="@style/Theme.TipsAreDone.NoActionBar" />
-        <activity
             android:name=".activities.UserLoginActivity"
             android:exported="true"
             android:label="@string/title_activity_login"
@@ -29,7 +24,7 @@
             android:name=".activities.MainActivity"
             android:configChanges="orientation|screenSize|screenLayout"
             android:exported="true"
-            android:theme="@style/Theme.TipsAreDone.NoActionBar"></activity>
+            android:theme="@style/Theme.TipsAreDone.NoActionBar" />
     </application>
 
 </manifest>

@@ -5,17 +5,17 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.tipsaredone.R
 import com.example.tipsaredone.databinding.ActivityUserLoginBinding
-import com.example.tipsaredone.viewmodels.EmployeesViewModel
+import com.example.tipsaredone.model.DatabaseModel
 import com.google.firebase.auth.FirebaseAuth
 
 class UserLoginActivity : AppCompatActivity() {
 
     companion object {
         const val AUTH = "FirebaseAuth"
+        const val REMEMBER_USER_BOOL = "rememberUserBool"
     }
 
     private lateinit var binding: ActivityUserLoginBinding
@@ -27,8 +27,10 @@ class UserLoginActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         if (FirebaseAuth.getInstance().currentUser != null) {
-            navigateToMainActivity()
+            DatabaseModel().readRememberUserBooleanForUserLogin(this)
         }
+
+
 
         binding.switchRememberMe.setOnClickListener {
             rememberCurrentUser(false)
@@ -54,6 +56,7 @@ class UserLoginActivity : AppCompatActivity() {
                 val inputEmail = binding.inputEmail.text.toString()
                 val inputPassword = binding.inputPassword.text.toString()
                 signInUser(inputEmail,inputPassword)
+
             }
         }
 
@@ -63,11 +66,11 @@ class UserLoginActivity : AppCompatActivity() {
         rememberingCurrentUser = isRemembered
         if (isRemembered) {
             binding.switchRememberMe.visibility = View.VISIBLE
+
         }
         else {
             binding.switchRememberMe.visibility = View.GONE
         }
-        TODO()
     }
     private fun signInUser(email: String, password: String) {
         Log.d(AUTH,"Attempting to sign in User: $email")
@@ -75,6 +78,7 @@ class UserLoginActivity : AppCompatActivity() {
             .addOnSuccessListener {
                 Log.d(AUTH,"Successfully signed in user: $email")
                 makeToastMessage(resources.getString(R.string.sign_in_successful))
+                DatabaseModel().setRememberUserBoolean(rememberingCurrentUser, it.user!!.uid)
                 navigateToMainActivity()
             }
             .addOnFailureListener {
@@ -106,9 +110,9 @@ class UserLoginActivity : AppCompatActivity() {
             false
         }
     }
-    private fun navigateToMainActivity() {
+    fun navigateToMainActivity() {
+        Log.d("FirebaseDatabase","Navigating to Main Activity")
         val intent = Intent(this, MainActivity::class.java)
-        intent.putExtra("CurrentUserRememberMe", rememberingCurrentUser)
         startActivity(intent)
     }
 

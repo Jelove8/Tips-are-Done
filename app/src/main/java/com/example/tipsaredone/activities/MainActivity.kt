@@ -8,6 +8,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -76,12 +77,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        if (FirebaseAuth.getInstance().currentUser == null) {
-            navigateToUserLoginActivity()
-        }
+    override fun onDestroy() {
+        super.onDestroy()
     }
+
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)
@@ -103,6 +102,7 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this,UserLoginActivity::class.java)
         startActivity(intent)
     }
+
 
     // Firebase Database
     fun initializeEmployeesFromDatabase(employeesAdapter: EmployeesAdapter) {
