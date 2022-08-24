@@ -9,8 +9,8 @@ import java.util.*
 import kotlin.math.absoluteValue
 
 data class WeeklyReport(
-    val startDate: LocalDate,
-    val endDate: LocalDate,
+    val startDate: String,
+    val endDate: String,
     var individualReports: MutableList<IndividualTipReport> = mutableListOf(),
     var totalHours: Double = 0.0,
     var collectedTips: MutableList<Map<String,Int>> = mutableListOf(),
@@ -26,12 +26,16 @@ data class WeeklyReport(
     fun initializeReports(data: MutableList<IndividualTipReport>) {
         var sumHours = 0.0
         data.forEach {
+            it.startDate = startDate
+            it.endDate = endDate
             individualReports.add(it)
             if (it.employeeHours != null) {
                 sumHours += it.employeeHours!!
             }
         }
         individualReports.sortBy { it.employeeName }
+
+
         totalHours = sumHours
 
         Log.d(MainActivity.WEEKLY_REPORT,"Individual reports initialized.")
@@ -97,6 +101,10 @@ data class WeeklyReport(
         }
         else if (roundingErrorAbs > 0) {
             redistributeTips(roundingError)
+        }
+
+        individualReports.forEach {
+            it.majorRoundingError = majorRoundingError
         }
     }
     private fun redistributeTips(roundingError: Double) {

@@ -92,7 +92,7 @@ class MainActivity : AppCompatActivity() {
     fun getWeeklyReport(): WeeklyReport {
         return newWeeklyReport!!
     }
-    fun createWeeklyReport(startDate: LocalDate, endDate: LocalDate) {
+    fun createWeeklyReport(startDate: String, endDate: String) {
         newWeeklyReport = WeeklyReport(startDate, endDate)
     }
 

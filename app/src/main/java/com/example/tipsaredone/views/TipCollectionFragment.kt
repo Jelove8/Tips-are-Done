@@ -38,7 +38,6 @@ class TipCollectionFragment : Fragment() {
             tipCollectionViewModel.tipsCollected.value!!,
             textChangedCallback = fun(_: Int, _: Double?) {
                 updateSumOfBillsTV()
-                checkForValidInputs()
             }
         )
         binding.rcyTipCollection.layoutManager = LinearLayoutManager(context as MainActivity)

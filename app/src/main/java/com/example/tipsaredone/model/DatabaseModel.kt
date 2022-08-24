@@ -78,7 +78,23 @@ class DatabaseModel() {
 
 
     fun saveWeeklyReport(weeklyReport: WeeklyReport) {
-        firebaseDB.collection(USERS).document(currentUserUID).collection(WEEKLY_REPORTS).document().set(weeklyReport)
+
+        var startDateString = ""
+        var endDateString = ""
+
+        weeklyReport.startDate.forEach {
+            if (it.toString() != "-") {
+                startDateString += it.toString()
+            }
+        }
+        weeklyReport.endDate.forEach {
+            if (it.toString() != "-") {
+                endDateString += it.toString()
+            }
+        }
+        val documentID = "$startDateString-$endDateString"
+
+        firebaseDB.collection(USERS).document(currentUserUID).collection(WEEKLY_REPORTS).document(documentID).set(weeklyReport)
             .addOnSuccessListener {
                 weeklyReports.add(weeklyReport)
                 weeklyReports.sortBy { it.startDate }

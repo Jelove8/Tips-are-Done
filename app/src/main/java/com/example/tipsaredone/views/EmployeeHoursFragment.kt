@@ -15,6 +15,8 @@ import com.example.tipsaredone.adapters.HoursAdapter
 import com.example.tipsaredone.databinding.FragmentEmployeeHoursBinding
 import com.example.tipsaredone.viewmodels.DatePickerViewModel
 import com.example.tipsaredone.viewmodels.EmployeesViewModel
+import java.time.LocalDate
+import kotlin.math.roundToInt
 
 
 class EmployeeHoursFragment : Fragment() {
@@ -116,8 +118,8 @@ class EmployeeHoursFragment : Fragment() {
             }
             binding.btnDatePickerConfirm.setOnClickListener {
                 if (checkForValidDates()) {
-                    val selectedStartDate = datePickerViewModel.startDate.value!!
-                    val selectedEndDate = datePickerViewModel.endDate.value!!
+                    val selectedStartDate = datePickerViewModel.startDate.value!!.toString()
+                    val selectedEndDate = datePickerViewModel.endDate.value!!.toString()
                     (context as MainActivity).createWeeklyReport(selectedStartDate,selectedEndDate)
 
                     val individualReports = employeesViewModel.individualTipReports.value!!
@@ -137,6 +139,7 @@ class EmployeeHoursFragment : Fragment() {
 
     private fun updateSumOfHoursHeader() {
         val newSum = hoursAdapter.getSumOfHours()
+
         (context as MainActivity).supportActionBar?.title = "Total Hours  |  $newSum"
     }
 

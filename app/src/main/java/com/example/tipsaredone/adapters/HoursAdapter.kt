@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tipsaredone.R
 import com.example.tipsaredone.model.EmployeeHours
 import com.example.tipsaredone.model.IndividualTipReport
+import kotlin.math.roundToInt
 
 class HoursAdapter(
     private var individualTipReports: MutableList<IndividualTipReport> = mutableListOf(),
@@ -83,8 +84,8 @@ class HoursAdapter(
                 output += it.employeeHours!!
             }
         }
-        output *= 100
-        return output / 100
+        return (output * 100.0).roundToInt() / 100.0
+
     }
     fun checkForValidHours(): Boolean {
         var output = true
