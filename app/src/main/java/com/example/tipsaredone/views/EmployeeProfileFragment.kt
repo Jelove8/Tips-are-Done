@@ -39,16 +39,12 @@ class EmployeeProfileFragment : Fragment() {
         employeesViewModel = employeeVM
 
         // Initializing view based on selected employee.
-        val selectedEmployeeMock = Employee(employeesViewModel.selectedEmployee.value!!.name,employeesViewModel.selectedEmployee.value!!.id)
-        binding.tvEmployeeProfile.text = selectedEmployeeMock.name
-        binding.etEmployeeProfile.setText(selectedEmployeeMock.name)
+        val selectedEmployee = employeesViewModel.selectedEmployee.value!!
+        binding.tvEmployeeProfile.text = selectedEmployee.name
+        binding.etEmployeeProfile.setText(selectedEmployee.name)
         binding.etEmployeeProfile.doAfterTextChanged {
-            if (!it.isNullOrEmpty()) {
-                selectedEmployeeMock.name = it.toString()
-            }
             updateConfirmButtonVisibility()
         }
-        Log.d("FirebaseDatabase","Employee Selected: ${selectedEmployeeMock.name}, ${selectedEmployeeMock.id}")
 
         /**
          * ITEMCLICK:   For existing employees, user can collect/uncollect distributed tips.
@@ -98,9 +94,9 @@ class EmployeeProfileFragment : Fragment() {
                 (context as MainActivity).makeToastMessage(toast)
             }
             else {
-                selectedEmployeeMock.name = binding.etEmployeeProfile.text.toString()
-                employeesViewModel.updateSelectedEmployee(selectedEmployeeMock)
-                (context as MainActivity).updateExistingEmployee(selectedEmployeeMock)
+                selectedEmployee.name = binding.etEmployeeProfile.text.toString()
+                employeesViewModel.updateSelectedEmployeeName(binding.etEmployeeProfile.text.toString())
+                (context as MainActivity).updateExistingEmployee(selectedEmployee)
                 findNavController().navigate(R.id.EmployeeListFragment)
             }
         }

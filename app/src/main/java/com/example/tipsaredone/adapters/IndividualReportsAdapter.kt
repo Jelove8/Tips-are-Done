@@ -7,10 +7,10 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tipsaredone.R
-import com.example.tipsaredone.model.IndividualTipReport
+import com.example.tipsaredone.model.IndividualReport
 
 class IndividualReportsAdapter(
-    private var tipReports: MutableList<IndividualTipReport>,
+    private var tipReports: MutableList<IndividualReport>,
     private val collectClickCallback: ((Int) -> Unit)?,
     private val uncollectClickCallback: ((Int) -> Unit)?
 ) : RecyclerView.Adapter<IndividualReportsAdapter.EmployeesViewHolder>() {
@@ -35,7 +35,7 @@ class IndividualReportsAdapter(
 
         }
 
-        fun displayReportData(individualTipReport: IndividualTipReport) {
+        fun displayReportData(individualTipReport: IndividualReport) {
 
             startDate.text = individualTipReport.startDate.toString()
             endDate.text = individualTipReport.endDate.toString()

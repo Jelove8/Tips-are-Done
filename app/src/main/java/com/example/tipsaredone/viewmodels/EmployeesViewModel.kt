@@ -1,23 +1,21 @@
 package com.example.tipsaredone.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.tipsaredone.model.DatabaseModel
 import com.example.tipsaredone.model.Employee
-import com.example.tipsaredone.model.IndividualTipReport
+import com.example.tipsaredone.model.EmployeeHours
+import com.example.tipsaredone.model.IndividualReport
 import java.util.*
 
 class EmployeesViewModel: ViewModel() {
 
-     var initializeEmployeesRequired = true
-
     private val _employees = MutableLiveData<MutableList<Employee>>(mutableListOf())
     val employees: LiveData<MutableList<Employee>> = _employees
 
-    private val _individualTipReports = MutableLiveData<MutableList<IndividualTipReport>>(mutableListOf())
-    val individualTipReports: LiveData<MutableList<IndividualTipReport>> = _individualTipReports
+    private val _employeeHours = MutableLiveData<MutableList<EmployeeHours>>(mutableListOf())
+    val employeeHours: LiveData<MutableList<EmployeeHours>> = _employeeHours
+
 
     private val _selectedEmployee = MutableLiveData<Employee?>(null)
     val selectedEmployee: LiveData<Employee?> = _selectedEmployee
@@ -31,49 +29,15 @@ class EmployeesViewModel: ViewModel() {
     private val _confirmEmployeesButtonShowing = MutableLiveData(false)
     val confirmEmployeesButtonShowing: LiveData<Boolean> = _confirmEmployeesButtonShowing
 
-    fun initializeTipReports() {
+
+    // Employee Hours
+    fun initializeEmployeeHoursObjects() {
         if (_employees.value!!.isNotEmpty()) {
             _employees.value!!.forEach {
-                _individualTipReports.value!!.add(IndividualTipReport(it.name,it.id))
+                _employeeHours.value!!.add(EmployeeHours(it.id,it.name,null))
             }
+            _employeeHours.value!!.sortBy { it.name }
         }
-        _individualTipReports.value!!.sortBy { it.employeeName }
-    }
-
-    fun initializeViewModelBool(): Boolean {
-        return if (initializeEmployeesRequired) {
-            initializeEmployeesRequired = false
-            false
-        } else {
-            true
-        }
-    }
-
-    fun setNewEmployeeDialogShowing(boolean: Boolean) {
-        _newEmployeeDialogShowing.value = boolean
-    }
-    fun setDeleteEmployeeDialogShowing(boolean: Boolean) {
-        _deleteEmployeeDialogShowing.value = boolean
-    }
-    fun setConfirmEmployeesButtonShowing(boolean: Boolean) {
-        _confirmEmployeesButtonShowing.value = boolean
-    }
-
-    fun addIndividualTipReport(newEmployee: Employee) {
-        _individualTipReports.value!!.add(IndividualTipReport(newEmployee.name,newEmployee.id))
-        _individualTipReports.value!!.sortBy { it.employeeName }
-    }
-
-    fun deleteSelectedEmployee() {
-        _employees.value!!.remove(_selectedEmployee.value!!)
-
-        var reportToDelete: IndividualTipReport? = null
-        _individualTipReports.value!!.forEach {
-            if (it.employeeID == _selectedEmployee.value!!.id) {
-                reportToDelete = it
-            }
-        }
-        _individualTipReports.value!!.remove(reportToDelete)
     }
 
     fun selectEmployee(index: Int?) {
@@ -81,20 +45,27 @@ class EmployeesViewModel: ViewModel() {
             if (index == null) {
                 null
             }
-        else {
-            _employees.value!![index]
+            else {
+                _employees.value!![index]
             }
     }
-    fun updateSelectedEmployee(updatedEmployee: Employee) {
-        _employees.value!!.forEach {
-            if (it.id == _selectedEmployee.value!!.id) {
-                it.name = updatedEmployee.name
-                it.tipReports = updatedEmployee.tipReports
+    fun deleteSelectedEmployee() {
+        _employees.value!!.remove(_selectedEmployee.value!!)
+        _employeeHours.value!!.forEach {
+            if (it.id == selectedEmployee.value!!.id) {
+                _employeeHours.value!!.remove(it)
             }
         }
-        _individualTipReports.value!!.forEach {
-            if (it.employeeID == updatedEmployee.id) {
-                it.employeeName = updatedEmployee.name
+    }
+    fun updateSelectedEmployeeName(updatedName: String) {
+        _employees.value!!.forEach {
+            if (it.id == _selectedEmployee.value!!.id) {
+                it.name = updatedName
+            }
+        }
+        _employeeHours.value!!.forEach {
+            if (it.id == selectedEmployee.value!!.id) {
+                it.name = updatedName
             }
         }
     }
@@ -110,5 +81,21 @@ class EmployeesViewModel: ViewModel() {
 
         return uniqueID
     }
+
+
+    fun setNewEmployeeDialogShowing(boolean: Boolean) {
+        _newEmployeeDialogShowing.value = boolean
+    }
+    fun setDeleteEmployeeDialogShowing(boolean: Boolean) {
+        _deleteEmployeeDialogShowing.value = boolean
+    }
+    fun setConfirmEmployeesButtonShowing(boolean: Boolean) {
+        _confirmEmployeesButtonShowing.value = boolean
+    }
+
+
+
+
+
 
 }

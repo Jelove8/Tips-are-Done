@@ -32,7 +32,7 @@
         tools:layout="@layout/fragment_employee_profile" />
     <fragment
         android:id="@+id/WeeklyReportsFragment"
-        android:name="com.example.tipsaredone.views.ReportsFragment"
+        android:name="com.example.tipsaredone.views.WeeklyReportsFragment"
         android:label="Weekly Reports"
         tools:layout="@layout/fragment_reports" />
     <fragment

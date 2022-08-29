@@ -17,7 +17,7 @@ import com.example.tipsaredone.databinding.FragmentReportsBinding
 import com.example.tipsaredone.viewmodels.EmployeesViewModel
 import com.example.tipsaredone.viewmodels.ReportsViewModel
 
-class ReportsFragment : Fragment() {
+class WeeklyReportsFragment : Fragment() {
 
     private var _binding: FragmentReportsBinding? = null
     private val binding get() = _binding!!
@@ -45,29 +45,6 @@ class ReportsFragment : Fragment() {
         binding.rcyReportsFrag.adapter = weeklyReportsAdapter
 
         (context as MainActivity).initializeWeeklyReportsFromDatabase(weeklyReportsAdapter)
-
-        val menuHost: MenuHost = requireActivity()
-        menuHost.addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_do_tips, menu)
-
-            }
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                return when (menuItem.itemId) {
-                    R.id.action_do_tips -> {
-                        val employeesViewModel: EmployeesViewModel by activityViewModels()
-                        if (employeesViewModel.employees.value!!.size > 1) {
-
-                            true
-                        }
-                        else {
-                            false
-                        }
-                    }
-                    else ->  false
-                }
-            }
-        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
     override fun onStart() {
         super.onStart()

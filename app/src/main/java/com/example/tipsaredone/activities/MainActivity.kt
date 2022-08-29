@@ -3,12 +3,10 @@ package com.example.tipsaredone.activities
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -23,16 +21,12 @@ import com.example.tipsaredone.viewmodels.DatePickerViewModel
 import com.example.tipsaredone.viewmodels.EmployeesViewModel
 import com.example.tipsaredone.viewmodels.TipCollectionViewModel
 import com.google.firebase.auth.FirebaseAuth
-import com.google.gson.Gson
 import java.time.LocalDate
-import kotlin.collections.ArrayList
+import java.time.format.DateTimeFormatter
+import java.util.*
+import kotlin.concurrent.schedule
 
 class MainActivity : AppCompatActivity() {
-
-    companion object {
-        const val WEEKLY_REPORT = "weekly_report"
-        const val EXTRA_INDIVIDUAL_TIP_REPORTS = "Individual Employee Tip Reports"
-    }
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
@@ -77,10 +71,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-    }
-
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)
@@ -93,8 +83,21 @@ class MainActivity : AppCompatActivity() {
         return newWeeklyReport!!
     }
     fun createWeeklyReport(startDate: String, endDate: String) {
-        newWeeklyReport = WeeklyReport(startDate, endDate)
+        val individualReports = mutableListOf<IndividualReport>()
+        var totalHours = 0.0
+        employeesViewModel.individualTipReports.value!!.forEach {
+            if (it.employeeHours != null) {
+                individualReports.add(IndividualReport(it.employeeName,it.employeeID,it.employeeHours,null,startDate,endDate))
+                totalHours += it.employeeHours!!
+            }
+        }
+        newWeeklyReport = WeeklyReport(startDate, endDate, individualReports, totalHours)
+
     }
+    fun collectTipsForWeeklyReport(collectedTips: MutableList<Double>) {
+        newWeeklyReport!!.collectTips(collectedTips)
+    }
+
 
     // Activity Navigation
     fun navigateToUserLoginActivity() {
@@ -102,7 +105,6 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this,UserLoginActivity::class.java)
         startActivity(intent)
     }
-
 
     // Firebase Database
     fun initializeEmployeesFromDatabase(employeesAdapter: EmployeesAdapter) {
@@ -122,33 +124,41 @@ class MainActivity : AppCompatActivity() {
         databaseModel.updateEmployee(selectedEmployee)
     }
     fun deleteExistingEmployee(selectedEmployee: Employee) {
-        databaseModel.deleteExistingEmployee(selectedEmployee)
+        employeesViewModel.employees.value!!.remove(selectedEmployee)
+        employeesViewModel.employeeHours.value!!.forEach {
+            if (it.id == selectedEmployee.id) {
+                employeesViewModel.employeeHours.value!!.remove(it)
+            }
+        }
+        databaseModel.deleteEmployee(selectedEmployee)
     }
 
     fun initializeWeeklyReportsFromDatabase(weeklyReportsAdapter: WeeklyReportsAdapter) {
         databaseModel.readWeeklyReportsFromDatabase(weeklyReportsAdapter)
     }
+
+
     fun addNewWeeklyReportToDatabase(newWeeklyReport: WeeklyReport) {
         databaseModel.saveWeeklyReport(newWeeklyReport)
+        val employees = employeesViewModel.employees.value!!
+        val newIndividualReports = newWeeklyReport.individualReports
+
+        newIndividualReports.forEach { individualReport ->
+            employees.forEach { employee ->
+                if (individualReport.id == employee.id) {
+                    employee.addTipReport(individualReport)
+                    updateExistingEmployee(employee)
+                }
+                val dateTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                employee.tipReports.sortByDescending {
+                    LocalDate.parse(it.startDate, dateTimeFormatter)
+                }
+            }
+        }
+
+
     }
 
-    // JSON
-    fun convertEmployeesToJson(employees: MutableList<Employee>): ArrayList<String> {
-        val gson = Gson()
-        val employeesJsonList = arrayListOf<String>()
-        employees.forEach {
-            employeesJsonList.add(gson.toJson(it))
-        }
-        return employeesJsonList
-    }
-    fun convertIndividualReportsToJson(individualReports: MutableList<IndividualTipReport>): ArrayList<String> {
-        val gson = Gson()
-        val reportsJson = arrayListOf<String>()
-        individualReports.forEach {
-            reportsJson.add(gson.toJson(it))
-        }
-        return reportsJson
-    }
 
     // Misc
     fun makeToastMessage(message: String, isDurationShort: Boolean = true) {
@@ -166,6 +176,16 @@ class MainActivity : AppCompatActivity() {
         }
         else {
             binding.includeContentMain.mainNavbar.visibility = View.GONE
+        }
+    }
+    fun displayCalculatingScreen() {
+        binding.includeContentMain.includeCalculatingScreen.root.visibility = View.VISIBLE
+        binding.toolbar.visibility = View.GONE
+        Timer().schedule(1000){
+            this@MainActivity.runOnUiThread {
+                binding.includeContentMain.includeCalculatingScreen.root.visibility = View.GONE
+                binding.toolbar.visibility = View.VISIBLE
+            }
         }
     }
 

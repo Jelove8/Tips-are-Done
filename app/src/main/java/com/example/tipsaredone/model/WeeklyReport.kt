@@ -1,7 +1,6 @@
 package com.example.tipsaredone.model
 
 import android.util.Log
-import com.example.tipsaredone.activities.MainActivity
 import java.math.BigDecimal
 import java.math.RoundingMode
 import kotlin.math.absoluteValue
@@ -9,7 +8,7 @@ import kotlin.math.absoluteValue
 data class WeeklyReport(
     val startDate: String,
     val endDate: String,
-    var individualReports: MutableList<IndividualTipReport> = mutableListOf(),
+    var individualReports: MutableList<IndividualReport> = mutableListOf(),
     var totalHours: Double = 0.0,
     var collectedTips: MutableList<Map<String,Int>> = mutableListOf(),
     var totalCollected: Double = 0.0,
@@ -17,29 +16,15 @@ data class WeeklyReport(
     var majorRoundingError: Int = 0
     ) {
 
+    companion object {
+        const val WEEKLY_REPORT = "WeeklyReport"
+    }
+
     init {
-        Log.d(MainActivity.WEEKLY_REPORT,"New WeeklyReport created.")
+        Log.d(WEEKLY_REPORT,"New weekly report created.")
     }
 
-    fun initializeReports(data: MutableList<IndividualTipReport>) {
-        var sumHours = 0.0
-        data.forEach {
-            it.startDate = startDate
-            it.endDate = endDate
-            individualReports.add(it)
-            if (it.employeeHours != null) {
-                sumHours += it.employeeHours!!
-            }
-        }
-        individualReports.sortBy { it.employeeName }
-
-
-        totalHours = sumHours
-
-        Log.d(MainActivity.WEEKLY_REPORT,"Individual reports initialized.")
-    }
-    fun initializeCollectedTips(data: MutableList<Double>) {
-        totalCollected = data.sum()
+    fun collectTips(data: MutableList<Double>) {
         val collectedTipsAsMap = mutableListOf<Map<String,Int>>()
         for ((i,item) in data.withIndex()) {
             when (i) {
@@ -66,26 +51,31 @@ data class WeeklyReport(
                 }
             }
         }
-        collectedTips = collectedTipsAsMap
 
-        Log.d(MainActivity.WEEKLY_REPORT,"Collected tips initialized.")
+        collectedTips = collectedTipsAsMap
+        totalCollected = data.sum()
+        Log.d(WEEKLY_REPORT,"Tips collected.")
+
+        distributeTips()
     }
 
-    fun distributeTips() {
-        tipRate = totalCollected / totalHours
-        tipRate = (tipRate * 100).toInt() / 100.0
+    private fun distributeTips() {
+        tipRate = ((totalCollected / totalHours) * 100).toInt() / 100.0
 
         for (report in individualReports) {
-            val rawTips = if (report.employeeHours != null) {
-                tipRate * report.employeeHours!!
-            }
-            else {
+            val rawTips = if (report.hours != null) {
+                tipRate * report.hours!!
+            } else {
                 0.0
             }
-            val roundedTips = BigDecimal(rawTips).setScale(0, RoundingMode.HALF_EVEN)
+            val roundedTips = BigDecimal(rawTips).setScale(0, RoundingMode.HALF_DOWN)
             report.distributedTips = roundedTips.toDouble()
         }
+        Log.d(WEEKLY_REPORT,"Tips distributed.")
+        checkForError()
 
+    }
+    private fun checkForError() {
         val expectedTotal = totalCollected
         var actualTotal = 0.0
         individualReports.forEach {
@@ -94,44 +84,67 @@ data class WeeklyReport(
 
         val roundingError = actualTotal - expectedTotal
         val roundingErrorAbs = roundingError.absoluteValue
+        majorRoundingError = roundingError.toInt()
 
-        if (roundingErrorAbs > 2.0) {
-            majorRoundingError = roundingError.toInt()
-        }
-        else if (roundingErrorAbs > 0) {
-            redistributeTips(roundingError)
+        if (roundingError != 0.0) {
+            Log.d(WEEKLY_REPORT,"Error found.")
         }
 
         individualReports.forEach {
             it.majorRoundingError = majorRoundingError
         }
+
+        if (roundingErrorAbs > 0 && roundingErrorAbs < 3) {
+            redistributeTips()
+        }
     }
-    private fun redistributeTips(roundingError: Double) {
-        var firstEmployee = IndividualTipReport("Template1","Template1",0.0,0.0, "","",null,false)
-        var secondEmployee = IndividualTipReport("Template2","Template2",0.0,0.0, "","",null,false)
-
-        val employeesCopy = individualReports.toMutableList()
-        firstEmployee = employeesCopy.random()
-        employeesCopy.remove(firstEmployee)
-        secondEmployee = employeesCopy.random()
-
-        if (roundingError < 0.0) {
-            firstEmployee.distributedTips = firstEmployee.distributedTips!! + 1.0
-            secondEmployee.distributedTips = secondEmployee.distributedTips!! + 1.0
-        }
-        else if (roundingError > 0.0) {
-            firstEmployee.distributedTips = firstEmployee.distributedTips!! - 1.0
-            secondEmployee.distributedTips = secondEmployee.distributedTips!! - 1.0
+    private fun redistributeTips() {
+        val listOfIDs = mutableListOf<String>()
+        individualReports.forEach {
+            listOfIDs.add(it.id)
         }
 
-        for (emp in individualReports) {
-            if (emp == firstEmployee) {
-                emp.distributedTips = firstEmployee.distributedTips
+        val firstReportID = listOfIDs.random()
+        listOfIDs.remove(firstReportID)
+        val secondReportID = listOfIDs.random()
+        listOfIDs.remove(secondReportID)
+
+        if (majorRoundingError < 0) {
+            if (majorRoundingError.absoluteValue == 1) {
+                individualReports.forEach {
+                    if (it.id == firstReportID) {
+                        it.distributedTips!! + 1.0
+                    }
+                }
+            } else if (majorRoundingError.absoluteValue == 2) {
+                individualReports.forEach {
+                    if (it.id == firstReportID) {
+                        it.distributedTips!! + 1.0
+                    }
+                    else if (it.id == secondReportID) {
+                        it.distributedTips!! + 1.0
+                    }
+                }
             }
-            else if (emp == secondEmployee && roundingError.absoluteValue == 2.0) {
-                emp.distributedTips = secondEmployee.distributedTips
+        } else {
+            if (majorRoundingError == 1) {
+                individualReports.forEach {
+                    if (it.id == firstReportID) {
+                        it.distributedTips!! - 1.0
+                    }
+                }
+            } else if (majorRoundingError == 2) {
+                individualReports.forEach {
+                    if (it.id == firstReportID) {
+                        it.distributedTips!! - 1.0
+                    }
+                    else if (it.id == secondReportID) {
+                        it.distributedTips!! - 1.0
+                    }
+                }
             }
         }
-
+        Log.d(WEEKLY_REPORT,"Tips redistributed.")
+        checkForError()
     }
 }

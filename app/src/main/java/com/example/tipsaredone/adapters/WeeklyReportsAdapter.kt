@@ -14,7 +14,7 @@ class WeeklyReportsAdapter(private val weeklyReports: MutableList<WeeklyReport>,
                            private val itemClickCallback: ((Int) -> Unit)?
 ) : RecyclerView.Adapter<WeeklyReportsAdapter.BillsViewHolder>() {
 
-    class BillsViewHolder(ItemView: View, adapter: WeeklyReportsAdapter, itemClickCallback: ((Int) -> Unit)?) : RecyclerView.ViewHolder(ItemView) {
+    class BillsViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
         private val tvStartDate: TextView = itemView.findViewById(R.id.tv_weekly_report_start_date)
         private val tvEndDate: TextView = itemView.findViewById(R.id.tv_weekly_report_end_date)
         private val tvTotalHours: TextView = itemView.findViewById(R.id.tv_weekly_report_total_hours)
@@ -35,79 +35,79 @@ class WeeklyReportsAdapter(private val weeklyReports: MutableList<WeeklyReport>,
 
            val startMonthString: String = when (startMonth) {
                1 -> {
-                   "January"
+                   "Jan"
                }
                2 -> {
-                   "February"
+                   "Feb"
                }
                3 -> {
-                   "March"
+                   "Mar"
                }
                4 -> {
-                   "April"
+                   "Apr"
                }
                5 -> {
                    "May"
                }
                6 -> {
-                   "June"
+                   "Jun"
                }
                7 -> {
-                   "July"
+                   "Jul"
                }
                8 -> {
-                   "August"
+                   "Aug"
                }
                9 -> {
-                   "September"
+                   "Sep"
                }
                10 -> {
-                   "October"
+                   "Oct"
                }
                11 -> {
-                   "November"
+                   "Nov"
                }
                12 -> {
-                   "December"
+                   "Dec"
                }
                else -> {"Error"}
            }
            val endMonthString: String = when (endMonth) {
                1 -> {
-                   "January"
+                   "Jan"
                }
                2 -> {
-                   "February"
+                   "Feb"
                }
                3 -> {
-                   "March"
+                   "Mar"
                }
                4 -> {
-                   "April"
+                   "Apr"
                }
                5 -> {
                    "May"
                }
                6 -> {
-                   "June"
+                   "Jun"
                }
                7 -> {
-                   "July"
+                   "Jul"
                }
                8 -> {
-                   "August"
+                   "Aug"
                }
                9 -> {
-                   "September"
+                   "Sep"
                }
                10 -> {
-                   "October"
+                   "Oct"
                }
                11 -> {
-                   "November"
+                   "Nov"
                }
                12 -> {
-                   "December"
+                   "Dec"
                }
                else -> {"Error"}
            }
@@ -135,12 +135,11 @@ class WeeklyReportsAdapter(private val weeklyReports: MutableList<WeeklyReport>,
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BillsViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.viewholder_weekly_report, parent, false)
-        return BillsViewHolder(view,this,itemClickCallback)
+        return BillsViewHolder(view)
     }
     override fun onBindViewHolder(holder: BillsViewHolder, position: Int) {
         holder.displayWeeklyReport(weeklyReports[position])
     }
-
     override fun getItemCount(): Int {
         return weeklyReports.size
     }

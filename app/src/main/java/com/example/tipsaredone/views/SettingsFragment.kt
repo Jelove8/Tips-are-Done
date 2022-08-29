@@ -1,6 +1,5 @@
 package com.example.tipsaredone.views
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -32,7 +31,7 @@ class SettingsFragment : Fragment() {
 
             (context as MainActivity).navigateToUserLoginActivity()
 
-            Log.d(UserLoginActivity.AUTH,"User signed out: $userEmail ")
+            Log.d(UserLoginActivity.LOGIN,"User signed out: $userEmail ")
         }
     }
     override fun onStart() {

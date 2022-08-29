@@ -11,38 +11,36 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tipsaredone.R
 
 class TipCollectionAdapter(private val tipsCollected: MutableList<Double>,
-                           private val textChangedCallback: ((Int,Double?) -> Unit)?
+                           private val textChangedCallback: ((Double?) -> Unit)?
 ) : RecyclerView.Adapter<TipCollectionAdapter.BillsViewHolder>() {
 
-    class BillsViewHolder(ItemView: View, adapter: TipCollectionAdapter, textChangedCallback: ((Int, Double?) -> Unit)?) : RecyclerView.ViewHolder(ItemView) {
+    class BillsViewHolder(ItemView: View, adapter: TipCollectionAdapter, textChangedCallback: ((Double?) -> Unit)?) : RecyclerView.ViewHolder(ItemView) {
         private val tvIndex: TextView = itemView.findViewById(R.id.tv_employee_index)
         private val tvBillType: TextView = itemView.findViewById(R.id.tv_indiv_report_endDate)
-        private val etBillAmount: EditText = itemView.findViewById(R.id.et_employee_hours)
         private val tvDollarSign: TextView = itemView.findViewById(R.id.tv_dollar_sign)
+        private val etBillAmount: EditText = itemView.findViewById(R.id.et_employee_hours)
 
         init {
             tvIndex.visibility = View.INVISIBLE
-
             etBillAmount.addTextChangedListener(object : TextWatcher {
                 override fun afterTextChanged(s: Editable?) {
                     if (etBillAmount.text.isNullOrEmpty()) {
                         adapter.editBillAmount(adapterPosition,null)
-                        textChangedCallback?.invoke(adapterPosition,null)
+                        textChangedCallback?.invoke(null)
                     }
                     else {
                         adapter.editBillAmount(adapterPosition,s.toString().toDouble())
-                        textChangedCallback?.invoke(adapterPosition,s.toString().toDouble())
+                        textChangedCallback?.invoke(null)
                     }
                 }
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
                 }
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {122
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
 
                 }
             })
         }
-
         fun displayBillTitleAndAmount(amount: Double) {
             tvBillType.text = when (adapterPosition) {
                 0 -> {"O N E S"}
@@ -68,7 +66,6 @@ class TipCollectionAdapter(private val tipsCollected: MutableList<Double>,
         }
     }
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BillsViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.viewholder_employee_hours, parent, false)
@@ -77,7 +74,6 @@ class TipCollectionAdapter(private val tipsCollected: MutableList<Double>,
     override fun onBindViewHolder(holder: BillsViewHolder, position: Int) {
         holder.displayBillTitleAndAmount(tipsCollected[position])
     }
-
     override fun getItemCount(): Int {
         // Should always return 7
         return tipsCollected.size
@@ -86,7 +82,6 @@ class TipCollectionAdapter(private val tipsCollected: MutableList<Double>,
     private fun editBillAmount(position: Int,newAmount:Double?) {
         tipsCollected[position] = newAmount ?: 0.0
     }
-
     fun getTotalCollected(): Double {
         return tipsCollected.sum()
     }

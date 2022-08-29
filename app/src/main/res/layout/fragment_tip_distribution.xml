@@ -81,7 +81,7 @@
             android:backgroundTint="@color/accent_green"
             android:elevation="64dp"
             android:fontFamily="@font/sodo"
-            android:text="DONE"
+            android:text="SAVE"
             app:icon="@drawable/icon_checkmark"
             app:iconGravity="textEnd"
             app:iconSize="24dp"

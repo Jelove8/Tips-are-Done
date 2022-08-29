@@ -1,7 +1,6 @@
 package com.example.tipsaredone.model
 
 import android.util.Log
-import com.example.tipsaredone.activities.MainActivity
 import com.example.tipsaredone.activities.UserLoginActivity
 import com.example.tipsaredone.adapters.EmployeesAdapter
 import com.example.tipsaredone.adapters.IndividualReportsAdapter
@@ -10,16 +9,21 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import javax.security.auth.callback.Callback
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class DatabaseModel() {
 
     companion object {
+        const val FIREBASE_EMPLOYEES = "FirebaseEmployees"
+
         const val USERS = "Users"
         const val EMPLOYEES = "Employees"
-        const val WEEKLY_REPORTS = "WeeklyReports"
+        const val WEEKLY_REPORTS_LABEL = "Weekly Reports"
+        const val INDIVIDUAL_REPORTS_LABEL = "Individual Reports"
         const val ID = "id"
         const val NAME = "name"
+        const val HOURS = "hours"
         const val START_DATE = "startDate"
         const val END_DATE = "endDate"
         const val INDIVIDUAL_REPORTS = "individualReports"
@@ -27,7 +31,7 @@ class DatabaseModel() {
         const val COLLECTED_TIPS = "collectedTips"
         const val TOTAL_COLLECTED = "totalCollected"
         const val TIP_RATE = "tipRate"
-        const val MAJOR_ROUNDING_ERROR = "majorRoundingError"
+        const val ROUNDING_ERROR = "roundingError"
 
         const val EMPLOYEE_NAME = "employeeName"
         const val EMPLOYEE_ID = "employeeID"
@@ -36,16 +40,63 @@ class DatabaseModel() {
         const val COLLECTED_BOOLEAN = "collected"
     }
 
-
     private val firebaseDB: FirebaseFirestore = Firebase.firestore
     private val employees = mutableListOf<Employee>()
     private val weeklyReports = mutableListOf<WeeklyReport>()
-    private val individualTipReports = mutableListOf<IndividualTipReport>()
+    private val individualReports = mutableListOf<IndividualReport>()
 
     init {
         Log.d("FirebaseDatabase","DataBaseModel initialized.")
         Log.d("FirebaseDatabase","Current User: ")
     }
+
+
+    // Employee List
+    fun addNewEmployee(newEmployee: Employee) {
+        val newEmployeeID = newEmployee.id
+        var idCheck = true
+        employees.forEach {
+            if (it.id == newEmployeeID) {
+                idCheck = false
+            }
+        }
+        if (idCheck) {
+            employees.add(newEmployee)
+            DatabaseOperator().saveNewOrExistingEmployee(newEmployee)
+        } else {
+            Log.d(FIREBASE_EMPLOYEES, "New employee id to be added already exists.")
+        }
+    }
+    fun editExistingEmployee(editedEmployee: Employee) {
+        employees.forEach {
+            if (it.id == editedEmployee.id) {
+                it.name = editedEmployee.name
+                it.tipReports = editedEmployee.tipReports
+                DatabaseOperator().saveNewOrExistingEmployee(editedEmployee)
+            }
+        }
+    }
+    fun deleteExistingEmployee(deletedEmployee: Employee) {
+        employees.forEach {
+            if (it.id == deletedEmployee.id) {
+                employees.remove(it)
+                DatabaseOperator().deleteEmployee(deletedEmployee)
+            }
+        }
+    }
+
+    
+
+
+
+
+
+
+
+
+
+
+
 
     fun readRememberUserBooleanForUserLogin(userLoginActivity: UserLoginActivity) {
         val currentUserUID = FirebaseAuth.getInstance().currentUser!!.uid
@@ -56,21 +107,19 @@ class DatabaseModel() {
                     if (rememberMeBoolean) {
                         userLoginActivity.navigateToMainActivity()
                     }
-                    Log.d("FirebaseDatabase","Successfully read 'remember me' boolean for UserLogin: $rememberMeBoolean")
+                    Log.d(UserLoginActivity.LOGIN,"Successfully read 'remember me' boolean: $rememberMeBoolean")
                 }
             }
             .addOnFailureListener {
-                Log.d("FirebaseDatabase","Failed to read 'remember me' boolean for UserLogin: $it")
+                Log.d(UserLoginActivity.LOGIN,"Failed to read 'remember me' boolean for UserLogin: $it")
             }
     }
-
     fun setRememberUserBoolean(boolean: Boolean, currentUserID: String) {
         firebaseDB.collection(USERS).document(currentUserID).update(UserLoginActivity.REMEMBER_USER_BOOL,boolean)
             .addOnSuccessListener {
-                Log.d("FirebaseDatabase","Successfully changed 'remember me' boolean to $boolean.")
+                Log.d(UserLoginActivity.LOGIN,"Successfully changed 'remember me' boolean to $boolean.")
             }
     }
-
 
     fun readEmployeeDataFromDatabase(employeesAdapter: EmployeesAdapter) {
         val currentUserUID = FirebaseAuth.getInstance().currentUser!!.uid
@@ -88,6 +137,27 @@ class DatabaseModel() {
             }
     }
 
+
+    fun readIndividualReportsFromDatabase() {
+        val currentUserUID = FirebaseAuth.getInstance().currentUser!!.uid
+        firebaseDB.collection(USERS).document(currentUserUID).collection(INDIVIDUAL_REPORTS_LABEL).get()
+            .addOnSuccessListener { individualReportItems ->
+                for (item in individualReportItems) {
+                    val itemName = item.data[NAME].toString()
+                    val itemID = item.data[ID].toString()
+                    val itemHours = item.data[HOURS].toString().toDouble()
+                    val itemDistributedTips = item.data[DISTRIBUTED_TIPS].toString().toDouble()
+                    val itemStartDate = item.data[START_DATE].toString()
+                    val itemEndDate = item.data[END_DATE].toString()
+                    val itemRoundingError = item.data[ROUNDING_ERROR].toString().toInt()
+                    val itemCollectedBool = item.data[COLLECTED_BOOLEAN].toString().toBoolean()
+                    individualReports.add(IndividualReport(itemName,itemID,itemHours,itemDistributedTips,itemStartDate,itemEndDate,itemRoundingError,itemCollectedBool))
+                }
+            }
+    }
+
+
+
     fun createNewEmployee(newEmployee: Employee) {
         firebaseDB.collection(USERS).document(FirebaseAuth.getInstance().currentUser!!.uid).collection(EMPLOYEES).document(newEmployee.id).set(newEmployee)
             .addOnSuccessListener {
@@ -100,7 +170,7 @@ class DatabaseModel() {
             }
     }
 
-    fun deleteExistingEmployee(selectedEmployee: Employee) {
+    fun deleteEmployee(selectedEmployee: Employee) {
         firebaseDB.collection("Users").document(FirebaseAuth.getInstance().currentUser!!.uid).collection("Employees").document(selectedEmployee.id).delete()
             .addOnSuccessListener {
                 Log.d("FirebaseDatabase", "Employee deleted from database: ${selectedEmployee.name}")
@@ -137,14 +207,46 @@ class DatabaseModel() {
         }
         val documentID = "$startDateString-$endDateString"
 
-        firebaseDB.collection(USERS).document(FirebaseAuth.getInstance().currentUser!!.uid).collection(WEEKLY_REPORTS).document(documentID).set(weeklyReport)
+        firebaseDB.collection(USERS).document(FirebaseAuth.getInstance().currentUser!!.uid).collection(WEEKLY_REPORTS_LABEL).document(documentID).set(weeklyReport)
             .addOnSuccessListener {
                 weeklyReports.add(weeklyReport)
                 weeklyReports.sortBy { it.startDate }
-                Log.d("FirebaseDatabase", "Successfully saved new weekly report.")
+                Log.d(WEEKLY_REPORTS_LABEL, "Successfully saved new weekly report.")
+                saveIndividualReports(weeklyReport.individualReports)
             }
             .addOnFailureListener {
-                Log.d("FirebaseDatabase", "Failed to saved new weekly report.")
+                Log.d(WEEKLY_REPORTS_LABEL, "Failed to saved new weekly report.")
+            }
+    }
+    private fun saveIndividualReports(newTipReports: MutableList<IndividualReport>) {
+        var startDateString = ""
+        var endDateString = ""
+
+        newTipReports[0].startDate!!.forEach {
+            if (it.toString() != "-") {
+                startDateString += it.toString()
+            }
+        }
+        newTipReports[0].endDate!!.forEach {
+            if (it.toString() != "-") {
+                endDateString += it.toString()
+            }
+        }
+        val documentID = "$startDateString-$endDateString"
+
+        firebaseDB.collection(USERS).document(FirebaseAuth.getInstance().currentUser!!.uid).collection(INDIVIDUAL_REPORTS_LABEL).document(documentID).set(newTipReports)
+            .addOnSuccessListener {
+                newTipReports.forEach {
+                    individualReports.add(it)
+                    Log.d(WEEKLY_REPORTS_LABEL, "Successfully saved new individual reports to database.")
+                }
+                val dateTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                individualReports.sortByDescending {
+                    LocalDate.parse(it.startDate, dateTimeFormatter)
+                }
+            }
+            .addOnFailureListener {
+                Log.d(WEEKLY_REPORTS_LABEL,"Failed to save new individual reports.")
             }
     }
 
@@ -164,7 +266,7 @@ class DatabaseModel() {
         val documentID = "$startDateString-$endDateString"
 
 
-        firebaseDB.collection(USERS).document(FirebaseAuth.getInstance().currentUser!!.uid).collection(WEEKLY_REPORTS).document(documentID).collection(INDIVIDUAL_REPORTS).get()
+        firebaseDB.collection(USERS).document(FirebaseAuth.getInstance().currentUser!!.uid).collection(WEEKLY_REPORTS_LABEL).document(documentID).collection(INDIVIDUAL_REPORTS).get()
             .addOnSuccessListener { individualReports ->
                 for (report in individualReports) {
                     val reportEmployeeName = report.data[EMPLOYEE_NAME].toString()
@@ -189,7 +291,7 @@ class DatabaseModel() {
 
     fun readWeeklyReportsFromDatabase(weeklyReportsAdapter: WeeklyReportsAdapter) {
         val currentUserUID = FirebaseAuth.getInstance().currentUser!!.uid
-        firebaseDB.collection(USERS).document(currentUserUID).collection(WEEKLY_REPORTS).get()
+        firebaseDB.collection(USERS).document(currentUserUID).collection(WEEKLY_REPORTS_LABEL).get()
             .addOnSuccessListener { weeklyReports ->
                 for (report in weeklyReports) {
                     val reportStartDate = report.data[START_DATE].toString()
@@ -197,7 +299,7 @@ class DatabaseModel() {
                     val reportTotalHours = report.data[TOTAL_HOURS].toString().toDouble()
                     val reportTotalCollected = report.data[TOTAL_COLLECTED].toString().toDouble()
                     val reportTipRate = report.data[TIP_RATE].toString().toDouble()
-                    val reportError = report.data[MAJOR_ROUNDING_ERROR].toString().toInt()
+                    val reportError = report.data[ROUNDING_ERROR].toString().toInt()
 
 
 
@@ -217,3 +319,9 @@ class DatabaseModel() {
     }
 
 }
+
+
+
+
+
+

@@ -36,7 +36,7 @@ class TipCollectionFragment : Fragment() {
         // Bills RecyclerView
         tipCollectionAdapter = TipCollectionAdapter(
             tipCollectionViewModel.tipsCollected.value!!,
-            textChangedCallback = fun(_: Int, _: Double?) {
+            textChangedCallback = fun(_: Double?) {
                 updateSumOfBillsTV()
             }
         )
@@ -47,8 +47,8 @@ class TipCollectionFragment : Fragment() {
         binding.btnConfirmCollection.setOnClickListener {
             if (checkForValidInputs()) {
                 val collectedTips = tipCollectionViewModel.tipsCollected.value!!
-                (context as MainActivity).getWeeklyReport().initializeCollectedTips(collectedTips)
-                (context as MainActivity).getWeeklyReport().distributeTips()
+                (context as MainActivity).collectTipsForWeeklyReport(collectedTips)
+                (context as MainActivity).displayCalculatingScreen()
                 findNavController().navigate(R.id.action_tipCollectionFragment_to_tipDistributionFragment)
             }
         }

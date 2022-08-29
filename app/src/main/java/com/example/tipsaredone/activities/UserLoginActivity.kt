@@ -14,7 +14,7 @@ import com.google.firebase.auth.FirebaseAuth
 class UserLoginActivity : AppCompatActivity() {
 
     companion object {
-        const val AUTH = "FirebaseAuth"
+        const val LOGIN = "LOGIN_ACTIVITY"
         const val REMEMBER_USER_BOOL = "rememberUserBool"
     }
 
@@ -27,10 +27,9 @@ class UserLoginActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         if (FirebaseAuth.getInstance().currentUser != null) {
+            Log.d(LOGIN,"Current user remembered: ${FirebaseAuth.getInstance().currentUser!!.email}")
             DatabaseModel().readRememberUserBooleanForUserLogin(this)
         }
-
-
 
         binding.switchRememberMe.setOnClickListener {
             rememberCurrentUser(false)
@@ -56,46 +55,46 @@ class UserLoginActivity : AppCompatActivity() {
                 val inputEmail = binding.inputEmail.text.toString()
                 val inputPassword = binding.inputPassword.text.toString()
                 signInUser(inputEmail,inputPassword)
-
             }
         }
-
     }
 
     private fun rememberCurrentUser(isRemembered: Boolean) {
         rememberingCurrentUser = isRemembered
-        if (isRemembered) {
-            binding.switchRememberMe.visibility = View.VISIBLE
-
-        }
-        else {
-            binding.switchRememberMe.visibility = View.GONE
-        }
+        if (isRemembered) { binding.switchRememberMe.visibility = View.VISIBLE }
+        else { binding.switchRememberMe.visibility = View.GONE }
     }
     private fun signInUser(email: String, password: String) {
-        Log.d(AUTH,"Attempting to sign in User: $email")
         FirebaseAuth.getInstance().signInWithEmailAndPassword(email,password)
             .addOnSuccessListener {
-                Log.d(AUTH,"Successfully signed in user: $email")
-                makeToastMessage(resources.getString(R.string.sign_in_successful))
+                Log.d(LOGIN,"Successfully signed in user: $email")
                 DatabaseModel().setRememberUserBoolean(rememberingCurrentUser, it.user!!.uid)
+                if (rememberingCurrentUser) {
+                    Log.d(LOGIN,"    User will be remembered")
+                } else {
+                    Log.d(LOGIN,"    User will not be remembered")
+                }
                 navigateToMainActivity()
             }
             .addOnFailureListener {
-                Log.d(AUTH,"Failed to sign in user: $email")
+                Log.d(LOGIN,"Failed to sign in user: $email")
                 makeToastMessage(resources.getString(R.string.login_failed))
             }
     }
     private fun signUpUser(email: String, password: String) {
-        Log.d(AUTH,"Attempting to create new User: $email")
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email,password)
             .addOnSuccessListener {
-                Log.d(AUTH,"New user created: $email")
-                makeToastMessage(resources.getString(R.string.account_creation_successful))
+                Log.d(LOGIN,"Successfully created new user: $email")
+                DatabaseModel().setRememberUserBoolean(rememberingCurrentUser, it.user!!.uid)
+                if (rememberingCurrentUser) {
+                    Log.d(LOGIN,"    User will be remembered")
+                } else {
+                    Log.d(LOGIN,"    User will not be remembered")
+                }
                 navigateToMainActivity()
             }
             .addOnFailureListener {
-                Log.d(AUTH,"Failed to create new user: $email")
+                Log.d(LOGIN,"Failed to create new user: $email")
                 makeToastMessage(resources.getString(R.string.account_creation_unsuccessful))
             }
     }
@@ -111,7 +110,7 @@ class UserLoginActivity : AppCompatActivity() {
         }
     }
     fun navigateToMainActivity() {
-        Log.d("FirebaseDatabase","Navigating to Main Activity")
+        Log.d(LOGIN,"Navigating to MainActivity.")
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
     }
@@ -125,10 +124,14 @@ class UserLoginActivity : AppCompatActivity() {
         }
 
     }
-
 }
 
-
+/**
+ * Notes
+ *
+ * I like that all UserLogin related stuff is only used in this Activity and it's invocation of the DatabaseModel.
+ *      The only exception is in MainActivity: A function to navigate back to this Activity.
+ */
 
 
 

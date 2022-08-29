@@ -9,12 +9,13 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tipsaredone.R
+import com.example.tipsaredone.model.Employee
 import com.example.tipsaredone.model.EmployeeHours
-import com.example.tipsaredone.model.IndividualTipReport
+import com.example.tipsaredone.model.IndividualReport
 import kotlin.math.roundToInt
 
 class HoursAdapter(
-    private var individualTipReports: MutableList<IndividualTipReport> = mutableListOf(),
+    private var employeeHours: MutableList<EmployeeHours> = mutableListOf(),
     private val textChangedCallback: ((Int) -> Unit)?
 ) : RecyclerView.Adapter<HoursAdapter.EmployeesViewHolder>() {
 
@@ -45,16 +46,16 @@ class HoursAdapter(
             })
         }
 
-        fun displayReportData(individualTipReport: IndividualTipReport, position: Int) {
+        fun displayReportData(employeeHoursItem: EmployeeHours, position: Int) {
             val index = position + 1
             tvIndex.text = index.toString()
-            tvName.text = individualTipReport.employeeName
+            tvName.text = employeeHoursItem.name
 
-            if (individualTipReport.employeeHours == null) {
+            if (employeeHoursItem.hours == null) {
                 etHours.text.clear()
             }
             else {
-                etHours.setText(individualTipReport.employeeHours.toString())
+                etHours.setText(employeeHoursItem.hours.toString())
             }
         }
     }
@@ -66,34 +67,26 @@ class HoursAdapter(
     }
     override fun onBindViewHolder(holder: EmployeesViewHolder, position: Int) {
 
-        holder.displayReportData(individualTipReports[position],position)
+        holder.displayReportData(employeeHours[position],position)
 
     }
     override fun getItemCount(): Int {
-        return individualTipReports.size
+        return employeeHours.size
     }
 
 
     fun editTippableHours(position: Int, newHours: Double) {
-        individualTipReports[position].employeeHours = newHours
+        employeeHours[position].hours = newHours
     }
     fun getSumOfHours(): Double {
         var output = 0.0
-        individualTipReports.forEach {
-            if (it.employeeHours != null) {
-                output += it.employeeHours!!
+        employeeHours.forEach {
+            if (it.hours != null) {
+                output += it.hours!!
             }
         }
         return (output * 100.0).roundToInt() / 100.0
 
     }
-    fun checkForValidHours(): Boolean {
-        var output = true
-        individualTipReports.forEach {
-            if (it.employeeHours == null) {
-                output = false
-            }
-        }
-        return  output
-    }
+
 }

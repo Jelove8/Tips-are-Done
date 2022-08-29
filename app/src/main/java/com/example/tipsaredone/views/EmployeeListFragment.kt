@@ -17,6 +17,7 @@ import com.example.tipsaredone.activities.MainActivity
 import com.example.tipsaredone.adapters.EmployeesAdapter
 import com.example.tipsaredone.databinding.FragmentEmployeesListBinding
 import com.example.tipsaredone.model.Employee
+import com.example.tipsaredone.model.EmployeeHours
 import com.example.tipsaredone.viewmodels.EmployeesViewModel
 
 class EmployeeListFragment : Fragment() {
@@ -142,7 +143,7 @@ class EmployeeListFragment : Fragment() {
                 val newName = dialogBox.etDialogNewEmployee.text.toString()
                 val newEmployee = Employee(newName,employeesViewModel.generateUniqueID())
                 employeesAdapter.addNewEmployee(newEmployee)
-                employeesViewModel.addIndividualTipReport(newEmployee)
+                employeesViewModel.employeeHours.value!!.add(EmployeeHours(newEmployee.id,newEmployee.name,null))
                 (context as MainActivity).addNewEmployeeToDatabase(newEmployee)
                 hideNewEmployeeDialog()
             }

@@ -14,10 +14,10 @@ class MyEmployees() {
         return myEmployees
     }
 
-    fun saveIndividualReports(reports: MutableList<IndividualTipReport>) {
+    fun saveIndividualReports(reports: MutableList<IndividualReport>) {
         for (report in reports) {
             for (employee in myEmployees) {
-                if (employee.id == report.employeeID) {
+                if (employee.id == report.id) {
                     employee.addTipReport(report)
                 }
             }

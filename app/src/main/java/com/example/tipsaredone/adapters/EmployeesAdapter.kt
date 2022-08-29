@@ -3,7 +3,6 @@ package com.example.tipsaredone.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
@@ -26,23 +25,29 @@ class EmployeesAdapter(
         ItemView: View,
         itemClickCallback: ((Int) -> Unit)?
     ) : RecyclerView.ViewHolder(ItemView) {
-        private val employeeIndex: TextView = itemView.findViewById(R.id.tv_employee_list_index)
-        private val employeeName: TextView = itemView.findViewById(R.id.tv_employee_list_name)
-        private val employeeItem: ConstraintLayout = itemView.findViewById(R.id.cnst_employee_list)
+        private val tvEmployeeIndex: TextView = itemView.findViewById(R.id.tv_employee_list_index)
+        private val tvEmployeeName: TextView = itemView.findViewById(R.id.tv_employee_list_name)
+        private val tvEmployeeItem: ConstraintLayout = itemView.findViewById(R.id.cnst_employee_list)
+        private val tvEmployeeUncollectedLabel: TextView = itemView.findViewById(R.id.tv_employee_list_uncollected_label)
+        private val tvEmployeeUncollectedValue: TextView = itemView.findViewById(R.id.tv_employee_list_uncollected_value)
         init {
-            employeeItem.setOnClickListener {
+            tvEmployeeItem.setOnClickListener {
                 itemClickCallback?.invoke(adapterPosition)
             }
         }
 
         fun displayEmployeeInfo(employee: Employee) {
-
             val index = adapterPosition + 1
-            employeeIndex.text = index.toString()
+            tvEmployeeIndex.text = index.toString()
 
-            employeeName.text = employee.name
+            tvEmployeeName.text = employee.name
 
             val uncollectedTips = employee.checkForUncollectedTips()
+            if (uncollectedTips != 0.0) {
+                tvEmployeeUncollectedLabel.visibility = View.VISIBLE
+                tvEmployeeUncollectedValue.visibility = View.VISIBLE
+                tvEmployeeUncollectedValue.text = "$ $uncollectedTips"
+            }
         }
     }
 

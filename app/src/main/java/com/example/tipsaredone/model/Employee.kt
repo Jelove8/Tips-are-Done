@@ -1,20 +1,18 @@
 package com.example.tipsaredone.model
 
-import kotlinx.serialization.Serializable
-
 class Employee(
     var name: String,
     val id: String,
-    var tipReports: MutableList<IndividualTipReport> = mutableListOf()
+    var tipReports: MutableList<IndividualReport> = mutableListOf()
 ) {
 
-    fun addTipReport(data: IndividualTipReport) {
+    fun addTipReport(data: IndividualReport) {
         tipReports.add(data)
     }
     fun checkForUncollectedTips(): Double {
         var output = 0.0
         tipReports.forEach {
-            if (!it.collected!!) {
+            if (!it.collected) {
                 output += it.distributedTips!!
             }
         }
