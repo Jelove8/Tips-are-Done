@@ -1,8 +1,6 @@
 package com.example.tipsaredone.model
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.example.tipsaredone.activities.UserLoginActivity
 import com.example.tipsaredone.adapters.EmployeesAdapter
 import com.example.tipsaredone.adapters.HoursAdapter
@@ -17,7 +15,7 @@ import java.time.format.DateTimeFormatter
 class DatabaseModel() {
 
     companion object {
-        const val FIREBASE_EMPLOYEES = "FirebaseEmployees"
+        const val FIRECAT = "FirebaseLogging"
 
         const val USERS = "Users"
         const val EMPLOYEES = "Employees"
@@ -40,73 +38,30 @@ class DatabaseModel() {
         const val EMPLOYEE_HOURS = "employeeHours"
         const val DISTRIBUTED_TIPS = "distributedTips"
         const val COLLECTED_BOOLEAN = "collected"
+
+        const val FIREBASE_REPORTS = "FirebaseReports"
+
+        const val USERS_LABEL = "Users"
+        const val EMPLOYEES_LABEL = "Employees"
+
+        const val ERROR = "error"
+        const val TOTAL_TIPS = "totalTips"
+        const val COLLECTED_BOOL = "collected"
+        const val REPORT_ID = "reportID"
+        const val TIP_REPORTS = "tipReports"
     }
 
     private val firebaseDB: FirebaseFirestore = Firebase.firestore
     private val userID = FirebaseAuth.getInstance().currentUser!!.uid
 
-    val employees: MutableList<Employee> = mutableListOf()
-    val weeklyReports = mutableListOf<WeeklyReport>()
-    val individualReports = mutableListOf<IndividualReport>()
 
     init {
-        Log.d(FIREBASE_EMPLOYEES,"Database model initialized.")
+        Log.d(FIRECAT,"Database model initialized.")
     }
 
-    fun initializeEmployees(employeesAdapter: EmployeesAdapter) {
-        // Reading employees
-        Firebase.firestore.collection(DatabaseOperator.USERS_LABEL).document(userID).collection(DatabaseOperator.EMPLOYEES_LABEL).get()
-            .addOnSuccessListener { employeesList ->
-                for (employee in employeesList) {
-                    val id = employee.data[DatabaseModel.ID].toString()
-                    val name = employee.data[DatabaseModel.NAME].toString()
-                    val employeeObject = Employee(name,id)
-                    employees.add(employeeObject)
-                    employeesAdapter.addNewEmployee(employeeObject)
-                    Log.d(DatabaseOperator.FIREBASE_EMPLOYEES,"Reading Employee: $name, $id")
-                }
-                Log.d(DatabaseOperator.FIREBASE_EMPLOYEES,"${employeesAdapter.itemCount} employees read from database.")
-            }
-        employees.forEach {
-            Log.d(FIREBASE_EMPLOYEES,"hello? $it")
-        }
-        employees.sortBy { it.name }
-    }
-    fun initializeIndividualReports(employeeAdapter: EmployeesAdapter) {
-        DatabaseOperator().initializeIndividualReports(employeeAdapter)
-        employeeAdapter.getEmployees().forEach {
-            it.tipReports.forEach { tipReport ->
-                individualReports.add(tipReport)
-            }
-        }
-        val dateTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        individualReports.sortByDescending {
-            LocalDate.parse(it.startDate, dateTimeFormatter)
-        }
-    }
-    fun initializeEmployeeHours(hoursAdapter: HoursAdapter) {
-        Firebase.firestore.collection(DatabaseOperator.USERS_LABEL).document(userID).collection(DatabaseOperator.EMPLOYEES_LABEL).get()
-            .addOnSuccessListener { employees ->
-                for (employee in employees) {
-                    val id = employee.data[ID].toString()
-                    val name = employee.data[NAME].toString()
-                    val employeeObject = Employee(name,id)
-                    hoursAdapter.addEmployee(employeeObject)
-                    Log.d(DatabaseOperator.FIREBASE_EMPLOYEES,"Reading Employee: $name, $id")
-                }
-                Log.d(DatabaseOperator.FIREBASE_EMPLOYEES,"${hoursAdapter.itemCount} employees read from database.")
-            }
-    }
-    fun initializeWeeklyReports(weeklyReportsAdapter: WeeklyReportsAdapter) {
-        DatabaseOperator().initializeWeeklyReports(weeklyReportsAdapter)
-        weeklyReportsAdapter.getWeeklyReports().forEach {
-            weeklyReports.add(it)
-        }
-        val dateTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        weeklyReports.sortByDescending {
-            LocalDate.parse(it.startDate, dateTimeFormatter)
-        }
-    }
+    private var employees: MutableList<Employee> = mutableListOf()
+    private var individualReports: MutableList<IndividualReport> = mutableListOf()
+    private var weeklyReports: MutableList<WeeklyReport> = mutableListOf()
 
     // User Login
     fun readRememberUserBooleanForUserLogin(userLoginActivity: UserLoginActivity) {
@@ -133,9 +88,100 @@ class DatabaseModel() {
             }
     }
 
+    // Initial reading from database
+    fun getEmployees(): MutableList<Employee> {
+        return employees
+    }
+    fun setInitialEmployees(data: MutableList<Employee>) {
+        employees = data
+    }
+    fun initializeEmployeesAndIndividualReports(employeesAdapter: EmployeesAdapter) {
+        // Reading employees
+        Firebase.firestore.collection(DatabaseOperator.USERS_LABEL).document(userID).collection(DatabaseOperator.EMPLOYEES_LABEL).get()
+            .addOnSuccessListener { employeesList ->
+                for (employee in employeesList) {
+                    val id = employee.data[ID].toString()
+                    val name = employee.data[NAME].toString()
+                    val employeeObject = Employee(name,id)
+                    employeesAdapter.addNewEmployee(employeeObject)
+                    Log.d(FIRECAT,"Reading employee from database: $name, $id")
+                }
+                Log.d(FIRECAT,"${employeesAdapter.itemCount} employees read from database.")
+            }
+            .addOnFailureListener {
+                Log.d(FIRECAT,"Failed to read individual reports: $it")
+            }
+
+        Firebase.firestore.collection(USERS_LABEL).document(userID).collection(INDIVIDUAL_REPORTS_LABEL).get()
+            .addOnSuccessListener { reports ->
+                var totalIndividualReportsRead = 0
+                for (report in reports) {
+                    val id = report.data[ID].toString()
+                    val name = report.data[NAME].toString()
+                    val reportID = report.data[REPORT_ID].toString()
+                    val startDate = report.data[START_DATE].toString()
+                    val endDate = report.data[END_DATE].toString()
+                    val hours = report.data[HOURS].toString().toDouble()
+                    val tips = report.data[DISTRIBUTED_TIPS].toString().toDouble()
+                    val error = report.data[ERROR].toString().toInt()
+                    val collected = report.data[COLLECTED_BOOL].toString().toBoolean()
+
+                    for (employee in employeesAdapter.getEmployees()) {
+                        if (employee.id == report.id) {
+                            employee.tipReports.add(IndividualReport(id,name,reportID,startDate,endDate,hours,tips,error,collected))
+                        }
+                    }
+                    totalIndividualReportsRead++
+                }
+                Log.d(FIRECAT,"$totalIndividualReportsRead individual reports read from database.")
+            }
+            .addOnFailureListener {
+                Log.d(DatabaseOperator.FIREBASE_REPORTS,"Failed to read individual reports: $it")
+            }
+    }
+    fun initializeEmployeeHours(hoursAdapter: HoursAdapter) {
+        Firebase.firestore.collection(DatabaseOperator.USERS_LABEL).document(userID).collection(DatabaseOperator.EMPLOYEES_LABEL).get()
+            .addOnSuccessListener { employees ->
+                for (employee in employees) {
+                    val id = employee.data[ID].toString()
+                    val name = employee.data[NAME].toString()
+                    val employeeObject = Employee(name,id)
+                    hoursAdapter.addEmployee(employeeObject)
+                    Log.d(DatabaseOperator.FIREBASE_EMPLOYEES,"Creating employee hours object: $name, $id")
+                }
+                Log.d(FIRECAT,"${hoursAdapter.itemCount} employee hour objects created.")
+            }
+            .addOnFailureListener {
+                Log.d(FIRECAT,"Failed to initialize employee hours.")
+            }
+    }
+    fun initializeWeeklyReports(weeklyReportsAdapter: WeeklyReportsAdapter) {
+        DatabaseOperator().initializeWeeklyReports(weeklyReportsAdapter)
+        Firebase.firestore.collection(DatabaseOperator.USERS_LABEL).document(userID).collection(WEEKLY_REPORTS_LABEL).get().addOnSuccessListener { reports ->
+            var totalWeeklyReports = 0
+            for (report in reports) {
+                val reportID = report.data[REPORT_ID].toString()
+                val startDate = report.data[START_DATE].toString()
+                val endDate = report.data[END_DATE].toString()
+
+                val totalHours = report.data[TOTAL_HOURS].toString().toDouble()
+                val totalTips = report.data[TOTAL_TIPS].toString().toDouble()
+                val tipRate = report.data[TIP_RATE].toString().toDouble()
+                val error = report.data[ERROR].toString().toInt()
+
+                weeklyReportsAdapter.addNewWeeklyReport(WeeklyReport(reportID,startDate,endDate,mutableListOf(),totalHours,totalTips,tipRate,error))
+                totalWeeklyReports++
+            }
+            Log.d(FIRECAT,"$totalWeeklyReports weekly reports read from database.")
+        }
+            .addOnFailureListener {
+                Log.d(FIRECAT,"Failed to read weekly reports: $it")
+            }
+    }
+
     // Employee List
     fun addNewEmployee(newEmployee: Employee): Boolean {
-        Log.d(FIREBASE_EMPLOYEES, "Attempting to add new employee: ${newEmployee.name}.")
+        Log.d(FIRECAT, "Attempting to add new employee: ${newEmployee.name}.")
         val newEmployeeID = newEmployee.id
         var idCheck = true
         employees.forEach {
@@ -149,12 +195,12 @@ class DatabaseModel() {
             employees.sortBy { it.name }
             DatabaseOperator().saveNewOrExistingEmployee(newEmployee)
         } else {
-            Log.d(FIREBASE_EMPLOYEES, "New employee id to be added already exists.")
+            Log.d(FIRECAT, "New employee id to be added already exists.")
         }
         return idCheck
     }
     fun editExistingEmployee(editedEmployee: Employee): Boolean {
-        Log.d(FIREBASE_EMPLOYEES, "Attempting to edit existing employee: ${editedEmployee.name}.")
+        Log.d(FIRECAT, "Attempting to edit existing employee: ${editedEmployee.name}.")
 
         var selectedEmployeeExists = false
         employees.forEach {
@@ -168,14 +214,14 @@ class DatabaseModel() {
         employees.sortBy { it.name }
 
         return if (!selectedEmployeeExists) {
-            Log.d(FIREBASE_EMPLOYEES, "Employee to edit does not exist: ${editedEmployee.name} (${editedEmployee.id}")
+            Log.d(FIRECAT, "Employee to edit does not exist: ${editedEmployee.name} (${editedEmployee.id}")
             false
         } else {
             true
         }
     }
     fun deleteExistingEmployee(selectedEmployee: Employee) : Boolean {
-        Log.d(FIREBASE_EMPLOYEES, "Attempting to delete existing employee: ${selectedEmployee.name}.")
+        Log.d(FIRECAT, "Attempting to delete existing employee: ${selectedEmployee.name}.")
 
         var selectedEmployeeExists = false
         employees.forEach {
@@ -187,7 +233,7 @@ class DatabaseModel() {
         }
 
         return if (!selectedEmployeeExists) {
-            Log.d(FIREBASE_EMPLOYEES,"Employee to delete does not exist: ${selectedEmployee.name} (${selectedEmployee.id}")
+            Log.d(FIRECAT,"Employee to delete does not exist: ${selectedEmployee.name} (${selectedEmployee.id}")
             false
         }
         else {
@@ -195,7 +241,7 @@ class DatabaseModel() {
         }
     }
     fun collectTipsFromSpecificWeek(selectedEmployeeID: String, selectedReportID: String, isCollecting: Boolean) : Boolean {
-        Log.d(FIREBASE_EMPLOYEES, "Attempting to collect employee tips.")
+        Log.d(FIRECAT, "Attempting to collect employee tips.")
 
         var selectedEmployee: Employee? = null
         employees.forEach {
@@ -222,7 +268,7 @@ class DatabaseModel() {
             true
         }
         else {
-            Log.d(FIREBASE_EMPLOYEES, "Selected employee could not be found for tip collection.")
+            Log.d(FIRECAT, "Selected employee could not be found for tip collection.")
             false
         }
     }

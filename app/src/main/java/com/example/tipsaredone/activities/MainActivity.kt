@@ -3,12 +3,12 @@ package com.example.tipsaredone.activities
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.asFlow
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -91,12 +91,15 @@ class MainActivity : AppCompatActivity() {
             databaseModel = DatabaseModel()
         }
     }
-    fun initializeEmployeesAndIndividualReports(employeeAdapter: EmployeesAdapter) {
+    fun initializeEmployeesAndIndividualReports(employeeAdapter: EmployeesAdapter): Boolean {
         employeesViewModel = ViewModelProvider(this)[EmployeesViewModel::class.java]
-        if (!employeesAndIndividualReportsInitialized) {
-            databaseModel!!.initializeEmployees(employeeAdapter)
-            databaseModel!!.initializeIndividualReports(employeeAdapter)
+        return if (!employeesAndIndividualReportsInitialized) {
+            databaseModel!!.initializeEmployeesAndIndividualReports(employeeAdapter)
+            databaseModel!!.setInitialEmployees(employeeAdapter.getEmployees())
             employeesAndIndividualReportsInitialized = true
+            true
+        } else {
+            false
         }
     }
     fun initializeEmployeeHours(hoursAdapter: HoursAdapter) {
@@ -111,6 +114,10 @@ class MainActivity : AppCompatActivity() {
             databaseModel!!.initializeWeeklyReports(weeklyReportsAdapter)
             weeklyReportsInitialized = true
         }
+    }
+
+    fun getDBModel(): DatabaseModel {
+        return databaseModel!!
     }
 
     // Employee List
@@ -135,7 +142,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
     fun addNewEmployee(name: String) {
-        val existingEmployees = databaseModel!!.employees
+        val existingEmployees = databaseModel!!.getEmployees()
         val newEmployeeID = generateEmployeeUID(existingEmployees)
 
         val newEmployee = Employee(name,newEmployeeID)

@@ -2,6 +2,7 @@ package com.example.tipsaredone.views
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.MenuHost
@@ -16,7 +17,10 @@ import com.example.tipsaredone.R
 import com.example.tipsaredone.activities.MainActivity
 import com.example.tipsaredone.adapters.EmployeesAdapter
 import com.example.tipsaredone.databinding.FragmentEmployeesListBinding
+import com.example.tipsaredone.model.DatabaseModel
 import com.example.tipsaredone.viewmodels.EmployeesViewModel
+import java.util.*
+import kotlin.concurrent.schedule
 
 class EmployeeListFragment : Fragment() {
 
@@ -53,6 +57,11 @@ class EmployeeListFragment : Fragment() {
          */
         (context as MainActivity).initializeDatabaseModel()
         (context as MainActivity).initializeEmployeesAndIndividualReports(employeesAdapter)
+        Timer().schedule(1000){
+            Log.d(DatabaseModel.FIRECAT,"First Employee: ${employeesViewModel.employees.value!![0].name}")
+            (context as MainActivity).getDBModel().setInitialEmployees(employeesViewModel.employees.value!!)
+            Log.d(DatabaseModel.FIRECAT,"First Employee From DB Model: ${(context as MainActivity).getDBModel().getEmployees()[0].name}")
+        }
 
         /**
          * BUTTON:  Show new employee dialog box.
@@ -67,6 +76,7 @@ class EmployeeListFragment : Fragment() {
                     R.id.action_add_employee -> {
                         if (!employeesViewModel.newEmployeeDialogShowing) {
                             showNewEmployeeDialog()
+
                             true
                         }
                         else if (employeesViewModel.newEmployeeDialogShowing) {
