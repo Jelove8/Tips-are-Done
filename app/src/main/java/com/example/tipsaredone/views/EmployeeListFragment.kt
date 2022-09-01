@@ -57,11 +57,7 @@ class EmployeeListFragment : Fragment() {
          */
         (context as MainActivity).initializeDatabaseModel()
         (context as MainActivity).initializeEmployeesAndIndividualReports(employeesAdapter)
-        Timer().schedule(1000){
-            Log.d(DatabaseModel.FIRECAT,"First Employee: ${employeesViewModel.employees.value!![0].name}")
-            (context as MainActivity).getDBModel().setInitialEmployees(employeesViewModel.employees.value!!)
-            Log.d(DatabaseModel.FIRECAT,"First Employee From DB Model: ${(context as MainActivity).getDBModel().getEmployees()[0].name}")
-        }
+
 
         /**
          * BUTTON:  Show new employee dialog box.

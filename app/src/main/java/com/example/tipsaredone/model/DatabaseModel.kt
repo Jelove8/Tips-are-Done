@@ -94,6 +94,10 @@ class DatabaseModel() {
     }
     fun setInitialEmployees(data: MutableList<Employee>) {
         employees = data
+        employees.forEach {
+            Log.d(FIRECAT,"Initializing employees for database model: ${it.name}, ${it.id}")
+        }
+        Log.d(FIRECAT,"Employees and individual reports initialization finished.")
     }
     fun initializeEmployeesAndIndividualReports(employeesAdapter: EmployeesAdapter) {
         // Reading employees
@@ -107,37 +111,38 @@ class DatabaseModel() {
                     Log.d(FIRECAT,"Reading employee from database: $name, $id")
                 }
                 Log.d(FIRECAT,"${employeesAdapter.itemCount} employees read from database.")
+
+                Firebase.firestore.collection(USERS_LABEL).document(userID).collection(INDIVIDUAL_REPORTS_LABEL).get()
+                    .addOnSuccessListener { reports ->
+                        var totalIndividualReportsRead = 0
+                        for (report in reports) {
+                            val id = report.data[ID].toString()
+                            val name = report.data[NAME].toString()
+                            val reportID = report.data[REPORT_ID].toString()
+                            val startDate = report.data[START_DATE].toString()
+                            val endDate = report.data[END_DATE].toString()
+                            val hours = report.data[HOURS].toString().toDouble()
+                            val tips = report.data[DISTRIBUTED_TIPS].toString().toDouble()
+                            val error = report.data[ERROR].toString().toInt()
+                            val collected = report.data[COLLECTED_BOOL].toString().toBoolean()
+
+                            for (employee in employeesAdapter.getEmployees()) {
+                                if (employee.id == report.id) {
+                                    employee.tipReports.add(IndividualReport(id,name,reportID,startDate,endDate,hours,tips,error,collected))
+                                }
+                            }
+                            totalIndividualReportsRead++
+                        }
+                        Log.d(FIRECAT,"$totalIndividualReportsRead individual reports read from database.")
+                    }
+                    .addOnFailureListener {
+                        Log.d(DatabaseOperator.FIREBASE_REPORTS,"Failed to read individual reports: $it")
+                    }
             }
             .addOnFailureListener {
                 Log.d(FIRECAT,"Failed to read individual reports: $it")
             }
 
-        Firebase.firestore.collection(USERS_LABEL).document(userID).collection(INDIVIDUAL_REPORTS_LABEL).get()
-            .addOnSuccessListener { reports ->
-                var totalIndividualReportsRead = 0
-                for (report in reports) {
-                    val id = report.data[ID].toString()
-                    val name = report.data[NAME].toString()
-                    val reportID = report.data[REPORT_ID].toString()
-                    val startDate = report.data[START_DATE].toString()
-                    val endDate = report.data[END_DATE].toString()
-                    val hours = report.data[HOURS].toString().toDouble()
-                    val tips = report.data[DISTRIBUTED_TIPS].toString().toDouble()
-                    val error = report.data[ERROR].toString().toInt()
-                    val collected = report.data[COLLECTED_BOOL].toString().toBoolean()
-
-                    for (employee in employeesAdapter.getEmployees()) {
-                        if (employee.id == report.id) {
-                            employee.tipReports.add(IndividualReport(id,name,reportID,startDate,endDate,hours,tips,error,collected))
-                        }
-                    }
-                    totalIndividualReportsRead++
-                }
-                Log.d(FIRECAT,"$totalIndividualReportsRead individual reports read from database.")
-            }
-            .addOnFailureListener {
-                Log.d(DatabaseOperator.FIREBASE_REPORTS,"Failed to read individual reports: $it")
-            }
     }
     fun initializeEmployeeHours(hoursAdapter: HoursAdapter) {
         Firebase.firestore.collection(DatabaseOperator.USERS_LABEL).document(userID).collection(DatabaseOperator.EMPLOYEES_LABEL).get()

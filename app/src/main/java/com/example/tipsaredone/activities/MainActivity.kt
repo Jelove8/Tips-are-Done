@@ -91,15 +91,15 @@ class MainActivity : AppCompatActivity() {
             databaseModel = DatabaseModel()
         }
     }
-    fun initializeEmployeesAndIndividualReports(employeeAdapter: EmployeesAdapter): Boolean {
+    fun initializeEmployeesAndIndividualReports(employeeAdapter: EmployeesAdapter) {
         employeesViewModel = ViewModelProvider(this)[EmployeesViewModel::class.java]
-        return if (!employeesAndIndividualReportsInitialized) {
+        if (!employeesAndIndividualReportsInitialized) {
             databaseModel!!.initializeEmployeesAndIndividualReports(employeeAdapter)
-            databaseModel!!.setInitialEmployees(employeeAdapter.getEmployees())
-            employeesAndIndividualReportsInitialized = true
-            true
-        } else {
-            false
+
+            Timer().schedule(400) {
+                databaseModel!!.setInitialEmployees(employeeAdapter.getEmployees())
+                employeesAndIndividualReportsInitialized = true
+            }
         }
     }
     fun initializeEmployeeHours(hoursAdapter: HoursAdapter) {
