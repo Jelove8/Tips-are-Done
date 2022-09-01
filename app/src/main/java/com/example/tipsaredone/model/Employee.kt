@@ -13,7 +13,7 @@ class Employee(
         var output = 0.0
         tipReports.forEach {
             if (!it.collected) {
-                output += it.distributedTips!!
+                output += it.tips!!
             }
         }
         return output

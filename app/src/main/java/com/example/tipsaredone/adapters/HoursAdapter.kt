@@ -75,8 +75,16 @@ class HoursAdapter(
     }
 
 
+    fun getListOfHours(): MutableList<EmployeeHours> {
+        return employeeHours
+    }
     fun editTippableHours(position: Int, newHours: Double) {
         employeeHours[position].hours = newHours
+    }
+    fun addEmployee(employee: Employee) {
+        employeeHours.add(EmployeeHours(employee.id,employee.name,null))
+        employeeHours.sortBy { it.name }
+        notifyDataSetChanged()
     }
     fun getSumOfHours(): Double {
         var output = 0.0

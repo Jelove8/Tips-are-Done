@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -33,11 +34,13 @@ class TipCollectionFragment : Fragment() {
         val tipCollectionVM: TipCollectionViewModel by activityViewModels()
         tipCollectionViewModel = tipCollectionVM
 
-        // Bills RecyclerView
-        tipCollectionAdapter = TipCollectionAdapter(
-            tipCollectionViewModel.tipsCollected.value!!,
+        /**
+         * TEXT CHANGE CALLBACK:    Updates sum of inputted amounts displayed
+         */
+        tipCollectionAdapter = TipCollectionAdapter(tipCollectionViewModel.tipsCollected.value!!,
             textChangedCallback = fun(_: Double?) {
                 updateSumOfBillsTV()
+                updateConfirmButtonVisibility()
             }
         )
         binding.rcyTipCollection.layoutManager = LinearLayoutManager(context as MainActivity)
@@ -47,7 +50,7 @@ class TipCollectionFragment : Fragment() {
         binding.btnConfirmCollection.setOnClickListener {
             if (checkForValidInputs()) {
                 val collectedTips = tipCollectionViewModel.tipsCollected.value!!
-                (context as MainActivity).collectTipsForWeeklyReport(collectedTips)
+                (context as MainActivity).collectWeeklyTips(collectedTips)
                 (context as MainActivity).displayCalculatingScreen()
                 findNavController().navigate(R.id.action_tipCollectionFragment_to_tipDistributionFragment)
             }
@@ -62,10 +65,27 @@ class TipCollectionFragment : Fragment() {
         _binding = null
     }
 
+    // Misc
     private fun updateSumOfBillsTV() {
         binding.tvTotalTips.text = tipCollectionAdapter.getTotalCollected().toString()
     }
+    private fun updateConfirmButtonVisibility() {
+        val sumOfModulos = (tipCollectionViewModel.tipsCollected.value!![0] % 1.00) +
+                (tipCollectionViewModel.tipsCollected.value!![1] % 2.00) +
+                (tipCollectionViewModel.tipsCollected.value!![2] % 5.00) +
+                (tipCollectionViewModel.tipsCollected.value!![3] % 10.00) +
+                (tipCollectionViewModel.tipsCollected.value!![4] % 20.00) +
+                (tipCollectionViewModel.tipsCollected.value!![5] % 50.00) +
+                (tipCollectionViewModel.tipsCollected.value!![6] % 100.00)
 
+        if (sumOfModulos == 0.0) {
+            val sbGreen = ResourcesCompat.getColor(resources,R.color.starbucks_green,(context as MainActivity).theme)
+            binding.btnConfirmCollection.setBackgroundColor(sbGreen)
+        } else {
+            val wrmNeutral = ResourcesCompat.getColor(resources,R.color.warm_neutral,(context as MainActivity).theme)
+            binding.btnConfirmCollection.setBackgroundColor(wrmNeutral)
+        }
+    }
     private fun checkForValidInputs(): Boolean {
         val sumOfModulos = (tipCollectionViewModel.tipsCollected.value!![0] % 1.00) +
                 (tipCollectionViewModel.tipsCollected.value!![1] % 2.00) +
@@ -107,4 +127,5 @@ class TipCollectionFragment : Fragment() {
         }
 
     }
+
 }

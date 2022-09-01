@@ -21,7 +21,7 @@ class DistributionAdapter(private val tipReports: MutableList<IndividualReport>)
             employeeIndex.text = (position + 1).toString()
             employeeName.text = tipReport.name
 
-            val tipsString = tipReport.distributedTips.toString()
+            val tipsString = tipReport.tips.toString()
             if (tipsString.contains(".0")) {
                 tipsString.removeSuffix(".0")
             }

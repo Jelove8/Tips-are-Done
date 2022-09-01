@@ -29,7 +29,11 @@
         android:id="@+id/EmployeeProfileFragment"
         android:name="com.example.tipsaredone.views.EmployeeProfileFragment"
         android:label="Employee Profile"
-        tools:layout="@layout/fragment_employee_profile" />
+        tools:layout="@layout/fragment_employee_profile" >
+        <action
+            android:id="@+id/action_employeeProfile_to_employeeList"
+            app:destination="@id/EmployeeListFragment" />
+    </fragment>
     <fragment
         android:id="@+id/WeeklyReportsFragment"
         android:name="com.example.tipsaredone.views.WeeklyReportsFragment"

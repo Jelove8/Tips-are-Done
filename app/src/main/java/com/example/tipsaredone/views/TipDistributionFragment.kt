@@ -28,21 +28,21 @@ class TipDistributionFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Distributing Tips
-        val weeklyTipReport = (context as MainActivity).getWeeklyReport()
+        val weeklyReportGenerator = (context as MainActivity).getWeeklyReportGenerator()
+        val unsavedWeeklyReport = weeklyReportGenerator.getWeeklyReport()
 
-        if (weeklyTipReport.majorRoundingError != 0) {
-            showRoundingErrorDialog()
+        if (unsavedWeeklyReport.error != 0) {
+            showRoundingErrorDialog(unsavedWeeklyReport.error)
         }
+        binding.tvTipRate.text = unsavedWeeklyReport.tipRate.toString()
 
-        binding.tvTipRate.text = weeklyTipReport.tipRate.toString()
-
-        distributionAdapter = DistributionAdapter(weeklyTipReport.individualReports)
+        distributionAdapter = DistributionAdapter(weeklyReportGenerator.getIndividualReports())
         binding.rcyTipDistribution.layoutManager = LinearLayoutManager(context as MainActivity)
         binding.rcyTipDistribution.adapter = distributionAdapter
 
         // Button Logic
         binding.btnSaveEmployees.setOnClickListener {
-            (context as MainActivity).addNewWeeklyReportToDatabase(weeklyTipReport)
+            (context as MainActivity).saveNewWeeklyReport()
             findNavController().navigate(R.id.action_tipDistribution_to_weeklyReports)
         }
     }
@@ -51,15 +51,14 @@ class TipDistributionFragment : Fragment() {
         _binding = null
     }
 
-    private fun showRoundingErrorDialog() {
+    private fun showRoundingErrorDialog(error: Int) {
         binding.includeRoundingErrorsDialog.root.visibility = View.VISIBLE
 
-        val roundingError = (context as MainActivity).getWeeklyReport().majorRoundingError
-        val errorMessage = if (roundingError < 0.0) {
-            "You will have $${roundingError.absoluteValue} leftover."
+        val errorMessage = if (error < 0) {
+            "You will have $${error.absoluteValue} leftover."
         }
         else {
-            "You will need to redistribute $${roundingError.absoluteValue}."
+            "You will need to redistribute $${error.absoluteValue}."
         }
         binding.includeRoundingErrorsDialog.tvDialogRoundingErrorMessage.text = errorMessage
 

@@ -1,6 +1,5 @@
 package com.example.tipsaredone.views
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.*
 import androidx.core.view.MenuHost
@@ -15,15 +14,15 @@ import com.example.tipsaredone.activities.MainActivity
 import com.example.tipsaredone.adapters.HoursAdapter
 import com.example.tipsaredone.databinding.FragmentEmployeeHoursBinding
 import com.example.tipsaredone.viewmodels.DatePickerViewModel
-import com.example.tipsaredone.viewmodels.EmployeesViewModel
+import com.example.tipsaredone.viewmodels.HoursViewModel
 
 
 class EmployeeHoursFragment : Fragment() {
 
-    private lateinit var employeesViewModel: EmployeesViewModel
+    private lateinit var hoursViewModel: HoursViewModel
     private lateinit var datePickerViewModel: DatePickerViewModel
 
-    private lateinit var employeeHoursAdapter: HoursAdapter
+    private lateinit var hoursAdapter: HoursAdapter
 
     private var _binding: FragmentEmployeeHoursBinding? = null
     private val binding get() = _binding!!
@@ -32,17 +31,19 @@ class EmployeeHoursFragment : Fragment() {
         _binding = FragmentEmployeeHoursBinding.inflate(inflater, container, false)
         return binding.root
     }
-    @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (context as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
-        val employeesVM: EmployeesViewModel by activityViewModels()
-        employeesViewModel = employeesVM
+        val hoursVM: HoursViewModel by activityViewModels()
+        hoursViewModel = hoursVM
 
         val datePickerVM: DatePickerViewModel by activityViewModels()
         datePickerViewModel = datePickerVM
 
+        /**
+         * BUTTON:  Show date picker dialog box.
+         */
         val menuHost: MenuHost = requireActivity()
         menuHost.addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -51,11 +52,11 @@ class EmployeeHoursFragment : Fragment() {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
                     R.id.action_select_dates -> {
-                        if (binding.includeDatePicker.root.visibility != View.VISIBLE && checkForValidEmployeesAndHours()) {
-                            displayDatePicker(true)
+                        if (!hoursViewModel.datePickerDialogShowing) {
+                            displayDatePickerViews(true)
                         }
                         else {
-                            displayDatePicker(false)
+                            displayDatePickerViews(false)
                         }
                         true
                     }
@@ -64,18 +65,18 @@ class EmployeeHoursFragment : Fragment() {
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
-        employeeHoursAdapter = HoursAdapter(employeesViewModel.employeeHours.value!!,
+        /**
+         * TEXT CHANGE CALLBACK:    Updates sum of hours displayed
+         */
+        hoursAdapter = HoursAdapter(hoursViewModel.employeeHours.value!!,
             textChangedCallback = fun(_: Int) {
                 updateSumOfHoursHeader()
             }
         )
         binding.rcyEmployeeHours.layoutManager = LinearLayoutManager(context as MainActivity)
-        binding.rcyEmployeeHours.adapter = employeeHoursAdapter
+        binding.rcyEmployeeHours.adapter = hoursAdapter
+        (context as MainActivity).initializeEmployeeHours(hoursAdapter)
 
-        if (employeeHoursAdapter.itemCount == 0) {
-            employeesViewModel.initializeEmployeeHoursObjects()
-            employeeHoursAdapter.notifyDataSetChanged()
-        }
         updateSumOfHoursHeader()
     }
     override fun onStart() {
@@ -87,13 +88,13 @@ class EmployeeHoursFragment : Fragment() {
         _binding = null
     }
 
-    
-    // Updates Views
-    private fun displayDatePicker(isVisible: Boolean) {
+    // Date Picker
+    private fun displayDatePickerViews(isVisible: Boolean) {
         if (isVisible) {
             binding.btnDatePickerCancel.visibility = View.VISIBLE
             binding.includeDatePicker.root.visibility = View.VISIBLE
             binding.btnDatePickerConfirm.visibility = View.VISIBLE
+            hoursViewModel.datePickerDialogShowing = true
             enableDatePickerLogic()
             (context as MainActivity).hideKeyboard()
             (context as MainActivity).displayNavbar(false)
@@ -102,12 +103,17 @@ class EmployeeHoursFragment : Fragment() {
             binding.btnDatePickerCancel.visibility = View.GONE
             binding.includeDatePicker.root.visibility = View.GONE
             binding.btnDatePickerConfirm.visibility = View.GONE
+            hoursViewModel.datePickerDialogShowing = false
             (context as MainActivity).displayNavbar(true)
         }
     }
     private fun enableDatePickerLogic() {
         val startDate = datePickerViewModel.startDate.value!!
         val endDate = datePickerViewModel.endDate.value!!
+
+        /**
+         * DATE PICKERS:    Initialized with current date
+         */
         binding.includeDatePicker.startDatePicker.init(startDate.year,startDate.monthValue,startDate.dayOfMonth) { _, year, month, day ->
             datePickerViewModel.setStartDate(year,month + 1,day)
         }
@@ -115,41 +121,30 @@ class EmployeeHoursFragment : Fragment() {
             datePickerViewModel.setEndDate(year,month + 1,day)
         }
 
+        /**
+         * BUTTONS: Confirm or cancel selected dates
+         */
         binding.btnDatePickerCancel.setOnClickListener {
-            displayDatePicker(false)
+            displayDatePickerViews(false)
         }
         binding.btnDatePickerConfirm.setOnClickListener {
             if (checkForValidDates()) {
                 val startDatePicker = binding.includeDatePicker.startDatePicker
                 val endDatePicker = binding.includeDatePicker.endDatePicker
+
                 val selectedStartDate = "${startDatePicker.year}-${startDatePicker.month + 1}-${startDatePicker.dayOfMonth}"
                 val selectedEndDate = "${endDatePicker.year}-${endDatePicker.month + 1}-${endDatePicker.dayOfMonth}"
-
-                (context as MainActivity).createWeeklyReport(selectedStartDate,selectedEndDate)
+                val employeeHours = hoursAdapter.getListOfHours()
+                (context as MainActivity).generateNewWeeklyReport(selectedStartDate,selectedEndDate,employeeHours)
                 findNavController().navigate(R.id.action_employeeHours_toTipCollection)
             }
         }
     }
 
+    // Misc
     private fun updateSumOfHoursHeader() {
-        val newSum = employeeHoursAdapter.getSumOfHours()
-
+        val newSum = hoursAdapter.getSumOfHours()
         (context as MainActivity).supportActionBar?.title = "Total Hours  |  $newSum"
-    }
-
-    // Validity Checks
-    private fun checkForValidEmployeesAndHours(): Boolean {
-        return if (employeesViewModel.employees.value!!.size < 2) {
-            (context as MainActivity).makeToastMessage(resources.getString(R.string.employees_list_invalid_string))
-            false
-        }
-        else if (employeeHoursAdapter.getSumOfHours() == 0.0) {
-            (context as MainActivity).makeToastMessage(resources.getString(R.string.employee_hours_required))
-            false
-        }
-        else {
-            true
-        }
     }
     private fun checkForValidDates(): Boolean {
         val startDate = datePickerViewModel.startDate.value!!

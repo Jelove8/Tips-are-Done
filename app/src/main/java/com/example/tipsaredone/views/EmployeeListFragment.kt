@@ -1,7 +1,7 @@
 package com.example.tipsaredone.views
 
+import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.MenuHost
@@ -16,8 +16,6 @@ import com.example.tipsaredone.R
 import com.example.tipsaredone.activities.MainActivity
 import com.example.tipsaredone.adapters.EmployeesAdapter
 import com.example.tipsaredone.databinding.FragmentEmployeesListBinding
-import com.example.tipsaredone.model.Employee
-import com.example.tipsaredone.model.EmployeeHours
 import com.example.tipsaredone.viewmodels.EmployeesViewModel
 
 class EmployeeListFragment : Fragment() {
@@ -40,9 +38,8 @@ class EmployeeListFragment : Fragment() {
         val employeesVM: EmployeesViewModel by activityViewModels()
         employeesViewModel = employeesVM
 
-
         /**
-         * ITEMCLICK:  Navigate to EmployeeProfileFragment to edit an employee.
+         * ITEMCLICK:  Navigate to EmployeeProfileFragment.
          */
         employeesAdapter = EmployeesAdapter(employeesViewModel.employees.value!!,
             itemClickCallback = fun(position: Int) {
@@ -52,14 +49,13 @@ class EmployeeListFragment : Fragment() {
         binding.rcyEmployeeList.adapter = employeesAdapter
 
         /**
-         * INIT:  Firebase Database - reading employees from database, then populating the adapter.
+         * INIT:  Reads employees from database.
          */
-        if (employeesAdapter.itemCount == 0) {
-            (context as MainActivity).initializeEmployeesFromDatabase(employeesAdapter)
-        }
+        (context as MainActivity).initializeDatabaseModel()
+        (context as MainActivity).initializeEmployeesAndIndividualReports(employeesAdapter)
 
         /**
-         * BUTTON:  Navigate to EmployeeProfileFragment to add a new employee.
+         * BUTTON:  Show new employee dialog box.
          */
         val menuHost: MenuHost = requireActivity()
         menuHost.addMenuProvider(object : MenuProvider {
@@ -69,11 +65,11 @@ class EmployeeListFragment : Fragment() {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
                     R.id.action_add_employee -> {
-                        if (!employeesViewModel.newEmployeeDialogShowing.value!!) {
+                        if (!employeesViewModel.newEmployeeDialogShowing) {
                             showNewEmployeeDialog()
                             true
                         }
-                        else if (employeesViewModel.newEmployeeDialogShowing.value!!) {
+                        else if (employeesViewModel.newEmployeeDialogShowing) {
                             hideNewEmployeeDialog()
                             false
                         }
@@ -103,19 +99,22 @@ class EmployeeListFragment : Fragment() {
         findNavController().navigate(R.id.action_employeeList_to_employeeProfile)
     }
 
-
     /**
      * DIALOG:  Add New Employee.
      */
+    @SuppressLint("NotifyDataSetChanged")
     private fun showNewEmployeeDialog() {
+        employeesViewModel.newEmployeeDialogShowing = true
+
         val dialogBox = binding.includeNewEmployeeDialog
         dialogBox.root.visibility = View.VISIBLE
-        employeesViewModel.setNewEmployeeDialogShowing(true)
-        employeesViewModel.setConfirmEmployeesButtonShowing(false)
+        dialogBox.etDialogNewEmployee.text.clear()
 
-        // If EditText is empty, the confirm button is hidden.
+        /**
+         * TEXT CHANGE LISTENER:  Update color of confirm button.
+         */
         dialogBox.etDialogNewEmployee.doAfterTextChanged {
-            if (dialogBox.etDialogNewEmployee.text.isNullOrEmpty()) {
+            if (it.isNullOrEmpty()) {
                 val wrmNeutral = ResourcesCompat.getColor(resources, R.color.warm_neutral, (context as MainActivity).theme)
                 dialogBox.btnDialogNewEmployeeConfirm.setBackgroundColor(wrmNeutral)
             }
@@ -124,15 +123,16 @@ class EmployeeListFragment : Fragment() {
                 dialogBox.btnDialogNewEmployeeConfirm.setBackgroundColor(sbGreen)
             }
         }
-        dialogBox.etDialogNewEmployee.text.clear()
 
-        // If out-of-bounds area is clicked, dialog is hidden.
-        dialogBox.cnstDialogNewEmployee.setOnClickListener {
+        /**
+         * BUTTON:  Cancel & Hide new employee dialog box
+         */
+        dialogBox.btnDialogNewEmployeeCancel.setOnClickListener {
             hideNewEmployeeDialog()
         }
 
         /**
-         * BUTTON:  Confirm new Employee name, updating EmployeesAdapter & Database.
+         * BUTTON:  Confirm new employee
          */
         dialogBox.btnDialogNewEmployeeConfirm.setOnClickListener {
             if (dialogBox.etDialogNewEmployee.text.isNullOrEmpty()) {
@@ -141,23 +141,31 @@ class EmployeeListFragment : Fragment() {
             }
             else {
                 val newName = dialogBox.etDialogNewEmployee.text.toString()
-                val newEmployee = Employee(newName,employeesViewModel.generateUniqueID())
-                employeesAdapter.addNewEmployee(newEmployee)
-                employeesViewModel.employeeHours.value!!.add(EmployeeHours(newEmployee.id,newEmployee.name,null))
-                (context as MainActivity).addNewEmployeeToDatabase(newEmployee)
+                (context as MainActivity).addNewEmployee(newName)
+                employeesAdapter.notifyDataSetChanged()
                 hideNewEmployeeDialog()
             }
         }
     }
     private fun hideNewEmployeeDialog() {
         binding.includeNewEmployeeDialog.root.visibility = View.GONE
-        employeesViewModel.setNewEmployeeDialogShowing(false)
-        employeesViewModel.setConfirmEmployeesButtonShowing(true)
+        employeesViewModel.newEmployeeDialogShowing = false
     }
 
-    // Validity
-    private fun checkForValidEmployees(): Boolean {
-        return employeesAdapter.itemCount > 1
-    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

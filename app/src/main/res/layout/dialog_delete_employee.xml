@@ -7,6 +7,16 @@
     android:layout_height="match_parent"
     android:background="#CC000000">
 
+    <TextView
+        android:id="@+id/btn_dialog_delete_employee_cancel2"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/icon_x_mark"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/subcnst_dialog_delete_employee"
         android:layout_width="0dp"

@@ -63,6 +63,9 @@ class EmployeesAdapter(
         return employees.size
     }
 
+    fun getEmployees(): MutableList<Employee> {
+        return employees
+    }
     fun addNewEmployee(newEmployee: Employee) {
         var checkForUniqueID = true
         employees.forEach {
@@ -86,5 +89,6 @@ class EmployeesAdapter(
         employees.sortBy { it.name }
         notifyDataSetChanged()
     }
+
 
 }

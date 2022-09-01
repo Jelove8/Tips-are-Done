@@ -11,16 +11,4 @@ class TipCollectionViewModel : ViewModel() {
     val tipsCollected: LiveData<MutableList<Double>> = _tipsCollected
     // Index: [0] Ones, [1] Twos, [2] Fives, [3] Tens, [4] Twenties, [5] Fifties, [6] Hundreds
 
-
-    fun clearTipsCollected() {
-        _tipsCollected.value = mutableListOf(0.0,0.0,0.0,0.0,0.0,0.0,0.0)
-    }
-
-    fun getTotalCollected(): Double {
-        var output = 0.0
-        _tipsCollected.value!!.forEach {
-            output += it
-        }
-        return output
-    }
 }

@@ -44,7 +44,7 @@ class WeeklyReportsFragment : Fragment() {
         binding.rcyReportsFrag.layoutManager = LinearLayoutManager(context as MainActivity)
         binding.rcyReportsFrag.adapter = weeklyReportsAdapter
 
-        (context as MainActivity).initializeWeeklyReportsFromDatabase(weeklyReportsAdapter)
+        (context as MainActivity).initializeWeeklyReports(weeklyReportsAdapter)
     }
     override fun onStart() {
         super.onStart()

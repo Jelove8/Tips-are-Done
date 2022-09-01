@@ -120,12 +120,12 @@ class WeeklyReportsAdapter(private val weeklyReports: MutableList<WeeklyReport>,
 
            val totalHours = currentReport.totalHours
            tvTotalHours.text = ((totalHours* 100.0).toInt() / 100.0).toString()
-           tvTotalTips.text = currentReport.totalCollected.toString()
+           tvTotalTips.text = currentReport.totalTips.toString()
 
            val tipRate = currentReport.tipRate
            tvTipRate.text = ((tipRate * 100.0).toInt() / 100.0).toString()
 
-           val error = currentReport.majorRoundingError
+           val error = currentReport.error
            tvError.text =
                if (error == 0) { "No Error" }
                else { "$$error" }
@@ -144,6 +144,9 @@ class WeeklyReportsAdapter(private val weeklyReports: MutableList<WeeklyReport>,
         return weeklyReports.size
     }
 
+    fun getWeeklyReports(): MutableList<WeeklyReport> {
+        return weeklyReports
+    }
     fun addNewWeeklyReport(weeklyReport: WeeklyReport) {
         weeklyReports.add(weeklyReport)
 

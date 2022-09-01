@@ -3,13 +3,14 @@ package com.example.tipsaredone.model
 import kotlinx.serialization.Serializable
 
 data class IndividualReport (
-    var name: String,
     val id: String,
-    var hours: Double? = null,
-    var distributedTips: Double? = null,
-    var startDate: String? = null,
-    var endDate: String? = null,
-    var majorRoundingError: Int? = null,
+    var name: String,
+    var reportID: String,
+    var startDate: String,
+    var endDate: String,
+    var hours: Double,
+    var tips: Double? = null,
+    var error: Int? = null,
     var collected: Boolean = false
 )
 
