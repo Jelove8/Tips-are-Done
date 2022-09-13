@@ -55,7 +55,6 @@ class EmployeeListFragment : Fragment() {
         /**
          * INIT:  Reads employees from database.
          */
-        (context as MainActivity).initializeDatabaseModel()
         (context as MainActivity).initializeEmployeesAndIndividualReports(employeesAdapter)
 
 

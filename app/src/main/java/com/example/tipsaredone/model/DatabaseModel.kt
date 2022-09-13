@@ -15,7 +15,7 @@ import java.time.format.DateTimeFormatter
 class DatabaseModel() {
 
     companion object {
-        const val FIRECAT = "FirebaseLogging"
+        const val FIRECAT = "Firecat"
 
         const val USERS = "Users"
         const val EMPLOYEES = "Employees"
@@ -54,7 +54,6 @@ class DatabaseModel() {
     private val firebaseDB: FirebaseFirestore = Firebase.firestore
     private val userID = FirebaseAuth.getInstance().currentUser!!.uid
 
-
     init {
         Log.d(FIRECAT,"Database model initialized.")
     }
@@ -92,15 +91,17 @@ class DatabaseModel() {
     fun getEmployees(): MutableList<Employee> {
         return employees
     }
-    fun setInitialEmployees(data: MutableList<Employee>) {
+    fun setInitialEmployeesAndIndividualReports(data: MutableList<Employee>) {
         employees = data
         employees.forEach {
+            it.tipReports.forEach { report ->
+                individualReports.add(report)
+            }
             Log.d(FIRECAT,"Initializing employees for database model: ${it.name}, ${it.id}")
         }
         Log.d(FIRECAT,"Employees and individual reports initialization finished.")
     }
     fun initializeEmployeesAndIndividualReports(employeesAdapter: EmployeesAdapter) {
-        // Reading employees
         Firebase.firestore.collection(DatabaseOperator.USERS_LABEL).document(userID).collection(DatabaseOperator.EMPLOYEES_LABEL).get()
             .addOnSuccessListener { employeesList ->
                 for (employee in employeesList) {
@@ -140,7 +141,7 @@ class DatabaseModel() {
                     }
             }
             .addOnFailureListener {
-                Log.d(FIRECAT,"Failed to read individual reports: $it")
+                Log.d(FIRECAT,"Failed to read employees from database: $it")
             }
 
     }
@@ -155,6 +156,7 @@ class DatabaseModel() {
                     Log.d(DatabaseOperator.FIREBASE_EMPLOYEES,"Creating employee hours object: $name, $id")
                 }
                 Log.d(FIRECAT,"${hoursAdapter.itemCount} employee hour objects created.")
+                Log.d(FIRECAT,"Employee hours initialization finished.")
             }
             .addOnFailureListener {
                 Log.d(FIRECAT,"Failed to initialize employee hours.")
@@ -178,6 +180,7 @@ class DatabaseModel() {
                 totalWeeklyReports++
             }
             Log.d(FIRECAT,"$totalWeeklyReports weekly reports read from database.")
+            Log.d(FIRECAT,"Weekly reports initialization finished.")
         }
             .addOnFailureListener {
                 Log.d(FIRECAT,"Failed to read weekly reports: $it")
@@ -233,7 +236,14 @@ class DatabaseModel() {
             if (it.id == selectedEmployee.id) {
                 employees.remove(it)
                 selectedEmployeeExists = true
-                DatabaseOperator().deleteEmployee(selectedEmployee)
+
+                Firebase.firestore.collection(DatabaseOperator.USERS_LABEL).document(userID).collection(DatabaseOperator.EMPLOYEES_LABEL).document(selectedEmployee.id).delete()
+                    .addOnSuccessListener {
+                        Log.d(FIRECAT, "Employee deleted from database: ${selectedEmployee.name} (${selectedEmployee.id})")
+                    }
+                    .addOnFailureListener {
+                        Log.d(FIRECAT, "Failed to delete employee: ${selectedEmployee.name} (${selectedEmployee.id})")
+                    }
             }
         }
 
@@ -277,8 +287,6 @@ class DatabaseModel() {
             false
         }
     }
-
-
 
     // Reports
     fun addWeeklyReport(weeklyReport: WeeklyReport) {

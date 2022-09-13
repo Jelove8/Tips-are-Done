@@ -3,7 +3,6 @@ package com.example.tipsaredone.activities
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -86,18 +85,14 @@ class MainActivity : AppCompatActivity() {
 
 
     // Database Model Init
-    fun initializeDatabaseModel() {
-        if (databaseModel == null) {
-            databaseModel = DatabaseModel()
-        }
-    }
     fun initializeEmployeesAndIndividualReports(employeeAdapter: EmployeesAdapter) {
         employeesViewModel = ViewModelProvider(this)[EmployeesViewModel::class.java]
         if (!employeesAndIndividualReportsInitialized) {
+            databaseModel = DatabaseModel()
             databaseModel!!.initializeEmployeesAndIndividualReports(employeeAdapter)
 
-            Timer().schedule(400) {
-                databaseModel!!.setInitialEmployees(employeeAdapter.getEmployees())
+            Timer().schedule(500) {
+                databaseModel!!.setInitialEmployeesAndIndividualReports(employeeAdapter.getEmployees())
                 employeesAndIndividualReportsInitialized = true
             }
         }
@@ -134,6 +129,11 @@ class MainActivity : AppCompatActivity() {
     fun deleteExistingEmployee(deletedEmployee: Employee) {
         val employeeDeletedBool = databaseModel!!.deleteExistingEmployee(deletedEmployee)
         if (employeeDeletedBool) {
+            employeesViewModel.employees.value!!.forEach {
+                if (it.id == deletedEmployee.id) {
+                    employeesViewModel.employees.value!!.remove(it)
+                }
+            }
             hoursViewModel.employeeHours.value!!.forEach {
                 if (it.id == deletedEmployee.id) {
                     hoursViewModel.employeeHours.value!!.remove(it)
