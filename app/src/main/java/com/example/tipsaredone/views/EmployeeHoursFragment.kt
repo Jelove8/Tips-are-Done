@@ -144,7 +144,7 @@ class EmployeeHoursFragment : Fragment() {
     // Misc
     private fun updateSumOfHoursHeader() {
         val newSum = hoursAdapter.getSumOfHours()
-        (context as MainActivity).supportActionBar?.title = "Total Hours  |  $newSum"
+        (context as MainActivity).supportActionBar?.title = "Total Hours     $newSum"
     }
     private fun checkForValidDates(): Boolean {
         val startDate = datePickerViewModel.startDate.value!!

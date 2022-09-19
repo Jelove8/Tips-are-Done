@@ -1,8 +1,7 @@
 package com.example.tipsaredone.views
 
-import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
+import android.provider.ContactsContract
 import android.view.*
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.MenuHost
@@ -18,9 +17,9 @@ import com.example.tipsaredone.activities.MainActivity
 import com.example.tipsaredone.adapters.EmployeesAdapter
 import com.example.tipsaredone.databinding.FragmentEmployeesListBinding
 import com.example.tipsaredone.model.DatabaseModel
+import com.example.tipsaredone.model.Employee
 import com.example.tipsaredone.viewmodels.EmployeesViewModel
 import java.util.*
-import kotlin.concurrent.schedule
 
 class EmployeeListFragment : Fragment() {
 
@@ -47,7 +46,7 @@ class EmployeeListFragment : Fragment() {
          */
         employeesAdapter = EmployeesAdapter(employeesViewModel.employees.value!!,
             itemClickCallback = fun(position: Int) {
-                navigateEditEmployee(position)
+                showEditEmployeeDialog(employeesViewModel.employees.value!![position])
             })
         binding.rcyEmployeeList.layoutManager = LinearLayoutManager(context as MainActivity)
         binding.rcyEmployeeList.adapter = employeesAdapter
@@ -55,8 +54,7 @@ class EmployeeListFragment : Fragment() {
         /**
          * INIT:  Reads employees from database.
          */
-        (context as MainActivity).initializeEmployeesAndIndividualReports(employeesAdapter)
-
+        (context as MainActivity).readEmployeesFromDatabase(employeesAdapter)
 
         /**
          * BUTTON:  Show new employee dialog box.
@@ -71,21 +69,28 @@ class EmployeeListFragment : Fragment() {
                     R.id.action_add_employee -> {
                         if (!employeesViewModel.newEmployeeDialogShowing) {
                             showNewEmployeeDialog()
-
                             true
                         }
                         else if (employeesViewModel.newEmployeeDialogShowing) {
-                            hideNewEmployeeDialog()
+                            hideEmployeeDialog(false)
                             false
                         }
                         else {
                             false
                         }
                     }
+                    R.id.action_settings -> {
+                        findNavController().navigate(R.id.action_EmployeeListFragment_to_SettingsFragment)
+                        true
+                    }
                     else ->  false
                 }
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+
+        binding.btnDoTips.setOnClickListener {
+            findNavController().navigate(R.id.action_empList_to_empHours)
+        }
     }
     override fun onStart() {
         super.onStart()
@@ -97,65 +102,105 @@ class EmployeeListFragment : Fragment() {
     }
 
     /**
-     * NAVIGATION:  To EmployeeHoursFragment
+     * DIALOG:  Add or Edit Employee.
      */
-    private fun navigateEditEmployee(index: Int) {
-        employeesViewModel.selectEmployee(index)
-        findNavController().navigate(R.id.action_employeeList_to_employeeProfile)
-    }
-
-    /**
-     * DIALOG:  Add New Employee.
-     */
-    @SuppressLint("NotifyDataSetChanged")
     private fun showNewEmployeeDialog() {
-        employeesViewModel.newEmployeeDialogShowing = true
-
         val dialogBox = binding.includeNewEmployeeDialog
         dialogBox.root.visibility = View.VISIBLE
         dialogBox.etDialogNewEmployee.text.clear()
+        binding.btnDoTips.visibility = View.GONE
+        employeesViewModel.newEmployeeDialogShowing = true
 
-        /**
-         * TEXT CHANGE LISTENER:  Update color of confirm button.
-         */
         dialogBox.etDialogNewEmployee.doAfterTextChanged {
             if (it.isNullOrEmpty()) {
-                val wrmNeutral = ResourcesCompat.getColor(resources, R.color.warm_neutral, (context as MainActivity).theme)
-                dialogBox.btnDialogNewEmployeeConfirm.setBackgroundColor(wrmNeutral)
+                dialogBox.btnDialogNewEmployeeConfirm.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.warm_neutral, (context as MainActivity).theme))
             }
             else {
-                val sbGreen = ResourcesCompat.getColor(resources, R.color.starbucks_green, (context as MainActivity).theme)
-                dialogBox.btnDialogNewEmployeeConfirm.setBackgroundColor(sbGreen)
+                dialogBox.btnDialogNewEmployeeConfirm.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.starbucks_green, (context as MainActivity).theme))
             }
         }
 
-        /**
-         * BUTTON:  Cancel & Hide new employee dialog box
-         */
         dialogBox.btnDialogNewEmployeeCancel.setOnClickListener {
-            hideNewEmployeeDialog()
+            hideEmployeeDialog(false)
         }
-
-        /**
-         * BUTTON:  Confirm new employee
-         */
         dialogBox.btnDialogNewEmployeeConfirm.setOnClickListener {
-            if (dialogBox.etDialogNewEmployee.text.isNullOrEmpty()) {
-                val toast = resources.getString(R.string.employee_name_required)
-                (context as MainActivity).makeToastMessage(toast)
+            val newName = dialogBox.etDialogNewEmployee.text
+            if (newName != null) {
+                val newEmployee = Employee(newName.toString(),generateEmployeeUID())
+                employeesAdapter.addNewEmployee(newEmployee)
+                DatabaseModel().addOrEditEmployee(newEmployee)
+                hideEmployeeDialog(false)
             }
             else {
-                val newName = dialogBox.etDialogNewEmployee.text.toString()
-                (context as MainActivity).addNewEmployee(newName)
-                employeesAdapter.notifyDataSetChanged()
-                hideNewEmployeeDialog()
+                (context as MainActivity).makeToastMessage(resources.getString(R.string.employee_name_required))
             }
         }
     }
-    private fun hideNewEmployeeDialog() {
-        binding.includeNewEmployeeDialog.root.visibility = View.GONE
-        employeesViewModel.newEmployeeDialogShowing = false
+    private fun showEditEmployeeDialog(selectedEmployee: Employee) {
+        val dialogBox = binding.includeEditEmployeeDialog
+        dialogBox.root.visibility = View.VISIBLE
+        dialogBox.etEditEmployeeDialog.setText(selectedEmployee.name)
+        binding.btnDoTips.visibility = View.GONE
+        employeesViewModel.editEmployeeDialogShowing = true
+
+        dialogBox.etEditEmployeeDialog.doAfterTextChanged {
+            if (it.isNullOrEmpty()) {
+                dialogBox.btnEditEmployeeDialogConfirm.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.warm_neutral, (context as MainActivity).theme))
+            }
+            else {
+                dialogBox.btnEditEmployeeDialogConfirm.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.starbucks_green, (context as MainActivity).theme))
+            }
+        }
+
+        dialogBox.btnDialogEditEmployeeCancel.setOnClickListener {
+            hideEmployeeDialog(true)
+        }
+        dialogBox.btnEditEmployeeDialogDelete.setOnClickListener {
+            employeesAdapter.deleteEmployee(selectedEmployee)
+            DatabaseModel().deleteExistingEmployee(selectedEmployee)
+            hideEmployeeDialog(true)
+        }
+        dialogBox.btnEditEmployeeDialogConfirm.setOnClickListener {
+            val newName = dialogBox.etEditEmployeeDialog.text
+            if (newName != null) {
+                selectedEmployee.name = newName.toString()
+                employeesAdapter.editEmployee(selectedEmployee)
+                DatabaseModel().addOrEditEmployee(selectedEmployee)
+                hideEmployeeDialog(true)
+            }
+            else {
+                (context as MainActivity).makeToastMessage(resources.getString(R.string.employee_name_required))
+            }
+        }
     }
+    private fun hideEmployeeDialog(boolean: Boolean) {
+        if (boolean) {
+            binding.includeEditEmployeeDialog.root.visibility = View.GONE
+            employeesViewModel.editEmployeeDialogShowing = false
+        }
+        else {
+            binding.includeNewEmployeeDialog.root.visibility = View.GONE
+            employeesViewModel.newEmployeeDialogShowing = false
+        }
+        binding.btnDoTips.visibility = View.VISIBLE
+    }
+    private fun generateEmployeeUID(): String {
+        var uniqueID = UUID.randomUUID().toString()
+        employeesViewModel.employees.value!!.forEach {
+            if (uniqueID == it.id) {
+                uniqueID = generateEmployeeUID()
+            }
+        }
+        return uniqueID
+    }
+
+
+
+
+
+
+
+
 
 
 

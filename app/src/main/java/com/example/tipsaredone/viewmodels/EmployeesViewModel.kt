@@ -11,6 +11,7 @@ class EmployeesViewModel: ViewModel() {
     val employees: LiveData<MutableList<Employee>> = _employees
 
     var newEmployeeDialogShowing: Boolean = false
+    var editEmployeeDialogShowing: Boolean = false
 
     var deleteEmployeeDialogShowing: Boolean = false
 

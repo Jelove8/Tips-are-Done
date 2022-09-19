@@ -8,12 +8,15 @@
     <fragment
         android:id="@+id/EmployeeListFragment"
         android:name="com.example.tipsaredone.views.EmployeeListFragment"
-        android:label="My Employees"
+        android:label="Tips Are Done"
         android:fontFamily="@font/sodo"
         tools:layout="@layout/fragment_employees_list">
         <action
-            android:id="@+id/action_employeeList_to_employeeProfile"
-            app:destination="@id/EmployeeProfileFragment" />
+            android:id="@+id/action_empList_to_empHours"
+            app:destination="@id/EmployeeHoursFragment" />
+        <action
+            android:id="@+id/action_EmployeeListFragment_to_SettingsFragment"
+            app:destination="@id/SettingsFragment" />
     </fragment>
 
     <fragment
@@ -24,15 +27,6 @@
         <action
             android:id="@+id/action_employeeHours_toTipCollection"
             app:destination="@id/tipCollectionFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/EmployeeProfileFragment"
-        android:name="com.example.tipsaredone.views.EmployeeProfileFragment"
-        android:label="Employee Profile"
-        tools:layout="@layout/fragment_employee_profile" >
-        <action
-            android:id="@+id/action_employeeProfile_to_employeeList"
-            app:destination="@id/EmployeeListFragment" />
     </fragment>
     <fragment
         android:id="@+id/WeeklyReportsFragment"
@@ -59,8 +53,8 @@
         android:label="TipDistributionFragment"
         tools:layout="@layout/fragment_tip_distribution">
         <action
-            android:id="@+id/action_tipDistribution_to_weeklyReports"
-            app:destination="@id/WeeklyReportsFragment" />
+            android:id="@+id/action_tipDistributionFragment_to_EmployeeListFragment"
+            app:destination="@id/EmployeeListFragment" />
     </fragment>
 
 </navigation>

@@ -3,8 +3,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/action_settings"
+        android:icon="@drawable/icon_cog"
+        android:title="Settings"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/action_add_employee"
         android:icon="@drawable/icon_add_employee"
-        android:title="Add"
+        android:title="Add Employee"
         app:showAsAction="always" />
 </menu>

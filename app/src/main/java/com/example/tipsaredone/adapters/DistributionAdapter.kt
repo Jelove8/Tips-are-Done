@@ -8,16 +8,16 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tipsaredone.R
-import com.example.tipsaredone.model.IndividualReport
+import com.example.tipsaredone.model.Employee
 
-class DistributionAdapter(private val tipReports: MutableList<IndividualReport>) : RecyclerView.Adapter<DistributionAdapter.DistributedTipsViewHolder>() {
+class DistributionAdapter(private val tipReports: MutableList<Employee>) : RecyclerView.Adapter<DistributionAdapter.DistributedTipsViewHolder>() {
 
     class DistributedTipsViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
         private val employeeIndex: TextView = itemView.findViewById(R.id.tv_employee_index)
         private val employeeName: TextView = itemView.findViewById(R.id.tv_indiv_report_endDate)
         private val employeeTips: EditText = itemView.findViewById(R.id.et_employee_hours)
 
-        fun displayEmployeeData(tipReport: IndividualReport, position: Int) {
+        fun displayEmployeeData(tipReport: Employee, position: Int) {
             employeeIndex.text = (position + 1).toString()
             employeeName.text = tipReport.name
 

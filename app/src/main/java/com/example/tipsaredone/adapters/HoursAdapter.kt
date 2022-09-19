@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tipsaredone.R
 import com.example.tipsaredone.model.Employee
 import com.example.tipsaredone.model.EmployeeHours
-import com.example.tipsaredone.model.IndividualReport
 import kotlin.math.roundToInt
 
 class HoursAdapter(

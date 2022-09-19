@@ -23,7 +23,6 @@ class SettingsFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (context as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
         binding.btnSignOut.setOnClickListener {
             val userEmail = FirebaseAuth.getInstance().currentUser!!.email
@@ -33,10 +32,6 @@ class SettingsFragment : Fragment() {
 
             Log.d(UserLoginActivity.LOGIN,"User signed out: $userEmail ")
         }
-    }
-    override fun onStart() {
-        super.onStart()
-        (context as MainActivity).displayNavbar(true)
     }
     override fun onDestroy() {
         super.onDestroy()

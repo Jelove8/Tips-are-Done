@@ -8,12 +8,16 @@ import kotlin.math.absoluteValue
 class WeeklyReportGenerator(val startDate: String, val endDate: String) {
 
     companion object {
-        const val THIS = "WEEKLY_REPORT_GENERATOR"
+        const val THIS = "WeeklyReports"
+    }
+
+    init {
+        Log.d(THIS,"Weekly Report Generator initialized.")
     }
 
     private val reportID: String = "$startDate-$endDate"
 
-    private val individualReports: MutableList<IndividualReport> = mutableListOf()
+    private val employees: MutableList<Employee> = mutableListOf()
     private val collectedTips: MutableList<Map<String,Int>> = mutableListOf()
 
     private var totalHours: Double = 0.0
@@ -21,11 +25,16 @@ class WeeklyReportGenerator(val startDate: String, val endDate: String) {
     private var tipRate: Double = 0.0
     private var error: Int = 0
 
-    fun addIndividualReport(individualReport: IndividualReport) {
-        individualReports.add(individualReport)
-        totalHours += individualReport.hours
+    fun setWeeklyEmployees(data: MutableList<Employee>) {
+        data.forEach {
+            if (it.hours != null) {
+                employees.add(it)
+                totalHours += it.hours!!
+            }
+        }
+        employees.sortBy { it.name }
+        Log.d(THIS,"Employees and hours set.")
     }
-
     fun collectWeeklyTips(weeklyCollection: MutableList<Double>) {
         for ((i,item) in weeklyCollection.withIndex()) {
             when (i) {
@@ -53,14 +62,15 @@ class WeeklyReportGenerator(val startDate: String, val endDate: String) {
             }
         }
         totalTips = weeklyCollection.sum()
+        Log.d(THIS,"Tips collected.")
     }
     fun distributeWeeklyTips() {
         tipRate = ((totalTips / totalHours) * 100).toInt() / 100.0
 
-        for (report in individualReports) {
-            val rawTips = tipRate * report.hours
+        for (emp in employees) {
+            val rawTips = tipRate * emp.hours!!
             val roundedTips = BigDecimal(rawTips).setScale(0, RoundingMode.HALF_DOWN)
-            report.tips = roundedTips.toDouble()
+            emp.tips = roundedTips.toInt()
         }
         Log.d(THIS,"Tips distributed.")
 
@@ -70,7 +80,7 @@ class WeeklyReportGenerator(val startDate: String, val endDate: String) {
     }
     private fun redistributeTips(){
         val listOfIDs = mutableListOf<String>()
-        individualReports.forEach {
+        employees.forEach {
             listOfIDs.add(it.id)
         }
 
@@ -81,13 +91,13 @@ class WeeklyReportGenerator(val startDate: String, val endDate: String) {
 
         if (error < 0) {
             if (error.absoluteValue == 1) {
-                individualReports.forEach {
+                employees.forEach {
                     if (it.id == firstReportID) {
                         it.tips!! + 1.0
                     }
                 }
             } else if (error.absoluteValue == 2) {
-                individualReports.forEach {
+                employees.forEach {
                     if (it.id == firstReportID) {
                         it.tips!! + 1.0
                     }
@@ -98,13 +108,13 @@ class WeeklyReportGenerator(val startDate: String, val endDate: String) {
             }
         } else {
             if (error == 1) {
-                individualReports.forEach {
+                employees.forEach {
                     if (it.id == firstReportID) {
                         it.tips!! - 1.0
                     }
                 }
             } else if (error == 2) {
-                individualReports.forEach {
+                employees.forEach {
                     if (it.id == firstReportID) {
                         it.tips!! - 1.0
                     }
@@ -123,7 +133,7 @@ class WeeklyReportGenerator(val startDate: String, val endDate: String) {
     private fun checkForError(): Boolean {
         val expectedTotal = totalTips
         var actualTotal = 0.0
-        individualReports.forEach {
+        employees.forEach {
             actualTotal += it.tips!!
         }
 
@@ -135,17 +145,11 @@ class WeeklyReportGenerator(val startDate: String, val endDate: String) {
             Log.d(THIS,"Error found.")
         }
 
-        individualReports.forEach {
-            it.error = error
-        }
-
         return !(roundingErrorAbs > 0 && roundingErrorAbs < 3)
     }
 
     fun getWeeklyReport(): WeeklyReport {
         return WeeklyReport(reportID, startDate, endDate, collectedTips, totalHours, totalTips, tipRate, error)
     }
-    fun getIndividualReports(): MutableList<IndividualReport> {
-        return individualReports
-    }
+
 }

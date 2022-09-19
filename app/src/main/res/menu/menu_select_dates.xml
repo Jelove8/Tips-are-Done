@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/action_select_dates"
-        android:icon="@drawable/icon_write"
+        android:icon="@drawable/icon_calendar"
         android:title="@string/do_tips"
         android:tooltipText="Do Tips"
         app:showAsAction="always|withText" />

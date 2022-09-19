@@ -36,14 +36,14 @@ class TipDistributionFragment : Fragment() {
         }
         binding.tvTipRate.text = unsavedWeeklyReport.tipRate.toString()
 
-        distributionAdapter = DistributionAdapter(weeklyReportGenerator.getIndividualReports())
+        distributionAdapter = DistributionAdapter(mutableListOf())
         binding.rcyTipDistribution.layoutManager = LinearLayoutManager(context as MainActivity)
         binding.rcyTipDistribution.adapter = distributionAdapter
 
         // Button Logic
         binding.btnSaveEmployees.setOnClickListener {
             (context as MainActivity).saveNewWeeklyReport()
-            findNavController().navigate(R.id.action_tipDistribution_to_weeklyReports)
+            findNavController().navigate(R.id.action_tipDistributionFragment_to_EmployeeListFragment)
         }
     }
     override fun onDestroyView() {

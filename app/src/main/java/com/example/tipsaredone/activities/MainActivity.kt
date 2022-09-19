@@ -85,18 +85,13 @@ class MainActivity : AppCompatActivity() {
 
 
     // Database Model Init
-    fun initializeEmployeesAndIndividualReports(employeeAdapter: EmployeesAdapter) {
+    fun readEmployeesFromDatabase(employeesAdapter: EmployeesAdapter) {
         employeesViewModel = ViewModelProvider(this)[EmployeesViewModel::class.java]
-        if (!employeesAndIndividualReportsInitialized) {
-            databaseModel = DatabaseModel()
-            databaseModel!!.initializeEmployeesAndIndividualReports(employeeAdapter)
-
-            Timer().schedule(500) {
-                databaseModel!!.setInitialEmployeesAndIndividualReports(employeeAdapter.getEmployees())
-                employeesAndIndividualReportsInitialized = true
-            }
-        }
+        databaseModel = DatabaseModel()
+        databaseModel!!.initializeEmployees(employeesAdapter)
     }
+
+
     fun initializeEmployeeHours(hoursAdapter: HoursAdapter) {
         if (!employeeHoursInitialized) {
             databaseModel!!.initializeEmployeeHours(hoursAdapter)
@@ -106,65 +101,14 @@ class MainActivity : AppCompatActivity() {
 
     fun initializeWeeklyReports(weeklyReportsAdapter: WeeklyReportsAdapter) {
         if (!weeklyReportsInitialized) {
-            databaseModel!!.initializeWeeklyReports(weeklyReportsAdapter)
             weeklyReportsInitialized = true
         }
     }
 
-    fun getDBModel(): DatabaseModel {
-        return databaseModel!!
-    }
 
-    // Employee List
-    fun editExistingEmployee(editedEmployee: Employee) {
-        val employeeEditedBool = databaseModel!!.editExistingEmployee(editedEmployee)
-        if (employeeEditedBool) {
-            hoursViewModel.employeeHours.value!!.forEach {
-                if (it.id == editedEmployee.id) {
-                    it.name = editedEmployee.name
-                }
-            }
-        }
-    }
-    fun deleteExistingEmployee(deletedEmployee: Employee) {
-        val employeeDeletedBool = databaseModel!!.deleteExistingEmployee(deletedEmployee)
-        if (employeeDeletedBool) {
-            employeesViewModel.employees.value!!.forEach {
-                if (it.id == deletedEmployee.id) {
-                    employeesViewModel.employees.value!!.remove(it)
-                }
-            }
-            hoursViewModel.employeeHours.value!!.forEach {
-                if (it.id == deletedEmployee.id) {
-                    hoursViewModel.employeeHours.value!!.remove(it)
-                }
-            }
-        }
-    }
-    fun addNewEmployee(name: String) {
-        val existingEmployees = databaseModel!!.getEmployees()
-        val newEmployeeID = generateEmployeeUID(existingEmployees)
 
-        val newEmployee = Employee(name,newEmployeeID)
-        val newEmployeeAddedBool = databaseModel!!.addNewEmployee(newEmployee)
 
-        if (newEmployeeAddedBool) {
-            employeesViewModel.addEmployee(newEmployee)
-            hoursViewModel.addNewEmployee(newEmployee)
-        }
-    }
-    fun collectEmployeeTips(selectedEmployeeID: String, selectedReportID: String, isCollecting: Boolean) : Boolean {
-        return databaseModel!!.collectTipsFromSpecificWeek(selectedEmployeeID,selectedReportID,isCollecting)
-    }
-    private fun generateEmployeeUID(existingEmployees: MutableList<Employee>): String {
-        var uniqueID = UUID.randomUUID().toString()
-        existingEmployees.forEach {
-            if (uniqueID == it.id) {
-                uniqueID = generateEmployeeUID(existingEmployees)
-            }
-        }
-        return uniqueID
-    }
+
 
     // Weekly Report
     fun getWeeklyReportGenerator(): WeeklyReportGenerator {
@@ -172,9 +116,7 @@ class MainActivity : AppCompatActivity() {
     }
     fun generateNewWeeklyReport(startDate: String, endDate: String, employeeHours: MutableList<EmployeeHours>) {
         weeklyReportGenerator = WeeklyReportGenerator(startDate,endDate)
-        employeeHours.forEach {
-            weeklyReportGenerator.addIndividualReport(IndividualReport(it.name,it.id,"$startDate-$endDate",startDate,endDate,it.hours!!))
-        }
+
     }
     fun collectWeeklyTips(collectedTips: MutableList<Double>) {
         weeklyReportGenerator.collectWeeklyTips(collectedTips)
@@ -184,10 +126,7 @@ class MainActivity : AppCompatActivity() {
         val newWeeklyReport = weeklyReportGenerator.getWeeklyReport()
         databaseModel!!.addWeeklyReport(newWeeklyReport)
 
-        val individualReports = weeklyReportGenerator.getIndividualReports()
-        individualReports.forEach { individualReport ->
-            databaseModel!!.addIndividualReport(individualReport)
-        }
+
     }
 
     // Activity Navigation
@@ -200,7 +139,7 @@ class MainActivity : AppCompatActivity() {
     // Misc
     fun displayNavbar(isVisible: Boolean) {
         if (isVisible) {
-            binding.includeContentMain.mainNavbar.visibility = View.VISIBLE
+            binding.includeContentMain.mainNavbar.visibility = View.GONE
         }
         else {
             binding.includeContentMain.mainNavbar.visibility = View.GONE

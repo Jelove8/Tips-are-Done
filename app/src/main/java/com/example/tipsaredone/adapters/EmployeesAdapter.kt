@@ -42,12 +42,7 @@ class EmployeesAdapter(
 
             tvEmployeeName.text = employee.name
 
-            val uncollectedTips = employee.checkForUncollectedTips()
-            if (uncollectedTips != 0.0) {
-                tvEmployeeUncollectedLabel.visibility = View.VISIBLE
-                tvEmployeeUncollectedValue.visibility = View.VISIBLE
-                tvEmployeeUncollectedValue.text = "$ $uncollectedTips"
-            }
+
         }
     }
 
@@ -67,25 +62,20 @@ class EmployeesAdapter(
         return employees
     }
     fun addNewEmployee(newEmployee: Employee) {
-        var checkForUniqueID = true
-        employees.forEach {
-            if (it.id == newEmployee.id) {
-                checkForUniqueID = false
-            }
-        }
-
-        if (checkForUniqueID) {
-            employees.add(newEmployee)
-            employees.sortBy { it.name }
-            notifyDataSetChanged()
-        }
-    }
-    fun deleteEmployee(position: Int) {
-        employees.removeAt(position)
+        employees.add(newEmployee)
+        employees.sortBy { it.name }
         notifyDataSetChanged()
     }
-    fun editEmployeeName(position: Int, newName: String) {
-        employees[position].name = newName
+    fun deleteEmployee(selectedEmployee: Employee) {
+        employees.remove(selectedEmployee)
+        notifyDataSetChanged()
+    }
+    fun editEmployee(editedEmployee: Employee) {
+        employees.forEach {
+            if (editedEmployee.id == it.id) {
+                it.name = editedEmployee.name
+            }
+        }
         employees.sortBy { it.name }
         notifyDataSetChanged()
     }
