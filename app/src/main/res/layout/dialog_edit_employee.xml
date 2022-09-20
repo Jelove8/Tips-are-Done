@@ -32,7 +32,7 @@
             android:layout_height="32dp"
             android:background="@drawable/icon_trash"
             android:backgroundTint="@color/default_text"
-            app:layout_constraintStart_toStartOf="@+id/tv_edit_employee_dialog"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView

@@ -33,7 +33,6 @@ class EmployeeHoursFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (context as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
         val hoursVM: HoursViewModel by activityViewModels()
         hoursViewModel = hoursVM
@@ -44,6 +43,7 @@ class EmployeeHoursFragment : Fragment() {
         /**
          * BUTTON:  Show date picker dialog box.
          */
+        /*
         val menuHost: MenuHost = requireActivity()
         menuHost.addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -64,7 +64,8 @@ class EmployeeHoursFragment : Fragment() {
                 }
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
-
+*/
+        
         /**
          * TEXT CHANGE CALLBACK:    Updates sum of hours displayed
          */
@@ -144,7 +145,7 @@ class EmployeeHoursFragment : Fragment() {
     // Misc
     private fun updateSumOfHoursHeader() {
         val newSum = hoursAdapter.getSumOfHours()
-        (context as MainActivity).supportActionBar?.title = "Total Hours     $newSum"
+        binding.tvEmployeeHoursSumValue.text = newSum.toString()
     }
     private fun checkForValidDates(): Boolean {
         val startDate = datePickerViewModel.startDate.value!!

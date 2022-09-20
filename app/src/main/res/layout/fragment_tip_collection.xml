@@ -72,7 +72,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
-            android:id="@+id/tv_total_tips_label"
+            android:id="@+id/tv_employee_hours_dollar_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/sodo"
@@ -84,20 +84,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tv_total_tips_label2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:fontFamily="@font/sodo"
-            android:text="total tips"
-            android:textColor="@color/default_text"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_total_tips"
-            app:layout_constraintStart_toEndOf="@+id/tv_total_tips"
-            app:layout_constraintTop_toTopOf="@+id/tv_total_tips" />
-
-        <TextView
-            android:id="@+id/tv_total_tips"
+            android:id="@+id/tv_employee_hours_sum_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -105,9 +92,9 @@
             android:text="0.00"
             android:textColor="@color/default_text"
             android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_total_tips_label"
-            app:layout_constraintStart_toEndOf="@+id/tv_total_tips_label"
-            app:layout_constraintTop_toTopOf="@+id/tv_total_tips_label"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_employee_hours_dollar_label"
+            app:layout_constraintStart_toEndOf="@+id/tv_employee_hours_dollar_label"
+            app:layout_constraintTop_toTopOf="@+id/tv_employee_hours_dollar_label"
             app:layout_constraintVertical_bias="0.0" />
 
         <Button

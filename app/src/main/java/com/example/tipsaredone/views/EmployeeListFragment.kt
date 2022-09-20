@@ -47,7 +47,11 @@ class EmployeeListFragment : Fragment() {
         employeesAdapter = EmployeesAdapter(employeesViewModel.employees.value!!,
             itemClickCallback = fun(position: Int) {
                 showEditEmployeeDialog(employeesViewModel.employees.value!![position])
-            })
+            },
+            textChangedCallback = fun(_: Int) {
+                updateSumOfHoursHeader()
+            }
+            )
         binding.rcyEmployeeList.layoutManager = LinearLayoutManager(context as MainActivity)
         binding.rcyEmployeeList.adapter = employeesAdapter
 
@@ -88,7 +92,7 @@ class EmployeeListFragment : Fragment() {
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
-        binding.btnDoTips.setOnClickListener {
+        binding.btnConfirmCollection.setOnClickListener {
             findNavController().navigate(R.id.action_empList_to_empHours)
         }
     }
@@ -108,7 +112,7 @@ class EmployeeListFragment : Fragment() {
         val dialogBox = binding.includeNewEmployeeDialog
         dialogBox.root.visibility = View.VISIBLE
         dialogBox.etDialogNewEmployee.text.clear()
-        binding.btnDoTips.visibility = View.GONE
+        binding.btnConfirmCollection.visibility = View.GONE
         employeesViewModel.newEmployeeDialogShowing = true
 
         dialogBox.etDialogNewEmployee.doAfterTextChanged {
@@ -140,7 +144,7 @@ class EmployeeListFragment : Fragment() {
         val dialogBox = binding.includeEditEmployeeDialog
         dialogBox.root.visibility = View.VISIBLE
         dialogBox.etEditEmployeeDialog.setText(selectedEmployee.name)
-        binding.btnDoTips.visibility = View.GONE
+        binding.btnConfirmCollection.visibility = View.GONE
         employeesViewModel.editEmployeeDialogShowing = true
 
         dialogBox.etEditEmployeeDialog.doAfterTextChanged {
@@ -182,7 +186,7 @@ class EmployeeListFragment : Fragment() {
             binding.includeNewEmployeeDialog.root.visibility = View.GONE
             employeesViewModel.newEmployeeDialogShowing = false
         }
-        binding.btnDoTips.visibility = View.VISIBLE
+        binding.btnConfirmCollection.visibility = View.VISIBLE
     }
     private fun generateEmployeeUID(): String {
         var uniqueID = UUID.randomUUID().toString()
@@ -192,6 +196,11 @@ class EmployeeListFragment : Fragment() {
             }
         }
         return uniqueID
+    }
+
+    private fun updateSumOfHoursHeader() {
+        val newSum = employeesAdapter.getSumOfHours()
+        binding.tvEmployeeHoursSumValue.text = newSum.toString()
     }
 
 

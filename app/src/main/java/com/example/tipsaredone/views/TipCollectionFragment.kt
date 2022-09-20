@@ -67,7 +67,6 @@ class TipCollectionFragment : Fragment() {
 
     // Misc
     private fun updateSumOfBillsTV() {
-        binding.tvTotalTips.text = tipCollectionAdapter.getTotalCollected().toString()
     }
     private fun updateConfirmButtonVisibility() {
         val sumOfModulos = (tipCollectionViewModel.tipsCollected.value!![0] % 1.00) +

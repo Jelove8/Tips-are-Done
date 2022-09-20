@@ -7,11 +7,69 @@
     android:layout_height="match_parent"
     tools:context=".views.EmployeeListFragment">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cnst_tip_collection_footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/warm_neutral"
+        android:padding="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/tv_total_hours_footer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:fontFamily="@font/sodo"
+            android:text="total hours"
+            android:textColor="@color/default_text"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_employee_hours_sum_value"
+            app:layout_constraintStart_toEndOf="@+id/tv_employee_hours_sum_value"
+            app:layout_constraintTop_toTopOf="@+id/tv_employee_hours_sum_value" />
+
+        <TextView
+            android:id="@+id/tv_employee_hours_sum_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sodo"
+            android:text="0.00"
+            android:textColor="@color/default_text"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/btn_confirm_collection"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:backgroundTint="@color/starbucks_green"
+            android:clickable="true"
+            android:elevation="64dp"
+            android:enabled="true"
+            android:fontFamily="@font/sodo"
+            android:text="Confirm"
+            android:textColor="@color/white"
+            app:icon="@drawable/icon_checkmark"
+            app:iconGravity="textEnd"
+            app:iconSize="20dp"
+            app:iconTint="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcy_employee_list"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/cnst_tip_collection_footer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -37,20 +95,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/btn_do_tips"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="32dp"
-        android:fontFamily="@font/sodo"
-        android:text="Do Tips"
-        android:textSize="16sp"
-        app:icon="@drawable/icon_money_bag"
-        app:iconGravity="textEnd"
-        app:iconSize="28dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
