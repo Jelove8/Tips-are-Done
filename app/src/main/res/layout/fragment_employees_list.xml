@@ -43,26 +43,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/btn_confirm_collection"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:backgroundTint="@color/starbucks_green"
-            android:clickable="true"
-            android:elevation="64dp"
-            android:enabled="true"
-            android:fontFamily="@font/sodo"
-            android:text="Confirm"
-            android:textColor="@color/white"
-            app:icon="@drawable/icon_checkmark"
-            app:iconGravity="textEnd"
-            app:iconSize="20dp"
-            app:iconTint="@color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="SpeakableTextPresentCheck" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -73,6 +53,38 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <include
+        android:id="@+id/include_date_picker_dialog"
+        layout="@layout/fragment_date_picker"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_confirm_collection"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="@color/starbucks_green"
+        android:clickable="true"
+        android:elevation="64dp"
+        android:enabled="true"
+        android:fontFamily="@font/sodo"
+        android:text="Confirm"
+        android:textColor="@color/white"
+        app:icon="@drawable/icon_checkmark"
+        app:iconGravity="textEnd"
+        app:iconSize="20dp"
+        app:iconTint="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/cnst_tip_collection_footer"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <include
         android:id="@+id/include_new_employee_dialog"

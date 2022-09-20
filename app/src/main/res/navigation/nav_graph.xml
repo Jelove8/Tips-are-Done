@@ -12,22 +12,13 @@
         android:fontFamily="@font/sodo"
         tools:layout="@layout/fragment_employees_list">
         <action
-            android:id="@+id/action_empList_to_empHours"
-            app:destination="@id/EmployeeHoursFragment" />
-        <action
             android:id="@+id/action_EmployeeListFragment_to_SettingsFragment"
             app:destination="@id/SettingsFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/EmployeeHoursFragment"
-        android:name="com.example.tipsaredone.views.EmployeeHoursFragment"
-        android:label="Doin' Tips"
-        tools:layout="@layout/fragment_employee_hours">
         <action
-            android:id="@+id/action_employeeHours_toTipCollection"
+            android:id="@+id/action_EmployeeListFragment_to_tipCollectionFragment"
             app:destination="@id/tipCollectionFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/WeeklyReportsFragment"
         android:name="com.example.tipsaredone.views.WeeklyReportsFragment"

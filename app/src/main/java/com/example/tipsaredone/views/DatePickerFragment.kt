@@ -6,16 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.example.tipsaredone.R
 import com.example.tipsaredone.databinding.FragmentDatePickerBinding
-import com.example.tipsaredone.viewmodels.DatePickerViewModel
-import java.time.LocalDate
 import java.util.*
 
 
 class DatePickerFragment : Fragment() {
 
-    private lateinit var datePickerViewModel: DatePickerViewModel
+
     private var _binding: FragmentDatePickerBinding? = null
     private val binding get() = _binding!!
 
@@ -25,10 +22,6 @@ class DatePickerFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val datePickerVM: DatePickerViewModel by activityViewModels()
-        datePickerViewModel = datePickerVM
-
 
 
 

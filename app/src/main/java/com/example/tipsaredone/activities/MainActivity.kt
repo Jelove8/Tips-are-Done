@@ -18,7 +18,6 @@ import com.example.tipsaredone.adapters.HoursAdapter
 import com.example.tipsaredone.adapters.WeeklyReportsAdapter
 import com.example.tipsaredone.databinding.ActivityMainBinding
 import com.example.tipsaredone.model.*
-import com.example.tipsaredone.viewmodels.DatePickerViewModel
 import com.example.tipsaredone.viewmodels.HoursViewModel
 import com.example.tipsaredone.viewmodels.EmployeesViewModel
 import com.example.tipsaredone.viewmodels.TipCollectionViewModel
@@ -34,7 +33,6 @@ class MainActivity : AppCompatActivity() {
     // ViewModels
     private lateinit var employeesViewModel: EmployeesViewModel
     private lateinit var hoursViewModel: HoursViewModel
-    private lateinit var datePickerViewModel: DatePickerViewModel
     private lateinit var collectionViewModel: TipCollectionViewModel
 
     // Init Checks
@@ -60,7 +58,6 @@ class MainActivity : AppCompatActivity() {
         // Initialize ViewModels
         employeesViewModel = ViewModelProvider(this)[EmployeesViewModel::class.java]
         hoursViewModel = ViewModelProvider(this)[HoursViewModel::class.java]
-        datePickerViewModel = ViewModelProvider(this)[DatePickerViewModel::class.java]
         collectionViewModel = ViewModelProvider(this)[TipCollectionViewModel::class.java]
 
         // Navbar Buttons
@@ -68,7 +65,6 @@ class MainActivity : AppCompatActivity() {
             findNavController(R.id.nav_host_fragment).navigate(R.id.EmployeeListFragment)
         }
         binding.includeContentMain.navTips.setOnClickListener {
-            findNavController(R.id.nav_host_fragment).navigate(R.id.EmployeeHoursFragment)
         }
         binding.includeContentMain.navReports.setOnClickListener {
             findNavController(R.id.nav_host_fragment).navigate(R.id.WeeklyReportsFragment)
