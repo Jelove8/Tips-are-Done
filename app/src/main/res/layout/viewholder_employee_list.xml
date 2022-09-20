@@ -11,14 +11,14 @@
 
     <TextView
         android:id="@+id/tv_employee_list_index"
-        android:layout_width="0dp"
+        android:layout_width="32dp"
         android:layout_height="0dp"
+        android:layout_marginStart="24dp"
         android:fontFamily="@font/sodo"
         android:gravity="center"
         android:hint="100"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_employee_list_name"
-        app:layout_constraintEnd_toStartOf="@+id/tv_employee_list_name"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tv_employee_list_name" />
 
@@ -26,10 +26,10 @@
         android:id="@+id/tv_employee_list_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="16dp"
         android:fontFamily="@font/sodo"
         android:gravity="center_vertical"
         android:hint="Ashley Ramirez Johnson"
@@ -39,7 +39,7 @@
         android:typeface="sans"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/et_employee_hours2"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_employee_list_index"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
@@ -76,8 +76,8 @@
     <EditText
         android:id="@+id/et_employee_hours2"
         android:layout_width="100dp"
-        android:layout_height="48dp"
-        android:layout_marginEnd="16dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="25dp"
         android:background="@drawable/rounded_square"
         android:backgroundTint="@color/warm_neutral"
         android:fontFamily="@font/sodo"
