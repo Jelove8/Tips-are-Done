@@ -29,12 +29,12 @@ class TipDistributionFragment : Fragment() {
 
         // Distributing Tips
         val weeklyReportGenerator = (context as MainActivity).getWeeklyReportGenerator()
-        val unsavedWeeklyReport = weeklyReportGenerator.getWeeklyReport()
+        weeklyReportGenerator.distributeWeeklyTips()
 
-        if (unsavedWeeklyReport.error != 0) {
-            showRoundingErrorDialog(unsavedWeeklyReport.error)
+        if (weeklyReportGenerator.error != 0) {
+            showRoundingErrorDialog(weeklyReportGenerator.error)
         }
-        binding.tvTipRate.text = unsavedWeeklyReport.tipRate.toString()
+        binding.tvTipRate.text = weeklyReportGenerator.tipRate.toString()
 
         distributionAdapter = DistributionAdapter(mutableListOf())
         binding.rcyTipDistribution.layoutManager = LinearLayoutManager(context as MainActivity)
@@ -42,7 +42,7 @@ class TipDistributionFragment : Fragment() {
 
         // Button Logic
         binding.btnSaveEmployees.setOnClickListener {
-            (context as MainActivity).saveNewWeeklyReport()
+            // ()context as MainActivity).saveNewWeeklyReport()
             findNavController().navigate(R.id.action_tipDistributionFragment_to_EmployeeListFragment)
         }
     }

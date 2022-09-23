@@ -16,5 +16,5 @@
     <color name="warm_neutral">#F2F0EB</color>
     <color name="cool_neutral">#F9F9F9</color>
     <color name="default_text">#808080</color>
-    <color name="transparent">#F2000000</color>
+    <color name="transparent">#CC000000</color>
 </resources>

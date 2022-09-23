@@ -15,7 +15,6 @@ import com.example.tipsaredone.adapters.TipCollectionAdapter
 import com.example.tipsaredone.databinding.FragmentTipCollectionBinding
 import com.example.tipsaredone.viewmodels.TipCollectionViewModel
 
-
 class TipCollectionFragment : Fragment() {
 
     private var _binding: FragmentTipCollectionBinding? = null
@@ -45,20 +44,14 @@ class TipCollectionFragment : Fragment() {
         )
         binding.rcyTipCollection.layoutManager = LinearLayoutManager(context as MainActivity)
         binding.rcyTipCollection.adapter = tipCollectionAdapter
-        updateSumOfBillsTV()
 
         binding.btnConfirmCollection.setOnClickListener {
             if (checkForValidInputs()) {
-                val collectedTips = tipCollectionViewModel.tipsCollected.value!!
-                (context as MainActivity).collectWeeklyTips(collectedTips)
                 (context as MainActivity).displayCalculatingScreen()
                 findNavController().navigate(R.id.action_tipCollectionFragment_to_tipDistributionFragment)
+                (context as MainActivity).collectWeeklyTips(tipCollectionViewModel.tipsCollected.value!!)
             }
         }
-    }
-    override fun onStart() {
-        super.onStart()
-        (context as MainActivity).displayNavbar(false)
     }
     override fun onDestroyView() {
         super.onDestroyView()
@@ -67,6 +60,8 @@ class TipCollectionFragment : Fragment() {
 
     // Misc
     private fun updateSumOfBillsTV() {
+        val totalTips = tipCollectionAdapter.getTotalCollected()
+        binding.tvTipCollectionTotalValue.text = totalTips.toString()
     }
     private fun updateConfirmButtonVisibility() {
         val sumOfModulos = (tipCollectionViewModel.tipsCollected.value!![0] % 1.00) +

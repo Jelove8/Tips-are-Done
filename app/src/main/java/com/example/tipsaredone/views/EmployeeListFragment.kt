@@ -19,6 +19,7 @@ import com.example.tipsaredone.databinding.FragmentEmployeesListBinding
 import com.example.tipsaredone.model.DatabaseModel
 import com.example.tipsaredone.model.Employee
 import com.example.tipsaredone.viewmodels.EmployeesViewModel
+import java.time.LocalDate
 import java.util.*
 
 class EmployeeListFragment : Fragment() {
@@ -84,8 +85,13 @@ class EmployeeListFragment : Fragment() {
                         }
                     }
                     R.id.action_settings -> {
-                        findNavController().navigate(R.id.action_EmployeeListFragment_to_SettingsFragment)
-                        true
+                        if (employeesViewModel.editEmployeeDialogShowing || employeesViewModel.newEmployeeDialogShowing || employeesViewModel.datePickerDialogShowing) {
+                            false
+                        }
+                        else {
+                            findNavController().navigate(R.id.action_EmployeeListFragment_to_SettingsFragment)
+                            true
+                        }
                     }
                     else ->  false
                 }
@@ -94,15 +100,26 @@ class EmployeeListFragment : Fragment() {
 
         binding.btnConfirmCollection.setOnClickListener {
             if (employeesViewModel.datePickerDialogShowing) {
-                if (employeesViewModel.startDate.value!!.isBefore(employeesViewModel.endDate.value!!)) {
+                val startDate = employeesViewModel.startDate.value
+                val endDate = employeesViewModel.endDate.value
+
+                if (checkForValidDates(startDate, endDate)) {
                     findNavController().navigate(R.id.action_EmployeeListFragment_to_tipCollectionFragment)
+                    employeesViewModel.datePickerDialogShowing = false
+                    (context as MainActivity).instantiateWeeklyReportGenerator(startDate.toString(),endDate.toString(),employeesViewModel.employees.value!!)
+
                 }
                 else {
                     (context as MainActivity).makeToastMessage(resources.getString(R.string.invalid_dates2))
                 }
             }
             else {
-                showDatePicker()
+                if (employeesAdapter.getSumOfHours() == 0.0) {
+                    (context as MainActivity).makeToastMessage(resources.getString(R.string.employee_hours_required))
+                }
+                else {
+                    showDatePicker()
+                }
             }
         }
     }
@@ -236,13 +253,14 @@ class EmployeeListFragment : Fragment() {
 
     }
 
-
-
     private fun updateSumOfHoursHeader() {
         val newSum = employeesAdapter.getSumOfHours()
         binding.tvEmployeeHoursSumValue.text = newSum.toString()
     }
 
+    private fun checkForValidDates(startDate: LocalDate?, endDate: LocalDate?) : Boolean {
+        return !(startDate == null || endDate == null || startDate.isAfter(endDate) || startDate == endDate)
+    }
 
 
 

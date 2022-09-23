@@ -76,7 +76,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cnst_tip_collection_footer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="80dp"
         android:background="@color/warm_neutral"
         android:padding="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -88,7 +88,7 @@
             android:id="@+id/tv_total_hours_footer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="4dp"
             android:fontFamily="@font/sodo"
             android:text="total hrs"
@@ -105,7 +105,7 @@
             android:fontFamily="@font/sodo"
             android:text="0.00"
             android:textColor="@color/default_text"
-            android:textSize="24sp"
+            android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

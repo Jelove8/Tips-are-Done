@@ -107,22 +107,19 @@ class MainActivity : AppCompatActivity() {
 
 
     // Weekly Report
+
     fun getWeeklyReportGenerator(): WeeklyReportGenerator {
         return weeklyReportGenerator
     }
-    fun generateNewWeeklyReport(startDate: String, endDate: String, employeeHours: MutableList<EmployeeHours>) {
+    fun instantiateWeeklyReportGenerator(startDate: String, endDate: String, employees: MutableList<Employee>) {
         weeklyReportGenerator = WeeklyReportGenerator(startDate,endDate)
-
+        weeklyReportGenerator.collectWeeklyEmployees(employees)
     }
     fun collectWeeklyTips(collectedTips: MutableList<Double>) {
         weeklyReportGenerator.collectWeeklyTips(collectedTips)
-        weeklyReportGenerator.distributeWeeklyTips()
     }
-    fun saveNewWeeklyReport() {
-        val newWeeklyReport = weeklyReportGenerator.getWeeklyReport()
-        databaseModel!!.addWeeklyReport(newWeeklyReport)
-
-
+    fun distributeWeeklyTips() {
+        weeklyReportGenerator.distributeWeeklyTips()
     }
 
     // Activity Navigation

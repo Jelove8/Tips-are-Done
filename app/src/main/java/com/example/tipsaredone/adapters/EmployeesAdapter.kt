@@ -117,7 +117,6 @@ class EmployeesAdapter(
     fun editTippableHours(position: Int, newHours: Double) {
         employees[position].hours = newHours
     }
-
     fun getSumOfHours(): Double {
         var output = 0.0
         employees.forEach {
@@ -128,6 +127,5 @@ class EmployeesAdapter(
         return (output * 100.0).roundToInt() / 100.0
 
     }
-
 
 }
